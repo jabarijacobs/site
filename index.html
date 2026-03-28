@@ -11,7 +11,7 @@
   --bg:#f7f5f2;--text:#0a0a0a;--muted:#888;--border:rgba(0,0,0,0.09);
   --nav-bg:rgba(247,245,242,0.92);--pill-bg:#0a0a0a;--pill-text:#f7f5f2;
   --pill-idle-text:rgba(10,10,10,0.45);--pill-idle-border:rgba(10,10,10,0.18);
-  --overlay:rgba(247,245,242,0.96);--gap:6px;--cols:3;
+  --overlay:rgba(247,245,242,0.96);
 }
 [data-theme="dark"]{
   --bg:#0c0c0c;--text:#f0ede8;--muted:#666;--border:rgba(255,255,255,0.07);
@@ -23,39 +23,37 @@ html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Karla',sans-serif;font-weight:300;transition:background 0.35s,color 0.35s;min-height:100vh}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;transition:background 0.35s,border-color 0.35s;}
+nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;transition:background 0.35s,border-color 0.35s;}
 .nav-logo{display:flex;align-items:center;text-decoration:none;color:var(--text);transition:color 0.35s}
-.nav-logo img.logo-light{height:32px;width:auto;object-fit:contain}
-.nav-logo img.logo-dark{height:32px;width:auto;object-fit:contain;display:none}
-[data-theme="dark"] .nav-logo img.logo-light{display:none}
-[data-theme="dark"] .nav-logo img.logo-dark{display:block}
-.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;letter-spacing:0.14em;text-transform:uppercase}
-.nav-right{display:flex;align-items:center;gap:20px}
-.nav-links{display:flex;gap:22px;list-style:none}
-.nav-links a{font-size:0.68rem;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.45;transition:opacity 0.2s}
+.nav-logo img{height:34px;width:auto;object-fit:contain}
+.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:400;letter-spacing:0.14em;text-transform:uppercase}
+.nav-right{display:flex;align-items:center;gap:32px}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-size:0.65rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.4;transition:opacity 0.2s}
 .nav-links a:hover,.nav-links a.active{opacity:1}
-.theme-toggle{background:none;border:1px solid var(--border);border-radius:20px;padding:5px 12px;cursor:pointer;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);opacity:0.6;transition:all 0.25s;white-space:nowrap}
-.theme-toggle:hover{opacity:1;border-color:var(--text)}
+/* Dark mode as a subtle icon button instead of pill */
+.theme-toggle{background:none;border:none;cursor:pointer;font-size:0.75rem;color:var(--text);opacity:0.4;transition:opacity 0.2s;padding:4px;line-height:1}
+.theme-toggle:hover{opacity:1}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
 .hamburger span{display:block;width:20px;height:1.5px;background:var(--text);transition:background 0.35s}
-.mobile-menu{display:none;position:fixed;inset:0;background:var(--overlay);z-index:90;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.mobile-menu{display:none;position:fixed;inset:0;background:var(--overlay);z-index:90;flex-direction:column;align-items:center;justify-content:center;gap:32px}
 .mobile-menu.open{display:flex}
-.mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.6;transition:opacity 0.2s}
+.mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.6;transition:opacity 0.2s}
 .mobile-menu a:hover{opacity:1}
 .mobile-close{position:absolute;top:18px;right:28px;font-size:1.8rem;cursor:pointer;background:none;border:none;color:var(--text)}
 .mobile-theme{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;background:none;border:1px solid var(--border);border-radius:20px;padding:7px 16px}
 
 /* FILTER BAR */
-.filter-wrap{position:sticky;top:60px;z-index:70;background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:8px 36px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;transition:background 0.35s,border-color 0.35s;}
-.filter-pill{padding:5px 14px;border-radius:20px;border:1px solid var(--pill-idle-border);font-size:0.67rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:var(--pill-idle-text);background:transparent}
+.filter-wrap{position:sticky;top:56px;z-index:70;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;transition:background 0.35s,border-color 0.35s;}
+.filter-pill{padding:5px 14px;border-radius:20px;border:1px solid var(--pill-idle-border);font-size:0.63rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:var(--pill-idle-text);background:transparent}
 .filter-pill:hover{border-color:var(--text);color:var(--text)}
 .filter-pill.active{background:var(--pill-bg);color:var(--pill-text);border-color:var(--pill-bg)}
-.filter-count{font-size:0.58rem;opacity:0.6;margin-left:2px}
+.filter-count{font-size:0.56rem;opacity:0.55;margin-left:2px}
 
-/* GALLERY */
-.gallery-wrap{padding-top:4px}
-.gallery{columns:4;column-gap:4px;padding:4px 4px 80px}
-.gallery-item{break-inside:avoid;margin-bottom:4px;overflow:hidden;cursor:pointer;position:relative}
+/* GALLERY — padding-top pushes content below the sticky bars so first photo never clips */
+.gallery-wrap{padding-top:16px}
+.gallery{columns:4;column-gap:3px;padding:0 3px 80px}
+.gallery-item{break-inside:avoid;margin-bottom:3px;cursor:pointer;position:relative}
 .gallery-item img,.gallery-item video{display:block;width:100%;height:auto;transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)}
 .gallery-item:hover img,.gallery-item:hover video{transform:scale(1.03)}
 .gallery-item.hidden{display:none}
@@ -124,9 +122,9 @@ footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify
 .gallery-item{animation:fadeUp 0.45s ease both}
 
 @media(max-width:900px){
-  .gallery{columns:2;column-gap:3px;padding:3px 3px 60px}
-  .gallery-item{margin-bottom:3px}
-  .filter-wrap{padding:8px 18px}
+  .gallery{columns:2;column-gap:2px;padding:0 2px 60px}
+  .gallery-item{margin-bottom:2px}
+  .filter-wrap{padding:8px 18px;top:56px}
   nav{padding:0 18px}
   .nav-links,.theme-toggle{display:none}
   .hamburger{display:flex}
@@ -135,7 +133,7 @@ footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify
   footer{padding:32px 20px}
 }
 @media(max-width:500px){
-  .gallery{columns:2;column-gap:2px;padding:2px 2px 60px}
+  .gallery{columns:2;column-gap:2px;padding:0 2px 60px}
   .gallery-item{margin-bottom:2px}
 }
 </style>
@@ -155,7 +153,7 @@ footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify
       <li><a href="#" id="navAbout">About</a></li>
       <li><a href="#" id="navContact">Contact</a></li>
     </ul>
-    <button class="theme-toggle" id="themeToggle">◑ Dark mode</button>
+    <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">◐</button>
   </div>
   <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
 </nav>
@@ -265,7 +263,11 @@ const html=document.documentElement;
 const saved=localStorage.getItem('jj_theme')||'light';
 html.setAttribute('data-theme',saved);
 updateToggleLabel();
-function updateToggleLabel(){document.getElementById('themeToggle').textContent=html.getAttribute('data-theme')==='dark'?'◑ Light mode':'◑ Dark mode';}
+function updateToggleLabel(){
+  // Icon stays as ◐ — tooltip changes
+  const dark=html.getAttribute('data-theme')==='dark';
+  document.getElementById('themeToggle').title=dark?'Switch to light mode':'Switch to dark mode';
+}
 function toggleTheme(){const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('jj_theme',n);updateToggleLabel();}
 document.getElementById('themeToggle').addEventListener('click',toggleTheme);
 document.getElementById('mobileTheme').addEventListener('click',()=>{toggleTheme();closeMobile();});
@@ -361,23 +363,48 @@ function renderMotion(){
 function applySettings(){
   const s=settings;
   const instaUrl='https://instagram.com/'+(s.insta||'').replace('@','');
-  // Logo — separate light/dark
-  const logoLight=document.getElementById('navLogoLight'),logoDark=document.getElementById('navLogoDark'),logoText=document.getElementById('navLogoText');
-  const hasLight=!!s.logoLightSrc, hasDark=!!s.logoDarkSrc;
-  if(hasLight||hasDark){
-    logoText.style.display='none';
-    if(hasLight){logoLight.src=s.logoLightSrc;logoLight.style.display='';}else{logoLight.style.display='none';}
-    if(hasDark){logoDark.src=s.logoDarkSrc;logoDark.style.display='';}else{logoDark.style.display='none';}
-  }else{
-    logoLight.style.display='none';logoDark.style.display='none';logoText.style.display='';
-    logoText.textContent=s.name||'Jabari Jacobs';
+
+  // Logo
+  const logoLight=document.getElementById('navLogoLight');
+  const logoDark=document.getElementById('navLogoDark');
+  const logoText=document.getElementById('navLogoText');
+  const hasLight=!!(s.logoLightSrc);
+  const hasDark=!!(s.logoDarkSrc);
+
+  function updateLogo(){
+    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+    if(hasLight||hasDark){
+      logoText.style.display='none';
+      // Show dark logo in dark mode if available, else light logo
+      if(isDark&&hasDark){
+        logoLight.style.display='none';
+        logoDark.style.display='block';logoDark.src=s.logoDarkSrc;
+      } else if(hasLight){
+        logoDark.style.display='none';
+        logoLight.style.display='block';logoLight.src=s.logoLightSrc;
+      } else if(hasDark){
+        logoLight.style.display='none';
+        logoDark.style.display='block';logoDark.src=s.logoDarkSrc;
+      }
+    } else {
+      logoLight.style.display='none';
+      logoDark.style.display='none';
+      logoText.style.display='block';
+      logoText.textContent=s.name||'Jabari Jacobs';
+    }
   }
-  // Footer logo
+  updateLogo();
+  // Re-run on theme toggle
+  document.getElementById('themeToggle').addEventListener('click',updateLogo);
+  document.getElementById('mobileTheme').addEventListener('click',updateLogo);
+
+  // Footer
   const fLogoImg=document.getElementById('footerLogoImg'),fLogoText=document.getElementById('footerName');
   if(hasLight){fLogoImg.src=s.logoLightSrc;fLogoImg.style.display='block';fLogoText.style.display='none';}
   else{fLogoImg.style.display='none';fLogoText.style.display='block';fLogoText.textContent=s.name||'Jabari Jacobs';}
   document.getElementById('footerCopy').textContent=`© ${new Date().getFullYear()} ${s.name||'Jabari Jacobs'}`;
   document.getElementById('footerInsta').href=instaUrl;
+
   // About
   document.getElementById('aboutName').textContent=s.name||'Jabari Jacobs';
   document.getElementById('aboutTagline').textContent=s.tagline||'Photographer & Director';
@@ -387,10 +414,10 @@ function applySettings(){
   document.getElementById('aboutEmail').href='mailto:'+(s.email||'');
   document.getElementById('aboutInsta').textContent=s.insta||'';
   document.getElementById('aboutInsta').href=instaUrl;
-  // About photo
   const aPhoto=document.getElementById('aboutPhoto'),aPlaceholder=document.getElementById('aboutPhotoPlaceholder');
   if(s.aboutPhotoSrc){aPhoto.src=s.aboutPhotoSrc;aPhoto.style.display='block';aPlaceholder.style.display='none';}
   else{aPhoto.style.display='none';aPlaceholder.style.display='flex';}
+
   // Contact
   document.getElementById('contactIntro').textContent=s.contactIntro||'';
   document.getElementById('contactEmail').textContent=s.email||'';
@@ -398,7 +425,6 @@ function applySettings(){
   document.getElementById('contactInsta').textContent=s.insta||'';
   document.getElementById('contactInsta').href=instaUrl;
   document.getElementById('contactLocation').textContent=s.location||'';
-  // Title
   document.title=s.name||'Jabari Jacobs';
 }
 
@@ -434,13 +460,6 @@ document.addEventListener('keydown',e=>{
 
 loadData().then(()=>{
   applySettings();
-  // Apply grid settings from dashboard
-  const cols=settings.cols||3;
-  const gap=settings.gap||12;
-  document.querySelector('.gallery').style.columns=cols;
-  document.querySelector('.gallery').style.columnGap=gap+'px';
-  document.querySelector('.gallery').style.padding=gap+'px 36px 100px';
-  document.querySelectorAll('.gallery-item').forEach(el=>el.style.marginBottom=gap+'px');
   renderGallery();
   showView('home');
 });
