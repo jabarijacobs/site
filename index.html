@@ -10,56 +10,55 @@
 
 /* ── THEME ── */
 :root{
-  --bg:#ffffff;--text:#000000;--muted:#999;--border:rgba(0,0,0,0.08);
-  --nav-bg:rgba(255,255,255,0.95);--pill-bg:#000000;--pill-text:#ffffff;
-  --pill-idle-text:rgba(0,0,0,0.4);--pill-idle-border:rgba(0,0,0,0.15);
+  --bg:#ffffff;--text:#000000;--muted:#666;--border:rgba(0,0,0,0.1);
+  --nav-bg:rgba(255,255,255,0.96);--pill-bg:#000000;--pill-text:#ffffff;
+  --pill-idle-text:rgba(0,0,0,0.45);--pill-idle-border:rgba(0,0,0,0.18);
   --overlay:rgba(255,255,255,0.97);--lb-bg:rgba(255,255,255,0.97);--lb-text:#000;
-  --lb-btn:rgba(0,0,0,0.5);--lb-btn-hover:#000;
+  --lb-btn:rgba(0,0,0,0.4);--lb-btn-hover:#000;
   --font-body:'Karla',sans-serif;--font-display:'Cormorant Garamond',serif;
-  --accent:#000000;
 }
 [data-theme="dark"]{
-  --bg:#0a0a0a;--text:#ffffff;--muted:#777;--border:rgba(255,255,255,0.08);
-  --nav-bg:rgba(10,10,10,0.95);--pill-bg:#ffffff;--pill-text:#000000;
-  --pill-idle-text:rgba(255,255,255,0.4);--pill-idle-border:rgba(255,255,255,0.15);
+  --bg:#0a0a0a;--text:#ffffff;--muted:#888;--border:rgba(255,255,255,0.08);
+  --nav-bg:rgba(10,10,10,0.96);--pill-bg:#ffffff;--pill-text:#000000;
+  --pill-idle-text:rgba(255,255,255,0.45);--pill-idle-border:rgba(255,255,255,0.18);
   --overlay:rgba(10,10,10,0.97);--lb-bg:rgba(0,0,0,0.97);--lb-text:#fff;
-  --lb-btn:rgba(255,255,255,0.5);--lb-btn-hover:#fff;
+  --lb-btn:rgba(255,255,255,0.4);--lb-btn-hover:#fff;
 }
 
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-weight:300;transition:background 0.3s,color 0.3s;min-height:100vh}
 
 /* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;transition:background 0.3s,border-color 0.3s}
-.nav-logo{display:flex;align-items:center;text-decoration:none;color:var(--text);transition:color 0.3s;gap:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;transition:background 0.3s,border-color 0.3s}
+.nav-logo{display:flex;align-items:center;text-decoration:none;color:var(--text);transition:color 0.3s}
 .nav-logo img{object-fit:contain;transition:height 0.3s}
-.nav-logo-text{font-family:var(--font-display);font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:var(--text);transition:font-size 0.3s,color 0.3s;font-size:1.1rem}
-.nav-right{display:flex;align-items:center;gap:32px}
-.nav-links{display:flex;gap:28px;list-style:none}
-.nav-links a{font-size:0.65rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.4;transition:opacity 0.2s}
+.nav-logo-text{font-family:var(--font-display);font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-size:1.5rem;line-height:1}
+.nav-right{display:flex;align-items:center;gap:36px}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:0.72rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.45;transition:opacity 0.2s}
 .nav-links a:hover,.nav-links a.active{opacity:1}
 .theme-toggle{background:none;border:none;cursor:pointer;font-size:1rem;color:var(--text);opacity:0.35;transition:opacity 0.2s;padding:4px;line-height:1}
 .theme-toggle:hover{opacity:0.8}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
-.hamburger span{display:block;width:20px;height:1.5px;background:var(--text);transition:background 0.3s}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--text);transition:background 0.3s}
 .mobile-menu{display:none;position:fixed;inset:0;background:var(--overlay);z-index:90;flex-direction:column;align-items:center;justify-content:center;gap:32px}
 .mobile-menu.open{display:flex}
 .mobile-menu a{font-family:var(--font-display);font-size:2rem;font-weight:300;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.6;transition:opacity 0.2s}
 .mobile-menu a:hover{opacity:1}
 .mobile-close{position:absolute;top:18px;right:28px;font-size:1.8rem;cursor:pointer;background:none;border:none;color:var(--text)}
-.mobile-theme{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;background:none;border:1px solid var(--border);border-radius:20px;padding:7px 16px;color:var(--text)}
+.mobile-theme{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;background:none;border:1px solid var(--border);border-radius:20px;padding:7px 16px;color:var(--text)}
 
 /* ── FILTER BAR ── */
-.filter-wrap{position:sticky;top:56px;z-index:70;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;transition:background 0.3s,border-color 0.3s}
-.filter-pill{padding:5px 14px;border-radius:20px;border:1px solid var(--pill-idle-border);font-size:0.63rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:var(--pill-idle-text);background:transparent}
+.filter-wrap{position:sticky;top:68px;z-index:70;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:12px 36px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;transition:background 0.3s,border-color 0.3s}
+.filter-pill{padding:6px 16px;border-radius:20px;border:1px solid var(--pill-idle-border);font-size:0.66rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:var(--pill-idle-text);background:transparent}
 .filter-pill:hover{border-color:var(--text);color:var(--text)}
 .filter-pill.active{background:var(--pill-bg);color:var(--pill-text);border-color:var(--pill-bg)}
 .filter-count{font-size:0.56rem;opacity:0.55;margin-left:2px}
 
 /* ── GALLERY ── */
-.gallery-wrap{padding-top:16px}
-.gallery{columns:4;column-gap:3px;padding:0 3px 80px}
-.gallery-item{break-inside:avoid;margin-bottom:3px;cursor:pointer;position:relative}
+.gallery-wrap{padding-top:20px}
+.gallery{columns:4;column-gap:4px;padding:0 36px 80px}
+.gallery-item{break-inside:avoid;margin-bottom:4px;cursor:pointer;position:relative}
 .gallery-item img,.gallery-item video{display:block;width:100%;height:auto;transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)}
 .gallery-item:hover img,.gallery-item:hover video{transform:scale(1.03)}
 .gallery-item.hidden{display:none}
@@ -86,40 +85,38 @@ nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);back
 .lb-prev{left:8px}.lb-next{right:8px}
 .lb-yt{width:88vw;max-width:900px;aspect-ratio:16/9}
 
-/* ── INNER PAGES ── */
-.inner-page{display:none;padding:96px 28px 80px;max-width:900px;margin:0 auto}
+/* ── ABOUT/CONTACT PAGE ── */
+.inner-page{display:none;padding:80px 36px 80px;margin:0 auto;max-width:1100px}
 .inner-page.open{display:block}
-.inner-page h1{font-family:var(--font-display);font-size:3rem;font-weight:300;letter-spacing:0.04em;margin-bottom:6px;line-height:1.1;color:var(--text)}
-.inner-page .sub{font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:48px}
 
-/* ── ABOUT+CONTACT combined ── */
-.about-contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
-.about-col{}
-.about-photo-wrap{margin-bottom:32px}
-.about-photo{width:100%;display:block;max-height:500px;object-fit:cover}
-.about-photo-placeholder{width:100%;aspect-ratio:3/4;background:var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase}
-.about-bio{font-size:0.95rem;line-height:1.85;color:var(--text);margin-bottom:28px}
-.detail-row{display:flex;gap:12px;align-items:baseline;margin-bottom:8px}
-.detail-label{font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);width:80px;flex-shrink:0}
-.detail-val{font-size:0.85rem;color:var(--text)}
-.detail-val a{color:var(--text);text-decoration:underline;text-underline-offset:3px}
+/* 3-column layout: contact left | photo middle | bio+form right */
+.about-grid{display:grid;grid-template-columns:150px 1fr 1fr;gap:52px;align-items:start}
 
-/* Contact col */
-.contact-col h2{font-family:var(--font-display);font-size:2rem;font-weight:300;letter-spacing:0.04em;margin-bottom:6px;color:var(--text)}
-.contact-col .sub2{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:32px}
-.contact-details{margin-bottom:36px}
-.contact-form label{display:block;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.contact-form input,.contact-form textarea,.contact-form select{width:100%;padding:11px 14px;background:transparent;border:1px solid var(--border);color:var(--text);font-family:var(--font-body);font-size:0.88rem;outline:none;margin-bottom:16px;transition:border-color 0.2s;border-radius:2px}
-.contact-form input:focus,.contact-form textarea:focus{border-color:var(--text)}
-.contact-form textarea{min-height:110px;resize:vertical}
-.contact-form button{padding:12px 28px;background:var(--text);color:var(--bg);border:none;font-family:var(--font-body);font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;border-radius:2px}
-.contact-form button:hover{opacity:0.7}
+.about-left{font-size:0.76rem;line-height:1.8}
+.about-left .col-label{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;margin-top:28px;display:block}
+.about-left .col-label:first-child{margin-top:0}
+.about-left p,.about-left a{color:var(--text);font-size:0.76rem;line-height:1.7;display:block}
+.about-left a{text-decoration:underline;text-underline-offset:3px}
 
-/* Client list */
-.client-section{margin-top:60px;padding-top:40px;border-top:1px solid var(--border);grid-column:1/-1}
-.client-section h2{font-family:var(--font-display);font-size:1.6rem;font-weight:300;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:28px;color:var(--text)}
-.client-list{columns:3;column-gap:20px}
-.client-list span{display:block;font-size:0.82rem;color:var(--text);line-height:2;letter-spacing:0.02em;break-inside:avoid}
+.about-middle img{width:100%;display:block}
+.about-middle .photo-ph{width:100%;aspect-ratio:2/3;background:var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase}
+
+.about-right .bio{font-size:0.86rem;line-height:1.95;color:var(--text);margin-bottom:36px}
+.about-right .bio em{font-style:italic}
+.about-right .col-label{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:block;margin-top:32px}
+.about-right .col-label:first-child{margin-top:0}
+
+/* Minimal contact form */
+.cf-field{width:100%;padding:9px 0;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:var(--font-body);font-size:0.84rem;outline:none;margin-bottom:12px;transition:border-color 0.2s;display:block}
+.cf-field:focus{border-bottom-color:var(--text)}
+textarea.cf-field{resize:none;min-height:70px}
+.cf-submit{margin-top:6px;padding:0;background:none;border:none;font-family:var(--font-body);font-size:0.7rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;color:var(--text);text-decoration:underline;text-underline-offset:3px;transition:opacity 0.2s}
+.cf-submit:hover{opacity:0.5}
+
+/* Client list in right col */
+.client-section{margin-top:36px;padding-top:28px;border-top:1px solid var(--border)}
+.client-list{font-size:0.8rem;line-height:2.1;color:var(--text)}
+.client-list span{display:block}
 
 /* ── FOOTER ── */
 footer{border-top:1px solid var(--border);padding:36px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;transition:border-color 0.3s}
@@ -134,20 +131,21 @@ footer{border-top:1px solid var(--border);padding:36px 28px;display:flex;justify
 .gallery-item{animation:fadeUp 0.4s ease both}
 
 @media(max-width:900px){
-  .gallery{columns:2;column-gap:2px;padding:0 2px 60px}
-  .gallery-item{margin-bottom:2px}
-  .filter-wrap{padding:8px 16px;top:56px}
+  .gallery{columns:2;column-gap:3px;padding:0 16px 60px}
+  .gallery-item{margin-bottom:3px}
+  .filter-wrap{padding:10px 16px;top:68px}
   nav{padding:0 16px}
   .nav-links,.theme-toggle{display:none}
   .hamburger{display:flex}
-  .inner-page{padding:80px 16px 60px}
-  .about-contact-wrap{grid-template-columns:1fr;gap:40px}
-  .client-list{columns:2}
+  .inner-page{padding:88px 16px 60px}
+  .about-grid{grid-template-columns:1fr;gap:28px}
+  .about-left{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   footer{padding:28px 16px}
 }
 @media(max-width:500px){
-  .gallery{columns:2;column-gap:2px}
-  .client-list{columns:1}
+  .gallery{columns:2;column-gap:2px;padding:0 10px 60px}
+  .gallery-item{margin-bottom:2px}
+  .about-left{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -161,7 +159,7 @@ footer{border-top:1px solid var(--border);padding:36px 28px;display:flex;justify
   </a>
   <div class="nav-right">
     <ul class="nav-links">
-      <li><a href="#" class="active" id="navHome">Work</a></li>
+      <li><a href="#" class="active" id="navHome">Overview</a></li>
       <li><a href="#" id="navAbout">About</a></li>
       <li><a href="#" id="navContact">Contact</a></li>
     </ul>
@@ -172,7 +170,7 @@ footer{border-top:1px solid var(--border);padding:36px 28px;display:flex;justify
 
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" id="mobileClose">×</button>
-  <a href="#" class="mob-nav" data-view="home">Work</a>
+  <a href="#" class="mob-nav" data-view="home">Overview</a>
   <a href="#" class="mob-nav" data-view="about">About</a>
   <a href="#" class="mob-nav" data-view="contact">Contact</a>
   <button class="mobile-theme" id="mobileTheme">◐ Toggle Dark / Light</button>
@@ -199,6 +197,7 @@ footer{border-top:1px solid var(--border);padding:36px 28px;display:flex;justify
       <span class="f-logo-text" id="footerName">Jabari Jacobs</span>
     </div>
     <div class="f-links">
+      <a href="#" id="footerHome" onclick="showView('home');return false;">Overview</a>
       <a href="#" id="footerAbout">About</a>
       <a href="#" id="footerContact">Contact</a>
       <a href="#" id="footerInsta" target="_blank">Instagram</a>
@@ -209,49 +208,41 @@ footer{border-top:1px solid var(--border);padding:36px 28px;display:flex;justify
 
 <!-- ABOUT + CONTACT PAGE -->
 <div class="inner-page" id="aboutView">
-  <div class="about-contact-wrap">
-    <div class="about-col">
-      <h1 id="aboutName">Jabari Jacobs</h1>
-      <p class="sub" id="aboutTagline">Photographer &amp; Director</p>
-      <div class="about-photo-wrap">
-        <img id="aboutPhoto" src="" alt="" class="about-photo" style="display:none"/>
-        <div class="about-photo-placeholder" id="aboutPlaceholder">Photo</div>
-      </div>
-      <p class="about-bio" id="aboutBio"></p>
-      <div class="detail-row"><span class="detail-label">Based in</span><span class="detail-val" id="aboutLocation">Los Angeles, CA</span></div>
-      <div class="detail-row"><span class="detail-label">Email</span><span class="detail-val"><a id="aboutEmail" href="">—</a></span></div>
-      <div class="detail-row"><span class="detail-label">Instagram</span><span class="detail-val"><a id="aboutInsta" href="" target="_blank">—</a></span></div>
+  <div class="about-grid">
+    <!-- LEFT: Contact info -->
+    <div class="about-left">
+      <span class="col-label">Contact</span>
+      <p id="aboutName2">Jabari Jacobs</p>
+      <p id="aboutLocation2">Los Angeles, CA</p>
+      <a id="aboutEmail2" href="">—</a>
+      <span class="col-label" style="margin-top:24px">Instagram</span>
+      <a id="aboutInsta2" href="" target="_blank">—</a>
+      <span class="col-label" style="margin-top:24px">Get In Touch</span>
+      <p id="aboutIntro2" style="color:var(--muted);font-size:0.72rem;line-height:1.6"></p>
     </div>
-    <div class="contact-col">
-      <h2>Contact</h2>
-      <p class="sub2">Let's work together</p>
-      <div class="contact-details">
-        <div class="detail-row"><span class="detail-label">Email</span><span class="detail-val"><a id="contactEmail" href="">—</a></span></div>
-        <div class="detail-row"><span class="detail-label">Instagram</span><span class="detail-val"><a id="contactInsta" href="" target="_blank">—</a></span></div>
-        <div class="detail-row"><span class="detail-label">Based in</span><span class="detail-val" id="contactLocation">—</span></div>
-      </div>
-      <div class="contact-form">
-        <label>Name</label><input type="text" id="cfName" placeholder="Your name"/>
-        <label>Email</label><input type="email" id="cfEmail" placeholder="your@email.com"/>
-        <label>Project Type</label>
-        <select id="cfType">
-          <option value="">Select a type…</option>
-          <option>Advertising</option>
-          <option>Editorial</option>
-          <option>Music</option>
-          <option>Food</option>
-          <option>Motion</option>
-          <option>Design</option>
-          <option>Other</option>
-        </select>
-        <label>Message</label><textarea id="cfMsg" placeholder="Tell me about your project…"></textarea>
-        <button id="cfSubmit">Send Message</button>
-      </div>
+
+    <!-- MIDDLE: Photo -->
+    <div class="about-middle">
+      <img id="aboutPhoto" src="" alt="" style="display:none"/>
+      <div class="photo-ph" id="aboutPlaceholder">Photo</div>
     </div>
-    <!-- CLIENT LIST spans full width -->
-    <div class="client-section" id="clientSection" style="display:none">
-      <h2>Select Clients</h2>
-      <div class="client-list" id="clientList"></div>
+
+    <!-- RIGHT: Bio + contact form + clients -->
+    <div class="about-right">
+      <p class="bio" id="aboutBio"></p>
+
+      <span class="col-label">Send a Message</span>
+      <input class="cf-field" type="text" id="cfName" placeholder="Your name"/>
+      <input class="cf-field" type="email" id="cfEmail" placeholder="your@email.com"/>
+      <input class="cf-field" type="text" id="cfType" placeholder="Project type (Advertising, Editorial…)"/>
+      <textarea class="cf-field" id="cfMsg" placeholder="Tell me about your project…"></textarea>
+      <button class="cf-submit" id="cfSubmit">Send Message →</button>
+
+      <!-- Client list -->
+      <div class="client-section" id="clientSection" style="display:none">
+        <span class="col-label" style="margin-top:0">Select Clients</span>
+        <div class="client-list" id="clientList"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -295,7 +286,8 @@ const savedTheme=localStorage.getItem('jj_theme')||'light';
 html.setAttribute('data-theme',savedTheme);
 function toggleTheme(){
   const n=html.getAttribute('data-theme')==='dark'?'light':'dark';
-  html.setAttribute('data-theme',n);localStorage.setItem('jj_theme',n);
+  html.setAttribute('data-theme',n);
+  localStorage.setItem('jj_theme',n);
   updateLogo();
 }
 document.getElementById('themeToggle').addEventListener('click',toggleTheme);
@@ -316,25 +308,20 @@ function applySettings(){
   document.getElementById('footerCopy').textContent=`© ${new Date().getFullYear()} ${s.name||'Jabari Jacobs'}`;
   const instaUrl='https://instagram.com/'+(s.insta||'').replace('@','');
   document.getElementById('footerInsta').href=instaUrl;
-  // About
-  document.getElementById('aboutName').textContent=s.name||'Jabari Jacobs';
-  document.getElementById('aboutTagline').textContent=s.tagline||'';
-  document.getElementById('aboutBio').textContent=s.about||'';
-  document.getElementById('aboutLocation').textContent=s.location||'';
-  document.getElementById('aboutEmail').textContent=s.email||'';
-  document.getElementById('aboutEmail').href='mailto:'+(s.email||'');
-  document.getElementById('aboutInsta').textContent=s.insta||'';
-  document.getElementById('aboutInsta').href=instaUrl;
-  // About photo
+  // About left col
+  document.getElementById('aboutName2').textContent=s.name||'Jabari Jacobs';
+  document.getElementById('aboutLocation2').textContent=s.location||'Los Angeles, CA';
+  document.getElementById('aboutEmail2').textContent=s.email||'';
+  document.getElementById('aboutEmail2').href='mailto:'+(s.email||'');
+  document.getElementById('aboutInsta2').textContent=s.insta||'';
+  document.getElementById('aboutInsta2').href=instaUrl;
+  document.getElementById('aboutIntro2').textContent=s.contactIntro||'';
+  // About middle
   const ap=document.getElementById('aboutPhoto'),aph=document.getElementById('aboutPlaceholder');
   if(s.aboutPhotoSrc){ap.src=s.aboutPhotoSrc;ap.style.display='block';aph.style.display='none';}
   else{ap.style.display='none';aph.style.display='flex';}
-  // Contact
-  document.getElementById('contactEmail').textContent=s.email||'';
-  document.getElementById('contactEmail').href='mailto:'+(s.email||'');
-  document.getElementById('contactInsta').textContent=s.insta||'';
-  document.getElementById('contactInsta').href=instaUrl;
-  document.getElementById('contactLocation').textContent=s.location||'';
+  // About right bio
+  document.getElementById('aboutBio').textContent=s.about||'';
   // Clients
   const cs=document.getElementById('clientSection'),cl=document.getElementById('clientList');
   if(s.clients&&s.clients.length){
@@ -349,17 +336,27 @@ function applySettings(){
 
 function updateLogo(){
   const s=settings;
-  const ll=document.getElementById('navLogoLight'),ld=document.getElementById('navLogoDark'),lt=document.getElementById('navLogoText');
+  const ll=document.getElementById('navLogoLight');
+  const ld=document.getElementById('navLogoDark');
+  const lt=document.getElementById('navLogoText');
   const isDark=html.getAttribute('data-theme')==='dark';
   const sz=(s.logoSize||32)+'px';
-  if(s.logoLightSrc||s.logoDarkSrc){
-    lt.style.display='none';
-    if(isDark&&s.logoDarkSrc){ll.style.display='none';ld.src=s.logoDarkSrc;ld.style.height=sz;ld.style.display='block';}
-    else if(s.logoLightSrc){ld.style.display='none';ll.src=s.logoLightSrc;ll.style.height=sz;ll.style.display='block';}
-    else if(s.logoDarkSrc){ll.style.display='none';ld.src=s.logoDarkSrc;ld.style.height=sz;ld.style.display='block';}
+
+  // Hide all first
+  ll.style.display='none';
+  ld.style.display='none';
+  lt.style.display='none';
+
+  if(isDark){
+    // Dark mode: prefer dark logo, fall back to light logo, fall back to text
+    if(s.logoDarkSrc){ld.src=s.logoDarkSrc;ld.style.height=sz;ld.style.display='block';}
+    else if(s.logoLightSrc){ll.src=s.logoLightSrc;ll.style.height=sz;ll.style.display='block';}
+    else{lt.style.display='block';lt.textContent=s.name||'Jabari Jacobs';}
   } else {
-    ll.style.display='none';ld.style.display='none';lt.style.display='block';
-    lt.textContent=s.name||'Jabari Jacobs';
+    // Light mode: prefer light logo, fall back to dark logo, fall back to text
+    if(s.logoLightSrc){ll.src=s.logoLightSrc;ll.style.height=sz;ll.style.display='block';}
+    else if(s.logoDarkSrc){ld.src=s.logoDarkSrc;ld.style.height=sz;ld.style.display='block';}
+    else{lt.style.display='block';lt.textContent=s.name||'Jabari Jacobs';}
   }
 }
 
