@@ -156,8 +156,9 @@ main{padding:40px;overflow-y:auto}
     </div>
   </nav>
   <div class="sidebar-footer">
-    <button class="export-btn" id="exportBtn">⬇ Export site data</button>
-    <p style="font-size:0.62rem;color:var(--muted);margin-top:10px;line-height:1.5">Exports a <code style="color:var(--accent)">portfolio-data.json</code> file. Place it next to your <code style="color:var(--accent)">index.html</code> to update your site.</p>
+    <button class="export-btn" id="publishBtn">🚀 Publish to Live Site</button>
+    <div id="publishStatus" style="font-size:0.62rem;margin-top:10px;line-height:1.6;color:var(--muted)">Ready to publish</div>
+    <button class="export-btn" id="exportBtn" style="margin-top:10px;background:var(--surface2);color:var(--muted);border:1px solid var(--border)">⬇ Export data only</button>
   </div>
 </aside>
 
@@ -183,7 +184,7 @@ main{padding:40px;overflow-y:auto}
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn btn-primary" onclick="showPage('upload')">Upload Photos</button>
         <button class="btn btn-ghost" onclick="showPage('photos')">Manage Photos</button>
-        <button class="btn btn-ghost" id="exportBtn2">Export Site Data</button>
+        <button class="btn btn-primary" onclick="publishToNetlify()">🚀 Publish to Live Site</button>
       </div>
     </div>
   </div>
@@ -484,6 +485,82 @@ document.getElementById('saveSettings').addEventListener('click',()=>{
   localStorage.setItem('jj_settings',JSON.stringify(settings));
   showToast('Settings saved!');
 });
+
+// ── NETLIFY PUBLISH ──
+const NETLIFY_TOKEN = 'nfp_gsUcjQZJMZc1ZDZao3hsezH4CETFkygnee9e';
+const NETLIFY_SITE_ID = 'c073236e-c89d-4606-83d9-4dc73cab1916';
+
+async function publishToNetlify() {
+  const btn = document.getElementById('publishBtn');
+  const status = document.getElementById('publishStatus');
+  btn.disabled = true;
+  btn.textContent = '⏳ Publishing...';
+  status.style.color = 'var(--accent)';
+  status.textContent = 'Preparing your site files...';
+
+  try {
+    // Build the data payload
+    const data = {photos: photos.map(p=>({id:p.id,name:p.name,src:p.dataUrl,categories:p.categories,dateAdded:p.dateAdded})), settings};
+    const dataJson = JSON.stringify(data, null, 2);
+
+    // Read the current index.html — we'll deploy both files
+    status.textContent = 'Uploading to Netlify...';
+
+    // Deploy via Netlify Files API
+    const response = await fetch(`https://api.netlify.com/api/v1/sites/${NETLIFY_SITE_ID}/deploys`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${NETLIFY_TOKEN}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        files: {
+          '/portfolio-data.json': await sha1(dataJson),
+        },
+        async: true
+      })
+    });
+
+    if (!response.ok) throw new Error('Deploy request failed');
+    const deploy = await response.json();
+
+    // Upload the actual file
+    const uploadRes = await fetch(`https://api.netlify.com/api/v1/deploys/${deploy.id}/files/portfolio-data.json`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${NETLIFY_TOKEN}`,
+        'Content-Type': 'application/octet-stream'
+      },
+      body: dataJson
+    });
+
+    if (!uploadRes.ok) throw new Error('File upload failed');
+
+    status.style.color = 'var(--green)';
+    status.textContent = '✓ Live! jabarijacobs.netlify.app updated';
+    btn.textContent = '🚀 Publish to Live Site';
+    btn.disabled = false;
+    showToast('Site published successfully!');
+
+  } catch(err) {
+    // Fallback: trigger a new deploy via build hook or just notify
+    status.style.color = 'var(--red)';
+    status.textContent = 'Upload failed — use Export instead and drag to Netlify';
+    btn.textContent = '🚀 Publish to Live Site';
+    btn.disabled = false;
+    console.error(err);
+    // Auto-trigger export as fallback
+    doExport();
+    showToast('Auto-exported as fallback — drag to Netlify');
+  }
+}
+
+async function sha1(str) {
+  const buf = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+document.getElementById('publishBtn').addEventListener('click', publishToNetlify);
 
 // ── EXPORT ──
 function doExport(){
