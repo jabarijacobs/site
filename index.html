@@ -10,17 +10,17 @@
 
 /* ── THEME ── */
 :root{
-  --bg:#ffffff;--text:#000000;--muted:#666;--border:rgba(0,0,0,0.1);
+  --bg:#ffffff;--text:#000000;--muted:#555;--border:rgba(0,0,0,0.1);
   --nav-bg:rgba(255,255,255,0.96);--pill-bg:#000000;--pill-text:#ffffff;
-  --pill-idle-text:rgba(0,0,0,0.45);--pill-idle-border:rgba(0,0,0,0.18);
+  --pill-idle-text:#000000;--pill-idle-border:rgba(0,0,0,0.25);
   --overlay:rgba(255,255,255,0.97);--lb-bg:rgba(255,255,255,0.97);--lb-text:#000;
   --lb-btn:rgba(0,0,0,0.4);--lb-btn-hover:#000;
   --font-body:'Karla',sans-serif;--font-display:'Cormorant Garamond',serif;
 }
 [data-theme="dark"]{
-  --bg:#0a0a0a;--text:#ffffff;--muted:#888;--border:rgba(255,255,255,0.08);
+  --bg:#0a0a0a;--text:#ffffff;--muted:#ffffff;--border:rgba(255,255,255,0.1);
   --nav-bg:rgba(10,10,10,0.96);--pill-bg:#ffffff;--pill-text:#000000;
-  --pill-idle-text:rgba(255,255,255,0.45);--pill-idle-border:rgba(255,255,255,0.18);
+  --pill-idle-text:#ffffff;--pill-idle-border:rgba(255,255,255,0.35);
   --overlay:rgba(10,10,10,0.97);--lb-bg:rgba(0,0,0,0.97);--lb-text:#fff;
   --lb-btn:rgba(255,255,255,0.4);--lb-btn-hover:#fff;
 }
@@ -35,7 +35,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);back
 .nav-logo-text{font-family:var(--font-display);font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text);font-size:1.9rem;line-height:1}
 .nav-right{display:flex;align-items:center;gap:40px}
 .nav-links{display:flex;gap:36px;list-style:none}
-.nav-links a{font-size:0.72rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.4;transition:opacity 0.2s}
+.nav-links a{font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:1;transition:opacity 0.2s}
 .nav-links a:hover,.nav-links a.active{opacity:1}
 .theme-toggle{background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--text);opacity:0.3;transition:opacity 0.2s;padding:4px;line-height:1}
 .theme-toggle:hover{opacity:0.7}
@@ -508,7 +508,15 @@ document.addEventListener('keydown',e=>{
 });
 
 // Init
-loadData().then(()=>{applySettings();renderGallery();showView('home');});
+loadData().then(()=>{
+  applySettings();
+  // Apply gallery gap from settings
+  const gap=settings.galleryGap||4;
+  document.querySelector('.gallery').style.columnGap=gap+'px';
+  document.querySelectorAll('.gallery-item').forEach(el=>el.style.marginBottom=gap+'px');
+  renderGallery();
+  showView('home');
+});
 </script>
 </body>
 </html>

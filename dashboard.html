@@ -252,6 +252,18 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
         <option value="__untagged">⚠ Untagged</option>
       </select>
       <button class="btn btn-ghost" id="sortBtn" style="font-size:0.65rem;padding:7px 12px">Sort A–Z</button>
+      <button class="btn btn-ghost" id="manageSelAllBtn" style="font-size:0.65rem;padding:7px 12px">Select All</button>
+    </div>
+
+    <!-- Manage bulk tag bar -->
+    <div id="manageBulkBar" style="display:none;background:var(--surface2);border:1px solid var(--accent);border-radius:8px;padding:12px 16px;margin-bottom:14px">
+      <div style="font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px">Tag <span id="manageBulkCount">0</span> selected:</div>
+      <div class="cat-grid" id="manageBulkCatGrid"></div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn btn-primary" id="manageBulkApplyBtn" style="font-size:0.68rem;padding:7px 14px">Apply Tags</button>
+        <button class="btn btn-ghost" id="manageBulkClearBtn" style="font-size:0.68rem;padding:7px 14px">Clear Tags</button>
+        <button class="btn btn-ghost" id="manageBulkDeselBtn" style="font-size:0.68rem;padding:7px 14px">Deselect All</button>
+      </div>
     </div>
     <div class="photo-grid" id="photoGrid"></div>
     <div class="empty-ph" id="photoEmpty">No photos yet.<br/>Add filenames above — make sure actual files are in your <strong>photos/</strong> folder.</div>
@@ -299,7 +311,19 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
     </div>
 
     <div class="sec">
-      <h3>Logo</h3>
+      <h3>Gallery Layout</h3>
+      <div class="field">
+        <label>Space Between Photos</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:4px">
+          <input type="range" id="galleryGap" min="0" max="24" value="4" step="2" style="flex:1;accent-color:var(--accent)"/>
+          <span id="galleryGapVal" style="font-size:0.72rem;color:var(--accent);min-width:34px">4px</span>
+        </div>
+        <p style="font-size:0.63rem;color:var(--muted);margin-top:6px">0 = no gap (tight), 24 = lots of space</p>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3>Logo Size</h3>
       <p style="font-size:0.64rem;color:var(--muted);margin-bottom:14px">Upload separate logos for light and dark mode.</p>
       <div class="field-row">
         <div class="field">
@@ -403,7 +427,7 @@ let photos=[],settings={
   name:'Jabari Jacobs',tagline:'Photographer & Director',
   email:'jabari@jabarijacobs.com',about:'',location:'Los Angeles, CA',
   insta:'@jabarijacobs',logoLightSrc:'',logoDarkSrc:'',aboutPhotoSrc:'',
-  logoSize:48,fontBody:'Karla',fontDisplay:'Cormorant Garamond',
+  logoSize:48,galleryGap:4,fontBody:'Karla',fontDisplay:'Cormorant Garamond',
   clients:[],filters:[...ALL_CATS]
 };
 let editingId=null;
@@ -573,9 +597,12 @@ function renderPhotoGrid(){
   let dragSrc=null;
   filtered.forEach(p=>{
     const globalIdx=real.indexOf(p)+1;
-    const card=document.createElement('div');card.className='photo-card';card.draggable=true;card.dataset.id=p.id;
+    const isSel=manageSelected.has(p.id);
+    const card=document.createElement('div');
+    card.className='photo-card'+(isSel?' drag-over':'');
+    card.draggable=true;card.dataset.id=p.id;
     card.innerHTML=`
-      <div class="order-num">${globalIdx}</div>
+      <div style="position:absolute;top:5px;left:5px;width:22px;height:22px;border-radius:50%;background:${isSel?'var(--accent)':'rgba(0,0,0,0.55)'};border:2px solid ${isSel?'var(--accent)':'rgba(255,255,255,0.4)'};display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:${isSel?'#0f0f0f':'#fff'};z-index:3">${isSel?'✓':globalIdx}</div>
       <img src="photos/${p.filename}" loading="lazy"/>
       <div class="photo-overlay">
         <button class="ov-btn ov-edit">Edit</button>
@@ -585,6 +612,13 @@ function renderPhotoGrid(){
         <div class="card-fn">${p.title||p.filename}</div>
         <div style="display:flex;flex-wrap:wrap;gap:3px">${p.categories&&p.categories.length?p.categories.map(c=>`<span class="tag">${c}</span>`).join(''):'<span class="no-tag">Untagged</span>'}</div>
       </div>`;
+    // Click to select/deselect
+    card.addEventListener('click',e=>{
+      if(e.target.classList.contains('ov-edit')||e.target.classList.contains('ov-del'))return;
+      if(manageSelected.has(p.id))manageSelected.delete(p.id);else manageSelected.add(p.id);
+      renderPhotoGrid();updateManageBulkBar();
+    });
+    // Drag to reorder
     card.addEventListener('dragstart',()=>{dragSrc=p.id;setTimeout(()=>card.classList.add('dragging'),0);});
     card.addEventListener('dragend',()=>{card.classList.remove('dragging');grid.querySelectorAll('.photo-card').forEach(c=>c.classList.remove('drag-over'));});
     card.addEventListener('dragover',e=>{e.preventDefault();if(dragSrc!==p.id)card.classList.add('drag-over');});
@@ -601,7 +635,39 @@ function renderPhotoGrid(){
     grid.appendChild(card);
   });
 }
-document.getElementById('searchBox').addEventListener('input',renderPhotoGrid);
+let manageSelected=new Set();
+
+document.getElementById('manageSelAllBtn').addEventListener('click',()=>{
+  const real=photos.filter(p=>!p.isYt);
+  if(manageSelected.size===real.length)manageSelected.clear();
+  else real.forEach(p=>manageSelected.add(p.id));
+  renderPhotoGrid();updateManageBulkBar();
+});
+document.getElementById('manageBulkApplyBtn').addEventListener('click',()=>{
+  const cats=getChecked('manageBulkCatGrid');
+  if(!cats.length){showToast('Pick a category first!','var(--yellow)');return;}
+  manageSelected.forEach(id=>{
+    const p=photos.find(x=>x.id===id);
+    if(p)cats.forEach(c=>{if(!p.categories.includes(c))p.categories.push(c);});
+  });
+  savePhotos();manageSelected.clear();clearCats('manageBulkCatGrid');
+  renderPhotoGrid();updateManageBulkBar();renderOverview();
+  showToast(`✓ Tags applied!`);
+});
+document.getElementById('manageBulkClearBtn').addEventListener('click',()=>{
+  manageSelected.forEach(id=>{const p=photos.find(x=>x.id===id);if(p)p.categories=[];});
+  savePhotos();renderPhotoGrid();updateManageBulkBar();renderOverview();
+  showToast('✓ Tags cleared from selected');
+});
+document.getElementById('manageBulkDeselBtn').addEventListener('click',()=>{
+  manageSelected.clear();renderPhotoGrid();updateManageBulkBar();
+});
+function updateManageBulkBar(){
+  const bar=document.getElementById('manageBulkBar');
+  bar.style.display=manageSelected.size>0?'block':'none';
+  document.getElementById('manageBulkCount').textContent=manageSelected.size;
+  if(manageSelected.size>0)buildCatGrid('manageBulkCatGrid');
+}
 document.getElementById('filterSel').addEventListener('change',renderPhotoGrid);
 document.getElementById('sortBtn').addEventListener('click',()=>{
   const yts=photos.filter(p=>p.isYt);
@@ -698,6 +764,8 @@ function loadSettings(){
   document.getElementById('sInsta').value=s.insta||'';
   document.getElementById('logoSize').value=s.logoSize||48;
   document.getElementById('logoSizeVal').textContent=(s.logoSize||48)+'px';
+  document.getElementById('galleryGap').value=s.galleryGap||4;
+  document.getElementById('galleryGapVal').textContent=(s.galleryGap||4)+'px';
   const llp=document.getElementById('logoLightPrev');
   if(s.logoLightSrc){llp.src=s.logoLightSrc;llp.style.display='block';}else llp.style.display='none';
   const ldp=document.getElementById('logoDarkPrev');
@@ -708,6 +776,10 @@ function loadSettings(){
   document.querySelectorAll('#bodyFontGrid .font-opt').forEach(el=>el.classList.toggle('selected',el.dataset.font===s.fontBody));
   renderFilterTags();renderClientTags();
 }
+document.getElementById('galleryGap').addEventListener('input',function(){
+  document.getElementById('galleryGapVal').textContent=this.value+'px';
+  settings.galleryGap=parseInt(this.value);
+});
 document.getElementById('logoSize').addEventListener('input',function(){document.getElementById('logoSizeVal').textContent=this.value+'px';settings.logoSize=parseInt(this.value);});
 document.getElementById('logoLightFile').addEventListener('change',function(){const f=this.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{settings.logoLightSrc=ev.target.result;const p=document.getElementById('logoLightPrev');p.src=ev.target.result;p.style.display='block';showToast('✓ Light logo uploaded!');};r.readAsDataURL(f);});
 document.getElementById('clrLogoLight').addEventListener('click',()=>{settings.logoLightSrc='';document.getElementById('logoLightPrev').style.display='none';showToast('✓ Removed.');});
@@ -729,6 +801,8 @@ document.getElementById('saveSettings').addEventListener('click',()=>{
   settings.about=document.getElementById('sAbout').value;
   settings.location=document.getElementById('sLocation').value;
   settings.insta=document.getElementById('sInsta').value;
+  settings.logoSize=parseInt(document.getElementById('logoSize').value)||48;
+  settings.galleryGap=parseInt(document.getElementById('galleryGap').value)||4;
   localStorage.setItem('jj_settings',JSON.stringify(settings));
   const btn=document.getElementById('saveSettings');
   btn.textContent='✓ Saved!';btn.style.background='var(--green)';
