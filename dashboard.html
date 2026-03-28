@@ -373,7 +373,16 @@ try{const s=localStorage.getItem('jj_settings');if(s)settings={...settings,...JS
 
 function formatSize(b){if(!b)return '';if(b<1024*1024)return (b/1024).toFixed(0)+'KB';return (b/(1024*1024)).toFixed(1)+'MB';}
 function sizeClass(b,vid){const mb=b/(1024*1024),max=vid?MAX_VIDEO_MB:MAX_PHOTO_MB;if(mb>max)return 'size-big';if(mb>max*0.7)return 'size-warn';return 'size-ok';}
-function showToast(msg,bg='var(--green)'){const t=document.getElementById('toast');t.textContent=msg;t.style.background=bg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
+function showToast(msg,bg='var(--green)'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.background=bg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),4000);
+  // Also update status bar so confirmation is always visible
+  const status=document.getElementById('publishStatus');
+  if(status&&bg==='var(--green)'){status.style.color='var(--green)';status.textContent=msg;}
+}
 function savePhotos(){localStorage.setItem('jj_photos',JSON.stringify(photos));}
 
 // NAV
@@ -608,34 +617,65 @@ document.getElementById('saveSettings').addEventListener('click',()=>{
   settings.cols=parseInt(document.getElementById('sCols').value)||4;
   settings.gap=parseInt(document.getElementById('sGap').value)||4;
   localStorage.setItem('jj_settings',JSON.stringify(settings));
+  // Multiple confirmation methods so it's always visible
+  const btn=document.getElementById('saveSettings');
+  const orig=btn.textContent;
+  btn.textContent='✓ Saved!';
+  btn.style.background='var(--green)';
+  setTimeout(()=>{btn.textContent=orig;btn.style.background='';},2500);
   showToast('✓ Settings saved! Hit Publish to make changes live.');
 });
 
 // PUBLISH
-async function publishToNetlify(){
+function publishToNetlify(){
   const btn=document.getElementById('publishBtn'),status=document.getElementById('publishStatus');
   btn.disabled=true;btn.textContent='⏳ Publishing...';
-  status.style.color='var(--accent)';status.textContent='Saving & exporting data...';
-  savePhotos();localStorage.setItem('jj_settings',JSON.stringify(settings));
+  status.style.color='var(--accent)';status.textContent='Saving & exporting...';
+
+  // Save everything first
+  savePhotos();
+  localStorage.setItem('jj_settings',JSON.stringify(settings));
   doExport();
 
-  // Use image trick to ping build hook — works from local file:// in all browsers
+  // Trigger Netlify build hook using a form POST — works from local files in all browsers
   try{
-    const img=new Image();
-    img.src=BUILD_HOOK+'?cb='+Date.now();
-    // Also try fetch with no-cors
-    fetch(BUILD_HOOK,{method:'POST',mode:'no-cors'}).catch(()=>{});
+    const form=document.createElement('form');
+    form.method='POST';
+    form.action=BUILD_HOOK;
+    form.target='netlify-trigger';
+    document.body.appendChild(form);
+
+    const iframe=document.createElement('iframe');
+    iframe.name='netlify-trigger';
+    iframe.style.display='none';
+    document.body.appendChild(iframe);
+
+    form.submit();
+    setTimeout(()=>{
+      document.body.removeChild(form);
+      document.body.removeChild(iframe);
+    },3000);
+
+    // Show success
     setTimeout(()=>{
       status.style.color='var(--green)';
       status.textContent='✓ Triggered! Live in ~60 seconds';
-      showToast('🚀 Published! Check jabarijacobs.netlify.app in ~60 seconds');
-      btn.textContent='🚀 Publish to Live Site';btn.disabled=false;
-    },1500);
+      btn.textContent='✓ Published!';
+      btn.style.background='var(--green)';
+      showToast('🚀 Published! Check your site in about 60 seconds.');
+      setTimeout(()=>{
+        btn.textContent='🚀 Publish to Live Site';
+        btn.style.background='';
+        btn.disabled=false;
+      },3000);
+    },1000);
+
   }catch(e){
     status.style.color='var(--yellow)';
-    status.textContent='portfolio-data.json exported — drag to site folder & push in GitHub Desktop';
-    showToast('✓ Data exported! Move JSON to site folder then push in GitHub Desktop','var(--yellow)');
-    btn.textContent='🚀 Publish to Live Site';btn.disabled=false;
+    status.textContent='Export done — drag portfolio-data.json to site folder & push in GitHub Desktop';
+    btn.textContent='🚀 Publish to Live Site';
+    btn.disabled=false;
+    showToast('✓ Data exported — push in GitHub Desktop to go live','var(--yellow)');
   }
 }
 document.getElementById('publishBtn').addEventListener('click',publishToNetlify);
