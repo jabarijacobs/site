@@ -7,18 +7,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0f0f0f;--surface:#181818;--surface2:#222;--border:#2e2e2e;
-  --text:#f0ede8;--muted:#888;--accent:#c8b89a;--accent2:#e8d5b7;
-  --red:#e05555;--green:#4caf7d;
-}
+:root{--bg:#0f0f0f;--surface:#181818;--surface2:#222;--border:#2e2e2e;--text:#f0ede8;--muted:#888;--accent:#c8b89a;--accent2:#e8d5b7;--red:#e05555;--green:#4caf7d;--yellow:#e0a930;}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Karla',sans-serif;font-weight:300;min-height:100vh}
-
-/* ── LAYOUT ── */
 .shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
 
-/* ── SIDEBAR ── */
 aside{background:var(--surface);border-right:1px solid var(--border);padding:32px 0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
 .brand{padding:0 24px 32px;border-bottom:1px solid var(--border)}
 .brand h1{font-family:'Cormorant Garamond',serif;font-size:1.25rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:400}
@@ -28,84 +21,106 @@ nav{padding:24px 0;flex:1}
 .nav-item:hover{color:var(--text);background:var(--surface2)}
 .nav-item.active{color:var(--accent);border-left-color:var(--accent);background:rgba(200,184,154,0.06)}
 .nav-item svg{flex-shrink:0;opacity:0.7}
-.sidebar-footer{padding:20px 24px;border-top:1px solid var(--border)}
-.export-btn{width:100%;padding:10px;background:var(--accent);color:#0f0f0f;border:none;border-radius:4px;font-family:'Karla',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
-.export-btn:hover{background:var(--accent2)}
+.sidebar-footer{padding:20px 24px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
+.publish-btn{width:100%;padding:12px;background:var(--accent);color:#0f0f0f;border:none;border-radius:4px;font-family:'Karla',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
+.publish-btn:hover{background:var(--accent2)}
+.publish-btn:disabled{opacity:0.5;cursor:not-allowed}
+.view-site-btn{width:100%;padding:10px;background:transparent;color:var(--accent);border:1px solid var(--accent);border-radius:4px;font-family:'Karla',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block;text-align:center}
+.view-site-btn:hover{background:rgba(200,184,154,0.1)}
+.export-btn-sm{width:100%;padding:9px;background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:4px;font-family:'Karla',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s}
+.export-btn-sm:hover{border-color:var(--muted);color:var(--text)}
+#publishStatus{font-size:0.62rem;line-height:1.6;color:var(--muted);text-align:center}
 
-/* ── MAIN ── */
 main{padding:40px;overflow-y:auto}
 .page{display:none}
 .page.active{display:block}
 .page-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;letter-spacing:0.05em;margin-bottom:6px}
 .page-sub{font-size:0.78rem;color:var(--muted);letter-spacing:0.08em;margin-bottom:36px}
 
-/* ── CARDS ── */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px}
 .stat-label{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
 .stat-val{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--accent)}
 
-/* ── UPLOAD ZONE ── */
-.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:60px 40px;text-align:center;cursor:pointer;transition:all 0.25s;margin-bottom:32px;position:relative}
+.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:60px 40px;text-align:center;cursor:pointer;transition:all 0.25s;margin-bottom:12px;position:relative}
 .upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:rgba(200,184,154,0.04)}
 .upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .upload-icon{font-size:2.5rem;margin-bottom:12px;opacity:0.4}
 .upload-zone h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;margin-bottom:6px}
 .upload-zone p{font-size:0.75rem;color:var(--muted);letter-spacing:0.06em}
+.size-info{font-size:0.68rem;color:var(--muted);margin-bottom:20px;padding:10px 14px;background:var(--surface);border-radius:6px;border:1px solid var(--border)}
 
-/* ── CATEGORY PILLS ── */
-.cat-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-.cat-pill{padding:5px 14px;border-radius:20px;border:1px solid var(--border);font-size:0.7rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:var(--muted);background:transparent}
-.cat-pill:hover{border-color:var(--accent);color:var(--accent)}
-.cat-pill.selected{background:var(--accent);border-color:var(--accent);color:#0f0f0f}
+.bulk-bar{background:var(--surface);border:1px solid var(--accent);border-radius:8px;padding:14px 18px;margin-bottom:16px;display:none;align-items:center;gap:10px;flex-wrap:wrap}
+.bulk-bar.visible{display:flex}
+.bulk-bar-label{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+.bulk-cats{display:flex;flex-wrap:wrap;gap:6px;flex:1}
+.bulk-pill{padding:5px 13px;border-radius:20px;border:1px solid var(--border);font-size:0.68rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:var(--muted);background:transparent}
+.bulk-pill:hover{border-color:var(--accent);color:var(--accent)}
+.bulk-pill.selected{background:var(--accent);border-color:var(--accent);color:#0f0f0f}
+.bulk-apply{padding:7px 16px;border-radius:4px;border:none;background:var(--green);color:#fff;font-family:'Karla',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.bulk-clear{padding:7px 12px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Karla',sans-serif;font-size:0.7rem;cursor:pointer}
 
-/* ── PENDING UPLOADS ── */
-.pending-title{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
-.pending-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:32px}
-.pending-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative}
-.pending-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
-.pending-card .card-info{padding:10px}
-.pending-card .card-name{font-size:0.7rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:6px}
-.pending-card .card-cats{display:flex;flex-wrap:wrap;gap:4px}
-.pending-card .card-cat{font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;background:rgba(200,184,154,0.15);color:var(--accent);padding:2px 7px;border-radius:10px}
-.pending-card .remove-btn{position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.7);border:none;color:#fff;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:0.9rem;line-height:22px;text-align:center;display:none}
+.pending-title{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.select-all-btn{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;background:none;border:1px solid var(--border);color:var(--muted);padding:3px 10px;border-radius:10px;cursor:pointer;transition:all 0.2s}
+.select-all-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+.pending-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:20px}
+.pending-card{background:var(--surface);border:2px solid var(--border);border-radius:8px;overflow:hidden;position:relative;cursor:pointer;transition:border-color 0.15s}
+.pending-card.selected{border-color:var(--accent)}
+.check{position:absolute;top:6px;left:6px;width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;font-size:0.65rem;z-index:2;transition:all 0.15s}
+.pending-card.selected .check{background:var(--accent);border-color:var(--accent);color:#0f0f0f;font-weight:700}
+.pending-card .thumb,.pending-card .thumb-video{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.remove-btn{position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.75);border:none;color:#fff;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:1rem;line-height:20px;text-align:center;display:none;z-index:2}
 .pending-card:hover .remove-btn{display:block}
+.card-info{padding:8px 10px}
+.card-name{font-size:0.64rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.card-size{font-size:0.6rem;margin-bottom:4px}
+.size-ok{color:var(--green)} .size-warn{color:var(--yellow)} .size-big{color:var(--red)}
+.card-cats{display:flex;flex-wrap:wrap;gap:3px}
+.card-cat{font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;background:rgba(200,184,154,0.15);color:var(--accent);padding:2px 6px;border-radius:8px}
+.tag-icon{font-size:0.62rem;color:var(--accent);cursor:pointer;margin-top:4px;display:inline-block;text-decoration:underline}
 
-/* ── TAG MODAL ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:100;align-items:center;justify-content:center}
+.action-row{display:flex;gap:10px;margin-bottom:32px;flex-wrap:wrap}
+.btn{padding:10px 22px;border-radius:4px;border:none;font-family:'Karla',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s}
+.btn-primary{background:var(--accent);color:#0f0f0f}.btn-primary:hover{background:var(--accent2)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}.btn-ghost:hover{border-color:var(--text);color:var(--text)}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:100;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px;width:520px;max-width:90vw;max-height:85vh;overflow-y:auto}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px;width:520px;max-width:90vw;max-height:88vh;overflow-y:auto}
 .modal h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;margin-bottom:4px}
-.modal .modal-sub{font-size:0.72rem;color:var(--muted);margin-bottom:24px}
-.modal-img{width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin-bottom:20px}
+.modal .modal-sub{font-size:0.72rem;color:var(--muted);margin-bottom:20px}
+.modal-img{width:100%;max-height:180px;object-fit:cover;border-radius:8px;margin-bottom:20px}
+.modal-video{width:100%;max-height:180px;border-radius:8px;margin-bottom:20px;background:#000}
 .modal label{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
 .modal-cats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.cat-pill{padding:6px 16px;border-radius:20px;border:1px solid var(--border);font-size:0.7rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:var(--muted);background:transparent}
+.cat-pill:hover{border-color:var(--accent);color:var(--accent)}
+.cat-pill.selected{background:var(--accent);border-color:var(--accent);color:#0f0f0f}
 .modal-actions{display:flex;gap:10px}
-.btn{padding:10px 22px;border-radius:4px;border:none;font-family:'Karla',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s}
-.btn-primary{background:var(--accent);color:#0f0f0f}
-.btn-primary:hover{background:var(--accent2)}
-.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
-.btn-ghost:hover{border-color:var(--text);color:var(--text)}
 
-/* ── PHOTO MANAGER ── */
+.confirm-modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:36px;width:400px;max-width:90vw;text-align:center}
+.confirm-modal h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;margin-bottom:12px}
+.confirm-modal p{font-size:0.82rem;color:var(--muted);line-height:1.7;margin-bottom:28px}
+.confirm-actions{display:flex;gap:10px;justify-content:center}
+
 .toolbar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
 .search-box{flex:1;min-width:200px;padding:9px 14px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.82rem;outline:none}
 .search-box:focus{border-color:var(--accent)}
 .filter-select{padding:9px 14px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.78rem;outline:none;cursor:pointer}
-.filter-select:focus{border-color:var(--accent)}
-.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
-.photo-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative;cursor:pointer}
-.photo-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.photo-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative}
+.photo-card img,.photo-card video{width:100%;aspect-ratio:1;object-fit:cover;display:block}
 .photo-card .overlay{position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;gap:6px;transition:background 0.2s;opacity:0}
-.photo-card:hover .overlay{background:rgba(0,0,0,0.6);opacity:1}
-.overlay-btn{padding:6px 12px;border-radius:4px;border:none;font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer}
+.photo-card:hover .overlay{background:rgba(0,0,0,0.65);opacity:1}
+.overlay-btn{padding:6px 10px;border-radius:4px;border:none;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer}
 .overlay-btn.edit{background:var(--accent);color:#0f0f0f}
 .overlay-btn.del{background:var(--red);color:#fff}
-.photo-card .card-footer{padding:8px 10px;display:flex;flex-wrap:wrap;gap:3px}
-.photo-card .tag{font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;background:rgba(200,184,154,0.12);color:var(--accent);padding:2px 6px;border-radius:8px}
-.photo-card .no-tag{font-size:0.62rem;color:var(--red);padding:2px 6px}
+.photo-card .card-footer{padding:7px 9px}
+.video-badge{position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.75);color:#fff;font-size:0.55rem;font-weight:700;letter-spacing:0.08em;padding:2px 6px;border-radius:6px}
+.tag{font-size:0.56rem;letter-spacing:0.08em;text-transform:uppercase;background:rgba(200,184,154,0.12);color:var(--accent);padding:2px 5px;border-radius:6px}
+.no-tag{font-size:0.6rem;color:var(--red)}
 
-/* ── SETTINGS ── */
 .settings-section{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:20px}
 .settings-section h3{font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
 .field{margin-bottom:18px}
@@ -115,441 +130,411 @@ main{padding:40px;overflow-y:auto}
 .field textarea{min-height:80px}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 
-/* ── TOAST ── */
-.toast{position:fixed;bottom:28px;right:28px;background:var(--green);color:#fff;padding:12px 20px;border-radius:6px;font-size:0.78rem;font-weight:500;letter-spacing:0.06em;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;z-index:200}
+.toast{position:fixed;bottom:28px;right:28px;color:#fff;padding:12px 20px;border-radius:6px;font-size:0.78rem;font-weight:500;letter-spacing:0.06em;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;z-index:300}
 .toast.show{opacity:1;transform:translateY(0)}
-
-/* ── EMPTY STATE ── */
 .empty{text-align:center;padding:60px 20px;color:var(--muted)}
-.empty p{font-size:0.82rem;letter-spacing:0.06em}
-
-/* ── DRAG INDICATOR ── */
 .drag-num{display:inline-block;background:var(--accent);color:#0f0f0f;border-radius:50%;width:20px;height:20px;line-height:20px;text-align:center;font-size:0.7rem;font-weight:700;margin-left:6px;vertical-align:middle}
 </style>
 </head>
 <body>
-
 <div class="shell">
-<!-- SIDEBAR -->
+
 <aside>
-  <div class="brand">
-    <h1>Jabari Jacobs</h1>
-    <p>Portfolio Dashboard</p>
-  </div>
+  <div class="brand"><h1>Jabari Jacobs</h1><p>Portfolio Dashboard</p></div>
   <nav>
     <div class="nav-item active" data-page="overview">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-      Overview
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Overview
     </div>
     <div class="nav-item" data-page="upload">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      Upload Photos
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Upload
       <span class="drag-num" id="pendingCount" style="display:none">0</span>
     </div>
     <div class="nav-item" data-page="photos">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-      Manage Photos
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Manage Files
     </div>
     <div class="nav-item" data-page="settings">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      Site Settings
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Site Settings
     </div>
   </nav>
   <div class="sidebar-footer">
-    <button class="export-btn" id="publishBtn">🚀 Publish to Live Site</button>
-    <div id="publishStatus" style="font-size:0.62rem;margin-top:10px;line-height:1.6;color:var(--muted)">Ready to publish</div>
-    <button class="export-btn" id="exportBtn" style="margin-top:10px;background:var(--surface2);color:var(--muted);border:1px solid var(--border)">⬇ Export data only</button>
+    <button class="publish-btn" id="publishBtn">🚀 Publish to Live Site</button>
+    <div id="publishStatus">Ready to publish</div>
+    <a class="view-site-btn" href="https://jabarijacobs.netlify.app" target="_blank">🌐 View Live Site</a>
+    <button class="export-btn-sm" id="exportBtn">⬇ Export data only</button>
   </div>
 </aside>
 
-<!-- MAIN -->
 <main>
-
-  <!-- OVERVIEW PAGE -->
+  <!-- OVERVIEW -->
   <div class="page active" id="page-overview">
     <div class="page-title">Overview</div>
     <div class="page-sub">Your portfolio at a glance</div>
     <div class="stats">
-      <div class="stat-card"><div class="stat-label">Total Photos</div><div class="stat-val" id="statTotal">0</div></div>
+      <div class="stat-card"><div class="stat-label">Total Files</div><div class="stat-val" id="statTotal">0</div></div>
       <div class="stat-card"><div class="stat-label">Untagged</div><div class="stat-val" id="statUntagged" style="color:var(--red)">0</div></div>
       <div class="stat-card"><div class="stat-label">Categories</div><div class="stat-val">7</div></div>
-      <div class="stat-card"><div class="stat-label">Pending Upload</div><div class="stat-val" id="statPending" style="color:var(--accent)">0</div></div>
+      <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-val" id="statPending" style="color:var(--accent)">0</div></div>
     </div>
     <div class="settings-section">
       <h3>Category Breakdown</h3>
-      <div id="catBreakdown" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px"></div>
+      <div id="catBreakdown" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px"></div>
     </div>
     <div class="settings-section">
       <h3>Quick Actions</h3>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="showPage('upload')">Upload Photos</button>
-        <button class="btn btn-ghost" onclick="showPage('photos')">Manage Photos</button>
-        <button class="btn btn-primary" onclick="publishToNetlify()">🚀 Publish to Live Site</button>
+        <button class="btn btn-primary" onclick="showPage('upload')">Upload Files</button>
+        <button class="btn btn-ghost" onclick="showPage('photos')">Manage Files</button>
+        <button class="btn btn-ghost" onclick="publishToNetlify()">🚀 Publish Site</button>
+        <a class="btn btn-ghost" href="https://jabarijacobs.netlify.app" target="_blank" style="text-decoration:none">🌐 View Live Site</a>
       </div>
     </div>
   </div>
 
-  <!-- UPLOAD PAGE -->
+  <!-- UPLOAD -->
   <div class="page" id="page-upload">
-    <div class="page-title">Upload Photos</div>
-    <div class="page-sub">Drag & drop your photos, then tag each one with categories</div>
-
+    <div class="page-title">Upload Files</div>
+    <div class="page-sub">Drag in multiple photos & videos at once — then bulk tag or tag individually</div>
     <div class="upload-zone" id="dropZone">
-      <input type="file" id="fileInput" multiple accept="image/*"/>
+      <input type="file" id="fileInput" multiple accept="image/*,video/*"/>
       <div class="upload-icon">📸</div>
-      <h3>Drop photos here</h3>
-      <p>or click to browse &nbsp;·&nbsp; JPG, PNG, GIF, WebP</p>
+      <h3>Drop photos or videos here</h3>
+      <p>JPG, PNG, GIF, WebP &nbsp;·&nbsp; MP4, MOV, WebM &nbsp;·&nbsp; Select multiple at once</p>
     </div>
+    <div class="size-info">⚠ <strong>Recommended max:</strong> 3MB per photo · 50MB per video. Files flagged in <span style="color:var(--red)">red</span> may slow your site. <span style="color:var(--yellow)">Yellow</span> = getting large.</div>
 
     <div id="pendingSection" style="display:none">
-      <p class="pending-title">Staged photos — tag before adding to site <span id="pendingCountLabel"></span></p>
+      <div class="bulk-bar" id="bulkBar">
+        <span class="bulk-bar-label">Tag <span id="bulkCountLabel">0</span> selected:</span>
+        <div class="bulk-cats" id="bulkCats"></div>
+        <button class="bulk-apply" id="bulkApply">Apply Tags</button>
+        <button class="bulk-clear" id="bulkClearSel">Deselect All</button>
+      </div>
+      <div class="pending-title">
+        Staged files — select &amp; bulk tag, or click ✏ Tag individually
+        <button class="select-all-btn" id="selectAllBtn">Select All</button>
+        <span id="pendingCountLabel" style="color:var(--muted)"></span>
+      </div>
       <div class="pending-grid" id="pendingGrid"></div>
-      <div style="display:flex;gap:10px;margin-bottom:20px">
-        <button class="btn btn-primary" id="addAllBtn">Add All to Portfolio</button>
+      <div class="action-row">
+        <button class="btn btn-primary" id="addAllBtn">✓ Add All to Portfolio</button>
         <button class="btn btn-ghost" id="clearPendingBtn">Clear Staged</button>
       </div>
     </div>
   </div>
 
-  <!-- PHOTOS PAGE -->
+  <!-- PHOTOS -->
   <div class="page" id="page-photos">
-    <div class="page-title">Manage Photos</div>
-    <div class="page-sub">Edit tags, reorder, or remove photos from your portfolio</div>
+    <div class="page-title">Manage Files</div>
+    <div class="page-sub">Edit tags, check file sizes, or remove files</div>
     <div class="toolbar">
       <input class="search-box" id="searchBox" placeholder="Search by filename or tag…"/>
       <select class="filter-select" id="filterSelect">
-        <option value="all">All Categories</option>
+        <option value="all">All Files</option>
         <option value="advertising">Advertising</option>
         <option value="editorial">Editorial</option>
         <option value="music">Music</option>
         <option value="food">Food</option>
         <option value="motion">Motion</option>
         <option value="design">Design</option>
-        <option value="about">About</option>
-        <option value="__untagged">Untagged Only</option>
+        <option value="about">Portrait</option>
+        <option value="__untagged">⚠ Untagged Only</option>
+        <option value="__video">🎬 Videos Only</option>
+        <option value="__big">🔴 Large Files Only</option>
       </select>
     </div>
     <div class="photo-grid" id="photoGrid"></div>
-    <div class="empty" id="photoEmpty" style="display:none"><p>No photos yet. Upload some on the Upload page.</p></div>
+    <div class="empty" id="photoEmpty" style="display:none"><p>No files yet — upload some!</p></div>
   </div>
 
-  <!-- SETTINGS PAGE -->
+  <!-- SETTINGS -->
   <div class="page" id="page-settings">
     <div class="page-title">Site Settings</div>
-    <div class="page-sub">Edit text and information shown on your portfolio</div>
+    <div class="page-sub">Edit text shown on your live portfolio</div>
     <div class="settings-section">
       <h3>Identity</h3>
       <div class="field-row">
         <div class="field"><label>Your Name</label><input id="sName" placeholder="Jabari Jacobs"/></div>
-        <div class="field"><label>Tagline / Role</label><input id="sTagline" placeholder="Photographer & Director"/></div>
+        <div class="field"><label>Tagline</label><input id="sTagline" placeholder="Photographer & Director"/></div>
       </div>
-      <div class="field"><label>Email (Contact)</label><input id="sEmail" placeholder="jabari@jabarijacobs.com"/></div>
+      <div class="field"><label>Email</label><input id="sEmail" placeholder="jabari@jabarijacobs.com"/></div>
     </div>
     <div class="settings-section">
       <h3>About Page</h3>
-      <div class="field"><label>About Text</label><textarea id="sAbout" placeholder="Write a short bio…"></textarea></div>
-      <div class="field"><label>Based In</label><input id="sLocation" placeholder="Los Angeles, CA"/></div>
-      <div class="field"><label>Instagram Handle</label><input id="sInsta" placeholder="@jabarijacobs"/></div>
+      <div class="field"><label>Bio</label><textarea id="sAbout" placeholder="Write a short bio…"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Based In</label><input id="sLocation" placeholder="Los Angeles, CA"/></div>
+        <div class="field"><label>Instagram</label><input id="sInsta" placeholder="@jabarijacobs"/></div>
+      </div>
     </div>
     <div class="settings-section">
       <h3>Motion Page</h3>
-      <div class="field"><label>Motion Page Intro Text</label><textarea id="sMotion" placeholder="Intro text for Motion page…"></textarea></div>
+      <div class="field"><label>Intro Text</label><textarea id="sMotion" placeholder="Intro text…"></textarea></div>
     </div>
-    <div style="display:flex;gap:10px">
-      <button class="btn btn-primary" id="saveSettings">Save Settings</button>
-    </div>
+    <button class="btn btn-primary" id="saveSettings">Save Settings</button>
   </div>
-
 </main>
 </div>
 
 <!-- TAG MODAL -->
 <div class="modal-overlay" id="tagModal">
   <div class="modal">
-    <h2>Tag this photo</h2>
-    <p class="modal-sub" id="modalFilename">filename.jpg</p>
-    <img class="modal-img" id="modalImg" src="" alt=""/>
+    <h2 id="modalTitle">Tag this file</h2>
+    <p class="modal-sub" id="modalFilename"></p>
+    <img class="modal-img" id="modalImg" src="" alt="" style="display:none"/>
+    <video class="modal-video" id="modalVideo" controls style="display:none"></video>
     <label>Select categories (pick all that apply)</label>
     <div class="modal-cats" id="modalCats"></div>
     <div class="modal-actions">
       <button class="btn btn-primary" id="modalSave">Save Tags</button>
-      <button class="btn btn-ghost" id="modalSkip">Skip for now</button>
+      <button class="btn btn-ghost" id="modalSkip">Cancel</button>
     </div>
   </div>
 </div>
 
-<!-- TOAST -->
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="confirm-modal">
+    <h2>Add to Portfolio?</h2>
+    <p id="confirmMsg"></p>
+    <div class="confirm-actions">
+      <button class="btn btn-primary" id="confirmYes">Yes, Add All</button>
+      <button class="btn btn-ghost" id="confirmNo">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-const CATEGORIES = ['advertising','editorial','music','food','motion','design','about'];
-let photos = [];      // {id, name, src, dataUrl, categories, dateAdded}
-let pending = [];     // {id, name, dataUrl, categories}
-let settings = {name:'Jabari Jacobs',tagline:'Photographer & Director',email:'jabari@jabarijacobs.com',about:'',location:'Los Angeles, CA',insta:'@jabarijacobs',motionText:''};
-let editingId = null;
-let modalQueue = [];
-let modalQueueIdx = 0;
+const CATEGORIES=['advertising','editorial','music','food','motion','design','about'];
+const BUILD_HOOK='https://api.netlify.com/build_hooks/69c7f4dfa3795419eacb8ca2';
+const MAX_PHOTO_MB=3, MAX_VIDEO_MB=50;
+let photos=[],pending=[],settings={name:'Jabari Jacobs',tagline:'Photographer & Director',email:'jabari@jabarijacobs.com',about:'',location:'Los Angeles, CA',insta:'@jabarijacobs',motionText:''};
+let editingId=null,selectedPending=new Set();
 
-// ── LOAD ──
-try {
-  const d = localStorage.getItem('jj_photos'); if(d) photos = JSON.parse(d);
-  const s = localStorage.getItem('jj_settings'); if(s) settings = {...settings,...JSON.parse(s)};
-} catch(e){}
+try{const d=localStorage.getItem('jj_photos');if(d)photos=JSON.parse(d);}catch(e){}
+try{const s=localStorage.getItem('jj_settings');if(s)settings={...settings,...JSON.parse(s)};}catch(e){}
 
-// ── NAV ──
-document.querySelectorAll('.nav-item').forEach(el=>{
-  el.addEventListener('click',()=>showPage(el.dataset.page));
-});
+function formatSize(b){if(!b)return '';if(b<1024*1024)return (b/1024).toFixed(0)+'KB';return (b/(1024*1024)).toFixed(1)+'MB';}
+function sizeClass(b,vid){const mb=b/(1024*1024),max=vid?MAX_VIDEO_MB:MAX_PHOTO_MB;if(mb>max)return 'size-big';if(mb>max*0.7)return 'size-warn';return 'size-ok';}
+function isVid(name){return /\.(mp4|mov|webm|avi|m4v)$/i.test(name);}
+function showToast(msg,bg='var(--green)'){const t=document.getElementById('toast');t.textContent=msg;t.style.background=bg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
+function savePhotos(){localStorage.setItem('jj_photos',JSON.stringify(photos));}
+
+// NAV
+document.querySelectorAll('.nav-item').forEach(el=>el.addEventListener('click',()=>showPage(el.dataset.page)));
 function showPage(id){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===id));
   document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+id));
-  if(id==='overview') renderOverview();
-  if(id==='photos') renderPhotoGrid();
-  if(id==='settings') loadSettings();
+  if(id==='overview')renderOverview();if(id==='photos')renderPhotoGrid();if(id==='settings')loadSettings();
 }
 
-// ── UPLOAD ──
-const dropZone = document.getElementById('dropZone');
-const fileInput = document.getElementById('fileInput');
-
+// UPLOAD
+const dropZone=document.getElementById('dropZone'),fileInput=document.getElementById('fileInput');
 dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('drag-over')});
 dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('drag-over'));
 dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('drag-over');handleFiles(e.dataTransfer.files)});
 fileInput.addEventListener('change',()=>handleFiles(fileInput.files));
 
 function handleFiles(files){
-  const arr = [...files].filter(f=>f.type.startsWith('image/'));
-  if(!arr.length) return;
+  const arr=[...files].filter(f=>f.type.startsWith('image/')||f.type.startsWith('video/'));
+  if(!arr.length)return;
   let done=0;
   arr.forEach(file=>{
-    const reader = new FileReader();
-    reader.onload = ev=>{
-      pending.push({id:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2),name:file.name,dataUrl:ev.target.result,categories:[]});
-      done++;
-      if(done===arr.length){renderPending();updateCounts();}
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      pending.push({id:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2),name:file.name,dataUrl:ev.target.result,categories:[],fileSize:file.size,isVideo:file.type.startsWith('video/')});
+      if(++done===arr.length){renderPending();updateCounts();}
     };
     reader.readAsDataURL(file);
   });
 }
 
 function renderPending(){
-  const section = document.getElementById('pendingSection');
-  const grid = document.getElementById('pendingGrid');
-  section.style.display = pending.length?'block':'none';
-  document.getElementById('pendingCountLabel').textContent = `(${pending.length} photo${pending.length!==1?'s':''})`;
+  const section=document.getElementById('pendingSection'),grid=document.getElementById('pendingGrid');
+  section.style.display=pending.length?'block':'none';
+  document.getElementById('pendingCountLabel').textContent=`${pending.length} file${pending.length!==1?'s':''}`;
   grid.innerHTML='';
   pending.forEach(p=>{
+    const isSel=selectedPending.has(p.id),sc=sizeClass(p.fileSize||0,p.isVideo);
     const card=document.createElement('div');
-    card.className='pending-card';
+    card.className='pending-card'+(isSel?' selected':'');
     card.innerHTML=`
-      <img src="${p.dataUrl}" alt="${p.name}"/>
-      <button class="remove-btn" data-id="${p.id}">×</button>
+      <div class="check">${isSel?'✓':''}</div>
+      <button class="remove-btn">×</button>
+      ${p.isVideo?`<video class="thumb-video" src="${p.dataUrl}" muted></video>`:`<img class="thumb" src="${p.dataUrl}" loading="lazy"/>`}
       <div class="card-info">
-        <div class="card-name">${p.name}</div>
-        <div class="card-cats">${p.categories.length?p.categories.map(c=>`<span class="card-cat">${c}</span>`).join(''):'<span style="font-size:0.62rem;color:var(--red)">Untagged</span>'}</div>
+        <div class="card-name" title="${p.name}">${p.name}</div>
+        <div class="card-size ${sc}">${formatSize(p.fileSize)}${sc==='size-big'?' ⚠ Too large':sc==='size-warn'?' ⚡ Large':' ✓'}</div>
+        <div class="card-cats">${p.categories.length?p.categories.map(c=>`<span class="card-cat">${c}</span>`).join(''):'<span style="font-size:0.6rem;color:var(--muted)">Untagged</span>'}</div>
+        <span class="tag-icon">✏ Tag individually</span>
       </div>`;
-    card.querySelector('img').addEventListener('click',()=>openTagModal(p.id,'pending'));
-    card.querySelector('.remove-btn').addEventListener('click',e=>{e.stopPropagation();pending=pending.filter(x=>x.id!==p.id);renderPending();updateCounts()});
+    card.addEventListener('click',e=>{if(e.target.classList.contains('remove-btn')||e.target.classList.contains('tag-icon'))return;toggleSelect(p.id);});
+    card.querySelector('.remove-btn').addEventListener('click',e=>{e.stopPropagation();pending=pending.filter(x=>x.id!==p.id);selectedPending.delete(p.id);renderPending();updateCounts();updateBulkBar();});
+    card.querySelector('.tag-icon').addEventListener('click',e=>{e.stopPropagation();openTagModal(p.id,'pending');});
     grid.appendChild(card);
   });
+  updateBulkBar();
 }
 
-document.getElementById('addAllBtn').addEventListener('click',()=>{
-  photos=[...photos,...pending.map(p=>({...p,dateAdded:new Date().toISOString()}))];
-  pending=[];
-  savePhotos();
+function toggleSelect(id){selectedPending.has(id)?selectedPending.delete(id):selectedPending.add(id);renderPending();}
+
+document.getElementById('selectAllBtn').addEventListener('click',()=>{
+  if(selectedPending.size===pending.length)selectedPending.clear();else pending.forEach(p=>selectedPending.add(p.id));
   renderPending();
-  renderPhotoGrid();
-  renderOverview();
-  updateCounts();
-  showToast(`Added to portfolio!`);
 });
 
-document.getElementById('clearPendingBtn').addEventListener('click',()=>{pending=[];renderPending();updateCounts()});
+function updateBulkBar(){
+  const bar=document.getElementById('bulkBar'),n=selectedPending.size;
+  bar.classList.toggle('visible',n>0);
+  document.getElementById('bulkCountLabel').textContent=n;
+  const cd=document.getElementById('bulkCats');
+  if(!cd.children.length){CATEGORIES.forEach(cat=>{const pill=document.createElement('button');pill.className='bulk-pill';pill.textContent=cat;pill.addEventListener('click',()=>pill.classList.toggle('selected'));cd.appendChild(pill);});}
+}
 
-// ── TAG MODAL ──
-function openTagModal(id, pool='photos'){
-  editingId = {id, pool};
-  const item = pool==='pending' ? pending.find(p=>p.id===id) : photos.find(p=>p.id===id);
-  if(!item) return;
-  document.getElementById('modalFilename').textContent = item.name;
-  document.getElementById('modalImg').src = item.dataUrl;
-  const catsDiv = document.getElementById('modalCats');
-  catsDiv.innerHTML='';
-  CATEGORIES.forEach(cat=>{
-    const pill=document.createElement('button');
-    pill.className='cat-pill'+(item.categories.includes(cat)?' selected':'');
-    pill.textContent=cat;
-    pill.addEventListener('click',()=>pill.classList.toggle('selected'));
-    catsDiv.appendChild(pill);
-  });
+document.getElementById('bulkApply').addEventListener('click',()=>{
+  const sel=[...document.querySelectorAll('#bulkCats .bulk-pill.selected')].map(p=>p.textContent);
+  if(!sel.length){showToast('Pick at least one category!','var(--yellow)');return;}
+  selectedPending.forEach(id=>{const item=pending.find(p=>p.id===id);if(item)sel.forEach(cat=>{if(!item.categories.includes(cat))item.categories.push(cat);});});
+  selectedPending.clear();
+  document.querySelectorAll('#bulkCats .bulk-pill').forEach(p=>p.classList.remove('selected'));
+  renderPending();updateBulkBar();
+  showToast(`✓ Tags applied to ${sel.length} categor${sel.length===1?'y':'ies'}!`);
+});
+
+document.getElementById('bulkClearSel').addEventListener('click',()=>{selectedPending.clear();renderPending();updateBulkBar();});
+
+// ADD ALL with confirmation
+document.getElementById('addAllBtn').addEventListener('click',()=>{
+  const untagged=pending.filter(p=>!p.categories.length).length;
+  document.getElementById('confirmMsg').textContent=untagged>0
+    ?`Add ${pending.length} file${pending.length!==1?'s':''} to portfolio? Note: ${untagged} file${untagged!==1?'s':''} ${untagged!==1?'are':'is'} still untagged and won't appear in category filters.`
+    :`Add all ${pending.length} file${pending.length!==1?'s':''} to your portfolio? This can't be undone but you can remove them later.`;
+  document.getElementById('confirmModal').classList.add('open');
+});
+document.getElementById('confirmYes').addEventListener('click',()=>{
+  photos=[...photos,...pending.map(p=>({...p,dateAdded:new Date().toISOString()}))];
+  pending=[];selectedPending.clear();
+  savePhotos();renderPending();renderPhotoGrid();renderOverview();updateCounts();
+  document.getElementById('confirmModal').classList.remove('open');
+  showToast(`✓ ${photos.length} file${photos.length!==1?'s':''} in portfolio!`);
+});
+document.getElementById('confirmNo').addEventListener('click',()=>document.getElementById('confirmModal').classList.remove('open'));
+document.getElementById('clearPendingBtn').addEventListener('click',()=>{pending=[];selectedPending.clear();renderPending();updateCounts();});
+
+// TAG MODAL
+function openTagModal(id,pool='photos'){
+  editingId={id,pool};
+  const item=(pool==='pending'?pending:photos).find(p=>p.id===id);if(!item)return;
+  document.getElementById('modalTitle').textContent=item.isVideo?'Tag this video':'Tag this photo';
+  document.getElementById('modalFilename').textContent=`${item.name} · ${formatSize(item.fileSize||0)}`;
+  const imgEl=document.getElementById('modalImg'),vidEl=document.getElementById('modalVideo');
+  if(item.isVideo){imgEl.style.display='none';vidEl.style.display='block';vidEl.src=item.dataUrl||item.src;}
+  else{vidEl.style.display='none';imgEl.style.display='block';imgEl.src=item.dataUrl||item.src;}
+  const cd=document.getElementById('modalCats');cd.innerHTML='';
+  CATEGORIES.forEach(cat=>{const pill=document.createElement('button');pill.className='cat-pill'+(item.categories.includes(cat)?' selected':'');pill.textContent=cat;pill.addEventListener('click',()=>pill.classList.toggle('selected'));cd.appendChild(pill);});
   document.getElementById('tagModal').classList.add('open');
 }
-
 document.getElementById('modalSave').addEventListener('click',()=>{
-  const selected=[...document.querySelectorAll('#modalCats .cat-pill.selected')].map(p=>p.textContent);
-  const {id,pool}=editingId;
-  const arr = pool==='pending' ? pending : photos;
-  const item = arr.find(p=>p.id===id);
-  if(item) item.categories=selected;
-  if(pool==='photos') savePhotos();
+  const sel=[...document.querySelectorAll('#modalCats .cat-pill.selected')].map(p=>p.textContent);
+  const{id,pool}=editingId;
+  const item=(pool==='pending'?pending:photos).find(p=>p.id===id);
+  if(item)item.categories=sel;
+  if(pool==='photos')savePhotos();
   document.getElementById('tagModal').classList.remove('open');
-  if(pool==='pending') renderPending();
-  else renderPhotoGrid();
-  renderOverview();
-  showToast('Tags saved!');
+  if(pool==='pending')renderPending();else renderPhotoGrid();
+  renderOverview();showToast('Tags saved!');
 });
+document.getElementById('modalSkip').addEventListener('click',()=>document.getElementById('tagModal').classList.remove('open'));
+document.getElementById('tagModal').addEventListener('click',e=>{if(e.target===e.currentTarget)document.getElementById('tagModal').classList.remove('open');});
 
-document.getElementById('modalSkip').addEventListener('click',()=>{
-  document.getElementById('tagModal').classList.remove('open');
-});
-
-document.getElementById('tagModal').addEventListener('click',e=>{
-  if(e.target===e.currentTarget) document.getElementById('tagModal').classList.remove('open');
-});
-
-// ── PHOTO GRID ──
+// PHOTO GRID
 function renderPhotoGrid(){
-  const grid=document.getElementById('photoGrid');
-  const empty=document.getElementById('photoEmpty');
-  const q=document.getElementById('searchBox').value.toLowerCase();
-  const f=document.getElementById('filterSelect').value;
-  let filtered=photos.filter(p=>{
-    if(f==='__untagged') return !p.categories||!p.categories.length;
-    if(f!=='all'&&!p.categories.includes(f)) return false;
-    if(q&&!p.name.toLowerCase().includes(q)&&!p.categories.join(' ').includes(q)) return false;
+  const grid=document.getElementById('photoGrid'),empty=document.getElementById('photoEmpty');
+  const q=document.getElementById('searchBox').value.toLowerCase(),f=document.getElementById('filterSelect').value;
+  const filtered=photos.filter(p=>{
+    if(f==='__untagged')return !p.categories||!p.categories.length;
+    if(f==='__video')return p.isVideo;
+    if(f==='__big'){const mb=(p.fileSize||0)/(1024*1024);return p.isVideo?mb>MAX_VIDEO_MB:mb>MAX_PHOTO_MB;}
+    if(f!=='all'&&!p.categories.includes(f))return false;
+    if(q&&!p.name.toLowerCase().includes(q)&&!p.categories.join(' ').includes(q))return false;
     return true;
   });
   grid.style.display=filtered.length?'grid':'none';
   empty.style.display=filtered.length?'none':'block';
   grid.innerHTML='';
   filtered.forEach(p=>{
-    const card=document.createElement('div');
-    card.className='photo-card';
+    const sc=sizeClass(p.fileSize||0,p.isVideo);
+    const card=document.createElement('div');card.className='photo-card';
     card.innerHTML=`
-      <img src="${p.dataUrl}" alt="${p.name}" loading="lazy"/>
+      ${p.isVideo?`<video src="${p.dataUrl||p.src}" muted></video><div class="video-badge">VIDEO</div>`:`<img src="${p.src||p.dataUrl}" loading="lazy"/>`}
       <div class="overlay">
-        <button class="overlay-btn edit" data-id="${p.id}">Edit Tags</button>
-        <button class="overlay-btn del" data-id="${p.id}">Remove</button>
+        <button class="overlay-btn edit">Edit Tags</button>
+        <button class="overlay-btn del">Remove</button>
       </div>
       <div class="card-footer">
-        ${p.categories&&p.categories.length?p.categories.map(c=>`<span class="tag">${c}</span>`).join(''):'<span class="no-tag">Untagged</span>'}
+        <div style="font-size:0.58rem;margin-bottom:3px" class="${sc}">${formatSize(p.fileSize||0)}${sc==='size-big'?' ⚠':sc==='size-warn'?' ⚡':''}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:3px">${p.categories&&p.categories.length?p.categories.map(c=>`<span class="tag">${c}</span>`).join(''):'<span class="no-tag">Untagged</span>'}</div>
       </div>`;
     card.querySelector('.edit').addEventListener('click',()=>openTagModal(p.id,'photos'));
-    card.querySelector('.del').addEventListener('click',()=>{
-      if(confirm(`Remove "${p.name}" from portfolio?`)){photos=photos.filter(x=>x.id!==p.id);savePhotos();renderPhotoGrid();renderOverview();showToast('Photo removed.');}
-    });
+    card.querySelector('.del').addEventListener('click',()=>{if(confirm(`Remove "${p.name}"?`)){photos=photos.filter(x=>x.id!==p.id);savePhotos();renderPhotoGrid();renderOverview();showToast('Removed.');}});
     grid.appendChild(card);
   });
 }
-
 document.getElementById('searchBox').addEventListener('input',renderPhotoGrid);
 document.getElementById('filterSelect').addEventListener('change',renderPhotoGrid);
 
-// ── OVERVIEW ──
+// OVERVIEW
 function renderOverview(){
   document.getElementById('statTotal').textContent=photos.length;
   document.getElementById('statUntagged').textContent=photos.filter(p=>!p.categories||!p.categories.length).length;
   document.getElementById('statPending').textContent=pending.length;
-  const breakdown=document.getElementById('catBreakdown');
-  breakdown.innerHTML='';
+  const bd=document.getElementById('catBreakdown');bd.innerHTML='';
   CATEGORIES.forEach(cat=>{
     const count=photos.filter(p=>p.categories&&p.categories.includes(cat)).length;
     const el=document.createElement('div');
     el.style.cssText='background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:14px;';
-    el.innerHTML=`<div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">${cat}</div><div style="font-family:\'Cormorant Garamond\',serif;font-size:1.6rem;color:var(--accent)">${count}</div>`;
-    breakdown.appendChild(el);
+    el.innerHTML=`<div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">${cat}</div><div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--accent)">${count}</div>`;
+    bd.appendChild(el);
   });
 }
 
-// ── SETTINGS ──
-function loadSettings(){
-  document.getElementById('sName').value=settings.name||'';
-  document.getElementById('sTagline').value=settings.tagline||'';
-  document.getElementById('sEmail').value=settings.email||'';
-  document.getElementById('sAbout').value=settings.about||'';
-  document.getElementById('sLocation').value=settings.location||'';
-  document.getElementById('sInsta').value=settings.insta||'';
-  document.getElementById('sMotion').value=settings.motionText||'';
-}
+// SETTINGS
+function loadSettings(){['sName','sTagline','sEmail','sAbout','sLocation','sInsta','sMotion'].forEach(id=>{const key=id.replace('s','').toLowerCase();const map={sName:'name',sTagline:'tagline',sEmail:'email',sAbout:'about',sLocation:'location',sInsta:'insta',sMotion:'motionText'};document.getElementById(id).value=settings[map[id]]||'';});}
 document.getElementById('saveSettings').addEventListener('click',()=>{
-  settings={
-    name:document.getElementById('sName').value,
-    tagline:document.getElementById('sTagline').value,
-    email:document.getElementById('sEmail').value,
-    about:document.getElementById('sAbout').value,
-    location:document.getElementById('sLocation').value,
-    insta:document.getElementById('sInsta').value,
-    motionText:document.getElementById('sMotion').value,
-  };
-  localStorage.setItem('jj_settings',JSON.stringify(settings));
-  showToast('Settings saved!');
+  settings={name:document.getElementById('sName').value,tagline:document.getElementById('sTagline').value,email:document.getElementById('sEmail').value,about:document.getElementById('sAbout').value,location:document.getElementById('sLocation').value,insta:document.getElementById('sInsta').value,motionText:document.getElementById('sMotion').value};
+  localStorage.setItem('jj_settings',JSON.stringify(settings));showToast('Settings saved!');
 });
 
-// ── NETLIFY PUBLISH ──
-const BUILD_HOOK = 'https://api.netlify.com/build_hooks/69c7f4dfa3795419eacb8ca2';
-
-async function publishToNetlify() {
-  const btn = document.getElementById('publishBtn');
-  const status = document.getElementById('publishStatus');
-  btn.disabled = true;
-  btn.textContent = '⏳ Publishing...';
-  status.style.color = 'var(--accent)';
-  status.textContent = 'Saving data and triggering deploy...';
-
-  // First save the portfolio data to localStorage
-  savePhotos();
-  localStorage.setItem('jj_settings', JSON.stringify(settings));
-
-  // Export the data file automatically
+// PUBLISH
+async function publishToNetlify(){
+  const btn=document.getElementById('publishBtn'),status=document.getElementById('publishStatus');
+  btn.disabled=true;btn.textContent='⏳ Publishing...';
+  status.style.color='var(--accent)';status.textContent='Triggering deploy...';
+  savePhotos();localStorage.setItem('jj_settings',JSON.stringify(settings));
   doExport();
-
-  // Trigger Netlify rebuild via build hook
-  try {
-    await fetch(BUILD_HOOK, { method: 'POST' });
-    status.style.color = 'var(--green)';
-    status.textContent = '✓ Deploy triggered! Live in ~30 seconds';
-    showToast('🚀 Publishing... check jabarijacobs.netlify.app in 30 seconds!');
-  } catch(err) {
-    status.style.color = 'var(--green)';
-    status.textContent = '✓ Data exported — add portfolio-data.json to your site folder & push via GitHub Desktop';
-    showToast('Data exported! Push via GitHub Desktop to go live.');
+  try{
+    await fetch(BUILD_HOOK,{method:'POST'});
+    status.style.color='var(--green)';status.textContent='✓ Live in ~30 seconds!';
+    showToast('🚀 Deploying! Check your site in 30s');
+  }catch(e){
+    status.style.color='var(--yellow)';status.textContent='Data exported — push via GitHub Desktop';
+    showToast('Exported! Push in GitHub Desktop','var(--yellow)');
   }
-
-  btn.textContent = '🚀 Publish to Live Site';
-  btn.disabled = false;
+  btn.textContent='🚀 Publish to Live Site';btn.disabled=false;
 }
+document.getElementById('publishBtn').addEventListener('click',publishToNetlify);
 
-document.getElementById('publishBtn').addEventListener('click', publishToNetlify);
-
-// ── EXPORT ──
 function doExport(){
-  const data={photos:photos.map(p=>({id:p.id,name:p.name,src:p.dataUrl,categories:p.categories,dateAdded:p.dateAdded})),settings};
+  const data={photos:photos.map(p=>({id:p.id,name:p.name,src:p.dataUrl||p.src,categories:p.categories,dateAdded:p.dateAdded,fileSize:p.fileSize,isVideo:p.isVideo})),settings};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='portfolio-data.json';a.click();
-  showToast('portfolio-data.json exported!');
 }
 document.getElementById('exportBtn').addEventListener('click',doExport);
-document.getElementById('exportBtn2').addEventListener('click',doExport);
 
-// ── HELPERS ──
-function savePhotos(){localStorage.setItem('jj_photos',JSON.stringify(photos));}
-function updateCounts(){
-  const n=pending.length;
-  const badge=document.getElementById('pendingCount');
-  badge.style.display=n?'inline-block':'none';
-  badge.textContent=n;
-  document.getElementById('statPending').textContent=n;
-}
-function showToast(msg){
-  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2800);
-}
+function updateCounts(){const n=pending.length;const badge=document.getElementById('pendingCount');badge.style.display=n?'inline-block':'none';badge.textContent=n;document.getElementById('statPending').textContent=n;}
 
-// ── INIT ──
-renderOverview();
-renderPhotoGrid();
-loadSettings();
+renderOverview();renderPhotoGrid();loadSettings();
 </script>
 </body>
 </html>
