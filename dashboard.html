@@ -119,7 +119,9 @@ main{padding:36px;overflow-y:auto}
 .search-box:focus{border-color:var(--accent)}
 .filter-sel{padding:8px 13px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.76rem;outline:none;cursor:pointer}
 .photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px}
-.photo-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative}
+.photo-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative;cursor:grab}
+.photo-card.dragging{opacity:0.4;border:2px dashed var(--accent)}
+.photo-card.drag-over{border:2px solid var(--accent);transform:scale(1.02)}
 .photo-card img,.photo-card video{width:100%;aspect-ratio:1;object-fit:cover;display:block}
 .photo-card .overlay{position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;gap:5px;transition:background 0.2s;opacity:0}
 .photo-card:hover .overlay{background:rgba(0,0,0,0.65);opacity:1}
@@ -583,11 +585,48 @@ document.getElementById('addAllBtn').addEventListener('click',()=>{
   document.getElementById('confirmModal').classList.add('open');
 });
 document.getElementById('confirmYes').addEventListener('click',()=>{
-  photos=[...photos,...pending.map(p=>({...p,src:p.dataUrl||'',dateAdded:new Date().toISOString()}))];
+  const btn=document.getElementById('confirmYes');
+  const msg=document.getElementById('confirmMsg');
+  btn.disabled=true;
+  btn.textContent='Processing…';
+  msg.textContent='Adding files, please wait…';
+
+  // Use setTimeout to let UI update before heavy processing
+  let i=0;
+  const total=pending.length;
+  function addNext(){
+    if(i>=pending.length){
+      savePhotos();
+      renderPending();renderPhotoGrid();renderOverview();updateCounts();
+      document.getElementById('confirmModal').classList.remove('open');
+      btn.disabled=false;btn.textContent='Yes, proceed';
+      showToast(`✓ ${total} file${total!==1?'s':''} added! Hit Publish to go live.`);
+      return;
+    }
+    const p=pending[i];
+    photos.push({...p,src:p.dataUrl||'',dateAdded:new Date().toISOString()});
+    i++;
+    msg.textContent=`Adding ${i} of ${total}…`;
+    setTimeout(addNext,10);
+  }
   pending=[];selectedPending.clear();
-  savePhotos();renderPending();renderPhotoGrid();renderOverview();updateCounts();
-  document.getElementById('confirmModal').classList.remove('open');
-  showToast(`✓ Added! Hit Publish to go live.`);
+  // Re-add from temp
+  const toAdd=[...photos.slice(photos.length-(photos.length))];
+  // Reset and re-process
+  photos=photos.filter(p=>!pending.find(x=>x.id===p.id));
+  pending=[...document.querySelectorAll('.pending-card')].length>0?pending:[];
+
+  // Simpler: just do it all at once but show feedback
+  setTimeout(()=>{
+    const staged=[...pending];
+    photos=[...photos,...staged.map(p=>({...p,src:p.dataUrl||'',dateAdded:new Date().toISOString()}))];
+    pending=[];selectedPending.clear();
+    savePhotos();
+    renderPending();renderPhotoGrid();renderOverview();updateCounts();
+    document.getElementById('confirmModal').classList.remove('open');
+    btn.disabled=false;btn.textContent='Yes, proceed';
+    showToast(`✓ ${staged.length} file${staged.length!==1?'s':''} added! Hit Publish to go live.`);
+  },100);
 });
 document.getElementById('confirmNo').addEventListener('click',()=>document.getElementById('confirmModal').classList.remove('open'));
 document.getElementById('clearPendingBtn').addEventListener('click',()=>{pending=[];selectedPending.clear();renderPending();updateCounts();});
@@ -635,13 +674,37 @@ function renderPhotoGrid(){
   });
   grid.style.display=filtered.length?'grid':'none';empty.style.display=filtered.length?'none':'block';
   grid.innerHTML='';
+
+  let dragSrc=null;
+
   filtered.forEach(p=>{
     const card=document.createElement('div');card.className='photo-card';
+    card.draggable=true;
+    card.dataset.id=p.id;
     const imgSrc=p.isYt?`https://img.youtube.com/vi/${p.youtubeId}/hqdefault.jpg`:p.src||p.dataUrl||'';
     card.innerHTML=`${p.isYt?'<div class="yt-badge">YT</div>':''}
-      <img src="${imgSrc}" loading="lazy"/>
+      <div style="position:absolute;top:5px;right:5px;background:rgba(0,0,0,0.5);color:#fff;border-radius:3px;padding:2px 5px;font-size:0.55rem;cursor:grab;z-index:2">⠿</div>
+      <img src="${imgSrc}" loading="lazy" style="width:100%;aspect-ratio:1;object-fit:cover;display:block"/>
       <div class="overlay"><button class="ov-btn ov-edit">Edit Tags</button><button class="ov-btn ov-del">Remove</button></div>
       <div class="cf"><div style="display:flex;flex-wrap:wrap;gap:3px">${p.categories&&p.categories.length?p.categories.map(c=>`<span class="tag">${c}</span>`).join(''):'<span class="no-tag">Untagged</span>'}</div></div>`;
+
+    // Drag events
+    card.addEventListener('dragstart',()=>{dragSrc=p.id;card.classList.add('dragging');});
+    card.addEventListener('dragend',()=>{card.classList.remove('dragging');document.querySelectorAll('.photo-card').forEach(c=>c.classList.remove('drag-over'));});
+    card.addEventListener('dragover',e=>{e.preventDefault();if(dragSrc!==p.id)card.classList.add('drag-over');});
+    card.addEventListener('dragleave',()=>card.classList.remove('drag-over'));
+    card.addEventListener('drop',e=>{
+      e.preventDefault();card.classList.remove('drag-over');
+      if(dragSrc===p.id)return;
+      const fromIdx=photos.findIndex(x=>x.id===dragSrc);
+      const toIdx=photos.findIndex(x=>x.id===p.id);
+      if(fromIdx<0||toIdx<0)return;
+      const moved=photos.splice(fromIdx,1)[0];
+      photos.splice(toIdx,0,moved);
+      savePhotos();renderPhotoGrid();
+      showToast('✓ Order updated! Publish to apply.');
+    });
+
     card.querySelector('.ov-edit').addEventListener('click',()=>openTagModal(p.id,'photos'));
     card.querySelector('.ov-del').addEventListener('click',()=>{
       if(confirm(`Remove "${p.name}"?`)){photos=photos.filter(x=>x.id!==p.id);savePhotos();renderPhotoGrid();renderOverview();showToast('✓ Removed.');}
