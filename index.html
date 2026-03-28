@@ -61,12 +61,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);back
 .gallery-item{break-inside:avoid;margin-bottom:4px;cursor:pointer;position:relative}
 .gallery-item img,.gallery-item video{display:block;width:100%;height:auto}
 .gallery-item.hidden{display:none}
-.gallery-item img,.gallery-item video{display:block;width:100%;height:auto}
-.gallery-item.hidden{display:none}
 .img-tags{position:absolute;bottom:0;left:0;right:0;padding:8px;display:flex;flex-wrap:wrap;gap:3px;opacity:0;transition:opacity 0.25s;pointer-events:none}
 .gallery-item:hover .img-tags{opacity:1}
 .img-tag{font-size:0.55rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;background:rgba(0,0,0,0.7);color:#fff;padding:3px 7px;border-radius:6px}
-/* YouTube play button overlay */
 .yt-thumb{position:relative}
 .yt-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;background:rgba(0,0,0,0.65);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s}
 .yt-play svg{margin-left:3px}
@@ -90,7 +87,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);back
 .inner-page{display:none;padding:108px 48px 80px;margin:0 auto;max-width:1200px}
 .inner-page.open{display:block}
 
-/* 4-column layout like David Urbanke: contact | photo | bio | clients */
 .about-grid{display:grid;grid-template-columns:160px 280px 1fr 180px;gap:48px;align-items:start}
 
 .about-left{font-size:0.76rem;line-height:1.8}
@@ -102,12 +98,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);back
 .about-middle img{width:100%;display:block}
 .about-middle .photo-ph{width:100%;aspect-ratio:2/3;background:var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase}
 
-/* Bio column */
 .about-bio-col .bio{font-size:0.85rem;line-height:1.95;color:var(--text);margin-bottom:36px}
 .about-bio-col .col-label{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:block;margin-top:32px}
 .about-bio-col .col-label:first-child{margin-top:0}
 
-/* Minimal contact form with visible lines */
 .cf-field{width:100%;padding:10px 0;background:transparent;border:none;border-bottom:1px solid var(--text);color:var(--text);font-family:var(--font-body);font-size:0.84rem;outline:none;margin-bottom:14px;transition:border-color 0.2s;display:block;opacity:0.9}
 .cf-field::placeholder{color:var(--muted);opacity:1}
 .cf-field:focus{border-bottom-color:var(--text);opacity:1}
@@ -115,7 +109,6 @@ textarea.cf-field{resize:none;min-height:70px}
 .cf-submit{margin-top:8px;padding:0;background:none;border:none;font-family:var(--font-body);font-size:0.7rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;color:var(--text);text-decoration:underline;text-underline-offset:4px;transition:opacity 0.2s}
 .cf-submit:hover{opacity:0.5}
 
-/* Clients column */
 .about-clients .col-label{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:block}
 .client-list{font-size:0.88rem;line-height:2.2;color:var(--text)}
 .client-list span{display:block}
@@ -140,7 +133,7 @@ footer{border-top:1px solid var(--border);padding:40px 48px;display:flex;justify
   .gallery{columns:2;column-gap:3px}
   .gallery-item{margin-bottom:3px}
   .gallery-wrap{padding:3px}
-  .filter-wrap{padding:10px 20px;top:90px}
+  .filter-wrap{padding:10px 20px;top:70px}
   nav{padding:0 20px;height:70px}
   .nav-logo-text{font-size:1.6rem}
   .nav-links,.theme-toggle{display:none}
@@ -182,15 +175,7 @@ footer{border-top:1px solid var(--border);padding:40px 48px;display:flex;justify
 </div>
 
 <!-- FILTER BAR -->
-<div class="filter-wrap" id="filterBar">
-  <button class="filter-pill active" data-cat="all">All <span class="filter-count" id="countAll"></span></button>
-  <button class="filter-pill" data-cat="advertising">Advertising <span class="filter-count" id="countAdvertising"></span></button>
-  <button class="filter-pill" data-cat="editorial">Editorial <span class="filter-count" id="countEditorial"></span></button>
-  <button class="filter-pill" data-cat="music">Music <span class="filter-count" id="countMusic"></span></button>
-  <button class="filter-pill" data-cat="food">Food <span class="filter-count" id="countFood"></span></button>
-  <button class="filter-pill" data-cat="motion">Motion <span class="filter-count" id="countMotion"></span></button>
-  <button class="filter-pill" data-cat="design">Design <span class="filter-count" id="countDesign"></span></button>
-</div>
+<div class="filter-wrap" id="filterBar"></div>
 
 <!-- GALLERY -->
 <div class="gallery-wrap" id="galleryView">
@@ -304,12 +289,11 @@ function applySettings(){
   document.documentElement.style.setProperty('--font-display',`'${s.fontDisplay||'Cormorant Garamond'}',serif`);
   // Nav logo
   updateLogo();
-  // Footer logo — switch with theme
+  // Footer logo
   updateFooterLogo();
   document.getElementById('footerCopy').textContent=`© ${new Date().getFullYear()} ${s.name||'Jabari Jacobs'}`;
   document.getElementById('footerInsta').href=instaUrl;
   // About left col
-  document.getElementById('aboutName2').textContent=s.name||'Jabari Jacobs';
   document.getElementById('aboutLocation2').textContent=s.location||'Los Angeles, CA';
   document.getElementById('aboutEmail2').textContent=s.email||'';
   document.getElementById('aboutEmail2').href='mailto:'+(s.email||'');
@@ -320,7 +304,7 @@ function applySettings(){
   if(s.aboutPhotoSrc){ap.src=s.aboutPhotoSrc;ap.style.display='block';aph.style.display='none';}
   else{ap.style.display='none';aph.style.display='flex';}
   // Bio
-  document.getElementById('aboutBio').textContent=s.about||'';
+  document.getElementById('aboutBio').textContent=s.about||'Los Angeles-based photographer and director working across advertising, editorial, music, and food.';
   // Clients
   const cs=document.getElementById('clientSection'),cl=document.getElementById('clientList');
   if(s.clients&&s.clients.length){cs.style.display='block';cl.innerHTML=s.clients.map(c=>`<span>${c}</span>`).join('');}
@@ -354,19 +338,14 @@ function updateLogo(){
   const lt=document.getElementById('navLogoText');
   const isDark=html.getAttribute('data-theme')==='dark';
   const sz=(s.logoSize||32)+'px';
-
-  // Hide all first
   ll.style.display='none';
   ld.style.display='none';
   lt.style.display='none';
-
   if(isDark){
-    // Dark mode: prefer dark logo, fall back to light logo, fall back to text
     if(s.logoDarkSrc){ld.src=s.logoDarkSrc;ld.style.height=sz;ld.style.display='block';}
     else if(s.logoLightSrc){ll.src=s.logoLightSrc;ll.style.height=sz;ll.style.display='block';}
     else{lt.style.display='block';lt.textContent=s.name||'Jabari Jacobs';}
   } else {
-    // Light mode: prefer light logo, fall back to dark logo, fall back to text
     if(s.logoLightSrc){ll.src=s.logoLightSrc;ll.style.height=sz;ll.style.display='block';}
     else if(s.logoDarkSrc){ld.src=s.logoDarkSrc;ld.style.height=sz;ld.style.display='block';}
     else{lt.style.display='block';lt.textContent=s.name||'Jabari Jacobs';}
@@ -378,7 +357,6 @@ function buildFilters(){
   const bar=document.getElementById('filterBar');
   bar.innerHTML='';
   const activeFilters=settings.filters&&settings.filters.length?settings.filters:CATS;
-  // All pill
   const allPill=document.createElement('button');
   allPill.className='filter-pill'+(currentFilter==='all'?' active':'');
   allPill.dataset.cat='all';
@@ -420,14 +398,14 @@ function renderGallery(){
     item.style.animationDelay=(i*0.02)+'s';
     const cats=(p.categories||[]);
     const isYt=!!(p.youtubeId);
-    const isVid=p.isVideo||/\.(mp4|mov|webm)$/i.test(p.name||'');
+    const isVid=p.isVideo||/\.(mp4|mov|webm)$/i.test(p.filename||p.name||'');
     if(isYt){
       const thumb=`https://img.youtube.com/vi/${p.youtubeId}/hqdefault.jpg`;
       item.innerHTML=`<div class="yt-thumb"><img src="${thumb}" alt="${p.title||'Video'}" loading="lazy"/><div class="yt-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div></div><div class="img-tags">${cats.map(c=>`<span class="img-tag">${c}</span>`).join('')}</div>`;
     } else if(isVid){
-      item.innerHTML=`<video src="${p.src}" muted playsinline preload="metadata" loading="lazy"></video><div class="img-tags">${cats.map(c=>`<span class="img-tag">${c}</span>`).join('')}</div>`;
+      item.innerHTML=`<video src="${p.src}" muted playsinline preload="metadata"></video><div class="img-tags">${cats.map(c=>`<span class="img-tag">${c}</span>`).join('')}</div>`;
     } else {
-      item.innerHTML=`<img src="${p.src}" alt="${p.name||''}" loading="lazy"/><div class="img-tags">${cats.map(c=>`<span class="img-tag">${c}</span>`).join('')}</div>`;
+      item.innerHTML=`<img src="${p.src}" alt="${p.filename||p.name||''}" loading="lazy"/><div class="img-tags">${cats.map(c=>`<span class="img-tag">${c}</span>`).join('')}</div>`;
     }
     item.addEventListener('click',()=>openLightbox(i));
     gallery.appendChild(item);
@@ -449,7 +427,6 @@ function updateCounts(){
 function showView(view){
   document.getElementById('galleryView').style.display='none';
   document.getElementById('aboutView').style.display='none';
-  document.getElementById('galleryView').classList.remove('open');
   document.getElementById('aboutView').classList.remove('open');
   document.getElementById('filterBar').style.display=view==='home'?'flex':'none';
   if(view==='home'){document.getElementById('galleryView').style.display='block';}
@@ -514,12 +491,11 @@ document.addEventListener('keydown',e=>{
 // Init
 loadData().then(()=>{
   applySettings();
-  const gap=settings.galleryGap||4;
+  const gap=settings.galleryGap!=null?settings.galleryGap:4;
   const cols=settings.galleryCols||4;
   const g=document.querySelector('.gallery');
   g.style.columns=cols;
   g.style.columnGap=gap+'px';
-  document.querySelectorAll('.gallery-item').forEach(el=>el.style.marginBottom=gap+'px');
   document.querySelector('.gallery-wrap').style.padding=gap+'px';
   renderGallery();
   showView('home');
