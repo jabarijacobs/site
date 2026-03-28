@@ -237,6 +237,33 @@ main{padding:40px;overflow-y:auto}
     <div class="page-sub">Edit text, photos, and branding shown on your live portfolio</div>
 
     <div class="settings-section">
+      <h3>Gallery Layout</h3>
+      <div class="field-row">
+        <div class="field">
+          <label>Columns (desktop)</label>
+          <select id="sCols" style="width:100%;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.85rem;outline:none;cursor:pointer">
+            <option value="2">2 columns</option>
+            <option value="3" selected>3 columns (default)</option>
+            <option value="4">4 columns</option>
+            <option value="5">5 columns</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Gap between photos</label>
+          <select id="sGap" style="width:100%;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.85rem;outline:none;cursor:pointer">
+            <option value="0">No gap</option>
+            <option value="4">Tight (4px)</option>
+            <option value="8">Small (8px)</option>
+            <option value="12" selected>Medium (12px — default)</option>
+            <option value="20">Large (20px)</option>
+            <option value="32">Very large (32px)</option>
+          </select>
+        </div>
+      </div>
+      <p style="font-size:0.65rem;color:var(--muted);margin-top:-8px">Mobile always shows 2 columns. Save settings and publish to apply.</p>
+    </div>
+
+    <div class="settings-section">
       <h3>Identity</h3>
       <div class="field-row">
         <div class="field"><label>Your Name</label><input id="sName" placeholder="Jabari Jacobs"/></div>
@@ -326,7 +353,7 @@ main{padding:40px;overflow-y:auto}
 const CATEGORIES=['advertising','editorial','music','food','motion','design','about'];
 const BUILD_HOOK='https://api.netlify.com/build_hooks/69c7f4dfa3795419eacb8ca2';
 const MAX_PHOTO_MB=3,MAX_VIDEO_MB=50;
-let photos=[],pending=[],settings={name:'Jabari Jacobs',tagline:'Photographer & Director',email:'jabari@jabarijacobs.com',about:'',contactIntro:'Available for advertising, editorial, music, and food projects worldwide.',location:'Los Angeles, CA',insta:'@jabarijacobs',motionText:'',logoSrc:'',aboutPhotoSrc:''};
+let photos=[],pending=[],settings={name:'Jabari Jacobs',tagline:'Photographer & Director',email:'jabari@jabarijacobs.com',about:'',contactIntro:'Available for advertising, editorial, music, and food projects worldwide.',location:'Los Angeles, CA',insta:'@jabarijacobs',motionText:'',logoSrc:'',aboutPhotoSrc:'',cols:3,gap:12};
 let editingId=null,selectedPending=new Set();
 
 try{const d=localStorage.getItem('jj_photos');if(d)photos=JSON.parse(d);}catch(e){}
@@ -520,10 +547,10 @@ function loadSettings(){
   document.getElementById('sInsta').value=s.insta||'';
   document.getElementById('sMotion').value=s.motionText||'';
   document.getElementById('sContactIntro').value=s.contactIntro||'';
-  // Logo preview
+  document.getElementById('sCols').value=s.cols||3;
+  document.getElementById('sGap').value=s.gap||12;
   const lp=document.getElementById('logoPreview');
   if(s.logoSrc){lp.src=s.logoSrc;lp.style.display='block';}else{lp.style.display='none';}
-  // About photo preview
   const ap=document.getElementById('aboutPhotoPreview');
   if(s.aboutPhotoSrc){ap.src=s.aboutPhotoSrc;ap.style.display='block';}else{ap.style.display='none';}
 }
@@ -555,6 +582,8 @@ document.getElementById('saveSettings').addEventListener('click',()=>{
   settings.insta=document.getElementById('sInsta').value;
   settings.motionText=document.getElementById('sMotion').value;
   settings.contactIntro=document.getElementById('sContactIntro').value;
+  settings.cols=parseInt(document.getElementById('sCols').value)||3;
+  settings.gap=parseInt(document.getElementById('sGap').value)||12;
   localStorage.setItem('jj_settings',JSON.stringify(settings));
   showToast('Settings saved!');
 });

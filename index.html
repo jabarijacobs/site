@@ -43,28 +43,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);back
 .mobile-close{position:absolute;top:18px;right:28px;font-size:1.8rem;cursor:pointer;background:none;border:none;color:var(--text)}
 .mobile-theme{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;background:none;border:1px solid var(--border);border-radius:20px;padding:7px 16px}
 
-/* FILTER + GRID CONTROLS BAR */
+/* FILTER BAR */
 .filter-wrap{position:sticky;top:60px;z-index:70;background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:8px 36px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;transition:background 0.35s,border-color 0.35s;}
 .filter-pill{padding:5px 14px;border-radius:20px;border:1px solid var(--pill-idle-border);font-size:0.67rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:var(--pill-idle-text);background:transparent}
 .filter-pill:hover{border-color:var(--text);color:var(--text)}
 .filter-pill.active{background:var(--pill-bg);color:var(--pill-text);border-color:var(--pill-bg)}
 .filter-count{font-size:0.58rem;opacity:0.6;margin-left:2px}
-.filter-sep{width:1px;height:20px;background:var(--border);margin:0 6px;flex-shrink:0}
-
-/* Grid controls */
-.grid-controls{display:flex;align-items:center;gap:6px;margin-left:auto}
-.grid-label{font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
-.grid-btn{width:28px;height:28px;border-radius:4px;border:1px solid var(--pill-idle-border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;color:var(--muted)}
-.grid-btn:hover,.grid-btn.active{border-color:var(--text);color:var(--text);background:rgba(128,128,128,0.08)}
-.gap-slider{width:60px;accent-color:var(--text);cursor:pointer;opacity:0.6}
-.gap-slider:hover{opacity:1}
 
 /* GALLERY */
 .gallery-wrap{padding-top:10px}
-.gallery{columns:var(--cols,3);column-gap:var(--gap,6px);padding:var(--gap,6px) 36px 100px;transition:column-gap 0.3s}
-.gallery-item{break-inside:avoid;margin-bottom:var(--gap,6px);overflow:hidden;cursor:pointer;position:relative;transition:margin-bottom 0.3s}
+.gallery{columns:3;column-gap:12px;padding:12px 36px 100px}
+.gallery-item{break-inside:avoid;margin-bottom:12px;overflow:hidden;cursor:pointer;position:relative}
 .gallery-item img,.gallery-item video{display:block;width:100%;height:auto;transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)}
-.gallery-item:hover img,.gallery-item:hover video{transform:scale(1.04)}
+.gallery-item:hover img,.gallery-item:hover video{transform:scale(1.03)}
 .gallery-item.hidden{display:none}
 .img-tags{position:absolute;bottom:0;left:0;right:0;padding:8px;display:flex;flex-wrap:wrap;gap:3px;opacity:0;transform:translateY(4px);transition:all 0.25s;pointer-events:none}
 .gallery-item:hover .img-tags{opacity:1;transform:translateY(0)}
@@ -131,17 +122,19 @@ footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify
 .gallery-item{animation:fadeUp 0.45s ease both}
 
 @media(max-width:900px){
-  .gallery{columns:2;padding:6px 18px 80px}
+  .gallery{columns:2;column-gap:8px;padding:8px 18px 80px}
+  .gallery-item{margin-bottom:8px}
   .filter-wrap{padding:8px 18px}
   nav{padding:0 18px}
-  .nav-links,.theme-toggle,.grid-controls{display:none}
+  .nav-links,.theme-toggle{display:none}
   .hamburger{display:flex}
   .inner-page{padding:90px 20px 80px}
   .about-layout,.contact-layout{grid-template-columns:1fr;gap:32px}
   footer{padding:32px 20px}
 }
 @media(max-width:500px){
-  .gallery{columns:1;padding:6px 10px 60px}
+  .gallery{columns:2;column-gap:6px;padding:6px 10px 60px}
+  .gallery-item{margin-bottom:6px}
 }
 </style>
 </head>
@@ -173,7 +166,7 @@ footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify
   <button class="mobile-theme" id="mobileTheme">◑ Toggle Dark / Light</button>
 </div>
 
-<!-- FILTER + GRID CONTROLS -->
+<!-- FILTER BAR -->
 <div class="filter-wrap" id="filterBar">
   <button class="filter-pill active" data-cat="all">All <span class="filter-count" id="countAll"></span></button>
   <button class="filter-pill" data-cat="advertising">Advertising <span class="filter-count" id="countAdvertising"></span></button>
@@ -182,17 +175,6 @@ footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify
   <button class="filter-pill" data-cat="food">Food <span class="filter-count" id="countFood"></span></button>
   <button class="filter-pill" data-cat="design">Design <span class="filter-count" id="countDesign"></span></button>
   <button class="filter-pill" data-cat="about">Portrait <span class="filter-count" id="countAbout"></span></button>
-  <div class="filter-sep"></div>
-  <div class="grid-controls">
-    <span class="grid-label">Grid</span>
-    <button class="grid-btn" data-cols="2" title="2 columns">▐▌</button>
-    <button class="grid-btn active" data-cols="3" title="3 columns">⊞</button>
-    <button class="grid-btn" data-cols="4" title="4 columns">⊟</button>
-    <button class="grid-btn" data-cols="5" title="5 columns">≡</button>
-    <div class="filter-sep"></div>
-    <span class="grid-label">Gap</span>
-    <input type="range" class="gap-slider" id="gapSlider" min="0" max="24" value="6" step="2"/>
-  </div>
 </div>
 
 <!-- GALLERY -->
@@ -284,31 +266,6 @@ function updateToggleLabel(){document.getElementById('themeToggle').textContent=
 function toggleTheme(){const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('jj_theme',n);updateToggleLabel();}
 document.getElementById('themeToggle').addEventListener('click',toggleTheme);
 document.getElementById('mobileTheme').addEventListener('click',()=>{toggleTheme();closeMobile();});
-
-// Grid controls
-let currentCols=parseInt(localStorage.getItem('jj_cols')||'3');
-let currentGap=parseInt(localStorage.getItem('jj_gap')||'6');
-setGrid(currentCols,currentGap);
-
-document.querySelectorAll('.grid-btn').forEach(btn=>{
-  btn.classList.toggle('active',parseInt(btn.dataset.cols)===currentCols);
-  btn.addEventListener('click',()=>{
-    currentCols=parseInt(btn.dataset.cols);
-    localStorage.setItem('jj_cols',currentCols);
-    document.querySelectorAll('.grid-btn').forEach(b=>b.classList.toggle('active',b===btn));
-    setGrid(currentCols,currentGap);
-  });
-});
-document.getElementById('gapSlider').value=currentGap;
-document.getElementById('gapSlider').addEventListener('input',e=>{
-  currentGap=parseInt(e.target.value);
-  localStorage.setItem('jj_gap',currentGap);
-  setGrid(currentCols,currentGap);
-});
-function setGrid(cols,gap){
-  document.documentElement.style.setProperty('--cols',cols);
-  document.documentElement.style.setProperty('--gap',gap+'px');
-}
 
 // Load data
 async function loadData(){
@@ -465,7 +422,18 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowRight'){lbIdx=(lbIdx+1)%visibleImgs.length;openLightbox(lbIdx);}
 });
 
-loadData().then(()=>{applySettings();renderGallery();showView('home');});
+loadData().then(()=>{
+  applySettings();
+  // Apply grid settings from dashboard
+  const cols=settings.cols||3;
+  const gap=settings.gap||12;
+  document.querySelector('.gallery').style.columns=cols;
+  document.querySelector('.gallery').style.columnGap=gap+'px';
+  document.querySelector('.gallery').style.padding=gap+'px 36px 100px';
+  document.querySelectorAll('.gallery-item').forEach(el=>el.style.marginBottom=gap+'px');
+  renderGallery();
+  showView('home');
+});
 </script>
 </body>
 </html>
