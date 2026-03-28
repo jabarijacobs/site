@@ -29,35 +29,35 @@ html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-weight:300;transition:background 0.3s,color 0.3s;min-height:100vh}
 
 /* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;transition:background 0.3s,border-color 0.3s}
+nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;transition:background 0.3s,border-color 0.3s}
 .nav-logo{display:flex;align-items:center;text-decoration:none;color:var(--text);transition:color 0.3s}
-.nav-logo img{object-fit:contain;transition:height 0.3s}
-.nav-logo-text{font-family:var(--font-display);font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-size:1.5rem;line-height:1}
-.nav-right{display:flex;align-items:center;gap:36px}
-.nav-links{display:flex;gap:32px;list-style:none}
-.nav-links a{font-size:0.72rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.45;transition:opacity 0.2s}
+.nav-logo img{object-fit:contain;max-height:60px;width:auto}
+.nav-logo-text{font-family:var(--font-display);font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text);font-size:1.9rem;line-height:1}
+.nav-right{display:flex;align-items:center;gap:40px}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{font-size:0.72rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.4;transition:opacity 0.2s}
 .nav-links a:hover,.nav-links a.active{opacity:1}
-.theme-toggle{background:none;border:none;cursor:pointer;font-size:1rem;color:var(--text);opacity:0.35;transition:opacity 0.2s;padding:4px;line-height:1}
-.theme-toggle:hover{opacity:0.8}
+.theme-toggle{background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--text);opacity:0.3;transition:opacity 0.2s;padding:4px;line-height:1}
+.theme-toggle:hover{opacity:0.7}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
 .hamburger span{display:block;width:22px;height:1.5px;background:var(--text);transition:background 0.3s}
-.mobile-menu{display:none;position:fixed;inset:0;background:var(--overlay);z-index:90;flex-direction:column;align-items:center;justify-content:center;gap:32px}
+.mobile-menu{display:none;position:fixed;inset:0;background:var(--overlay);z-index:90;flex-direction:column;align-items:center;justify-content:center;gap:36px}
 .mobile-menu.open{display:flex}
-.mobile-menu a{font-family:var(--font-display);font-size:2rem;font-weight:300;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.6;transition:opacity 0.2s}
+.mobile-menu a{font-family:var(--font-display);font-size:2.2rem;font-weight:300;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.6;transition:opacity 0.2s}
 .mobile-menu a:hover{opacity:1}
-.mobile-close{position:absolute;top:18px;right:28px;font-size:1.8rem;cursor:pointer;background:none;border:none;color:var(--text)}
-.mobile-theme{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;background:none;border:1px solid var(--border);border-radius:20px;padding:7px 16px;color:var(--text)}
+.mobile-close{position:absolute;top:20px;right:32px;font-size:1.8rem;cursor:pointer;background:none;border:none;color:var(--text)}
+.mobile-theme{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;background:none;border:1px solid var(--border);border-radius:20px;padding:8px 18px;color:var(--text)}
 
 /* ── FILTER BAR ── */
-.filter-wrap{position:sticky;top:68px;z-index:70;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:12px 36px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;transition:background 0.3s,border-color 0.3s}
-.filter-pill{padding:6px 16px;border-radius:20px;border:1px solid var(--pill-idle-border);font-size:0.66rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:var(--pill-idle-text);background:transparent}
+.filter-wrap{position:sticky;top:80px;z-index:70;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:12px 48px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;transition:background 0.3s,border-color 0.3s}
+.filter-pill{padding:6px 16px;border-radius:20px;border:1px solid var(--pill-idle-border);font-size:0.65rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:var(--pill-idle-text);background:transparent}
 .filter-pill:hover{border-color:var(--text);color:var(--text)}
 .filter-pill.active{background:var(--pill-bg);color:var(--pill-text);border-color:var(--pill-bg)}
 .filter-count{font-size:0.56rem;opacity:0.55;margin-left:2px}
 
 /* ── GALLERY ── */
-.gallery-wrap{padding-top:20px}
-.gallery{columns:4;column-gap:4px;padding:0 36px 80px}
+.gallery-wrap{padding-top:24px}
+.gallery{columns:4;column-gap:4px;padding:0 48px 100px}
 .gallery-item{break-inside:avoid;margin-bottom:4px;cursor:pointer;position:relative}
 .gallery-item img,.gallery-item video{display:block;width:100%;height:auto;transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)}
 .gallery-item:hover img,.gallery-item:hover video{transform:scale(1.03)}
@@ -86,14 +86,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);back
 .lb-yt{width:88vw;max-width:900px;aspect-ratio:16/9}
 
 /* ── ABOUT/CONTACT PAGE ── */
-.inner-page{display:none;padding:80px 36px 80px;margin:0 auto;max-width:1100px}
+.inner-page{display:none;padding:108px 48px 80px;margin:0 auto;max-width:1200px}
 .inner-page.open{display:block}
 
-/* 3-column layout: contact left | photo middle | bio+form right */
-.about-grid{display:grid;grid-template-columns:150px 1fr 1fr;gap:52px;align-items:start}
+/* 4-column layout like David Urbanke: contact | photo | bio | clients */
+.about-grid{display:grid;grid-template-columns:160px 280px 1fr 180px;gap:48px;align-items:start}
 
 .about-left{font-size:0.76rem;line-height:1.8}
-.about-left .col-label{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;margin-top:28px;display:block}
+.about-left .col-label{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;margin-top:24px;display:block}
 .about-left .col-label:first-child{margin-top:0}
 .about-left p,.about-left a{color:var(--text);font-size:0.76rem;line-height:1.7;display:block}
 .about-left a{text-decoration:underline;text-underline-offset:3px}
@@ -101,29 +101,34 @@ nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);back
 .about-middle img{width:100%;display:block}
 .about-middle .photo-ph{width:100%;aspect-ratio:2/3;background:var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase}
 
-.about-right .bio{font-size:0.86rem;line-height:1.95;color:var(--text);margin-bottom:36px}
-.about-right .bio em{font-style:italic}
-.about-right .col-label{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:block;margin-top:32px}
-.about-right .col-label:first-child{margin-top:0}
+/* Bio column */
+.about-bio-col .bio{font-size:0.85rem;line-height:1.95;color:var(--text);margin-bottom:36px}
+.about-bio-col .col-label{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:block;margin-top:32px}
+.about-bio-col .col-label:first-child{margin-top:0}
 
-/* Minimal contact form */
-.cf-field{width:100%;padding:9px 0;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:var(--font-body);font-size:0.84rem;outline:none;margin-bottom:12px;transition:border-color 0.2s;display:block}
-.cf-field:focus{border-bottom-color:var(--text)}
+/* Minimal contact form with visible lines */
+.cf-field{width:100%;padding:10px 0;background:transparent;border:none;border-bottom:1px solid var(--text);color:var(--text);font-family:var(--font-body);font-size:0.84rem;outline:none;margin-bottom:14px;transition:border-color 0.2s;display:block;opacity:0.9}
+.cf-field::placeholder{color:var(--muted);opacity:1}
+.cf-field:focus{border-bottom-color:var(--text);opacity:1}
 textarea.cf-field{resize:none;min-height:70px}
-.cf-submit{margin-top:6px;padding:0;background:none;border:none;font-family:var(--font-body);font-size:0.7rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;color:var(--text);text-decoration:underline;text-underline-offset:3px;transition:opacity 0.2s}
+.cf-submit{margin-top:8px;padding:0;background:none;border:none;font-family:var(--font-body);font-size:0.7rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;color:var(--text);text-decoration:underline;text-underline-offset:4px;transition:opacity 0.2s}
 .cf-submit:hover{opacity:0.5}
 
-/* Client list in right col */
-.client-section{margin-top:36px;padding-top:28px;border-top:1px solid var(--border)}
-.client-list{font-size:0.8rem;line-height:2.1;color:var(--text)}
+/* Clients column */
+.about-clients .col-label{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:block}
+.client-list{font-size:0.78rem;line-height:2.1;color:var(--text)}
 .client-list span{display:block}
 
 /* ── FOOTER ── */
-footer{border-top:1px solid var(--border);padding:36px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;transition:border-color 0.3s}
-.f-logo img{object-fit:contain}
-.f-logo-text{font-family:var(--font-display);font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text)}
-.f-links{display:flex;gap:24px}
-.f-links a{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;color:var(--muted);transition:color 0.2s}
+footer{border-top:1px solid var(--border);padding:40px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;transition:border-color 0.3s}
+.f-logo{display:flex;align-items:center}
+.f-logo img{object-fit:contain;max-height:40px;width:auto}
+[data-theme="dark"] .f-logo .f-logo-light{display:none}
+[data-theme="dark"] .f-logo .f-logo-dark{display:block!important}
+[data-theme="light"] .f-logo .f-logo-dark{display:none!important}
+.f-logo-text{font-family:var(--font-display);font-size:1.1rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text)}
+.f-links{display:flex;gap:28px}
+.f-links a{font-size:0.65rem;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;color:var(--muted);transition:color 0.2s}
 .f-links a:hover{color:var(--text)}
 .f-copy{font-size:0.62rem;color:var(--muted);letter-spacing:0.06em}
 
@@ -131,21 +136,19 @@ footer{border-top:1px solid var(--border);padding:36px 28px;display:flex;justify
 .gallery-item{animation:fadeUp 0.4s ease both}
 
 @media(max-width:900px){
-  .gallery{columns:2;column-gap:3px;padding:0 16px 60px}
+  .gallery{columns:2;column-gap:3px;padding:0 20px 60px}
   .gallery-item{margin-bottom:3px}
-  .filter-wrap{padding:10px 16px;top:68px}
-  nav{padding:0 16px}
+  .filter-wrap{padding:10px 20px;top:80px}
+  nav{padding:0 20px}
   .nav-links,.theme-toggle{display:none}
   .hamburger{display:flex}
-  .inner-page{padding:88px 16px 60px}
+  .inner-page{padding:100px 20px 60px}
   .about-grid{grid-template-columns:1fr;gap:28px}
-  .about-left{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  footer{padding:28px 16px}
+  footer{padding:28px 20px}
 }
 @media(max-width:500px){
-  .gallery{columns:2;column-gap:2px;padding:0 10px 60px}
+  .gallery{columns:2;column-gap:2px;padding:0 12px 60px}
   .gallery-item{margin-bottom:2px}
-  .about-left{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -160,8 +163,7 @@ footer{border-top:1px solid var(--border);padding:36px 28px;display:flex;justify
   <div class="nav-right">
     <ul class="nav-links">
       <li><a href="#" class="active" id="navHome">Overview</a></li>
-      <li><a href="#" id="navAbout">About</a></li>
-      <li><a href="#" id="navContact">Contact</a></li>
+      <li><a href="#" id="navAbout">About / Contact</a></li>
     </ul>
     <button class="theme-toggle" id="themeToggle" title="Toggle dark/light">◐</button>
   </div>
@@ -171,8 +173,7 @@ footer{border-top:1px solid var(--border);padding:36px 28px;display:flex;justify
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" id="mobileClose">×</button>
   <a href="#" class="mob-nav" data-view="home">Overview</a>
-  <a href="#" class="mob-nav" data-view="about">About</a>
-  <a href="#" class="mob-nav" data-view="contact">Contact</a>
+  <a href="#" class="mob-nav" data-view="about">About / Contact</a>
   <button class="mobile-theme" id="mobileTheme">◐ Toggle Dark / Light</button>
 </div>
 
@@ -193,13 +194,13 @@ footer{border-top:1px solid var(--border);padding:36px 28px;display:flex;justify
   <div class="empty-state" id="emptyState" style="display:none"><p>No photos here yet.</p></div>
   <footer>
     <div class="f-logo" id="footerLogo">
-      <img id="footerLogoImg" src="" alt="" style="display:none"/>
+      <img id="footerLogoLight" class="f-logo-light" src="" alt="" style="display:none"/>
+      <img id="footerLogoDark" class="f-logo-dark" src="" alt="" style="display:none"/>
       <span class="f-logo-text" id="footerName">Jabari Jacobs</span>
     </div>
     <div class="f-links">
-      <a href="#" id="footerHome" onclick="showView('home');return false;">Overview</a>
-      <a href="#" id="footerAbout">About</a>
-      <a href="#" id="footerContact">Contact</a>
+      <a href="#" onclick="showView('home');return false;">Overview</a>
+      <a href="#" id="footerAbout">About / Contact</a>
       <a href="#" id="footerInsta" target="_blank">Instagram</a>
     </div>
     <div class="f-copy" id="footerCopy">&copy; 2025 Jabari Jacobs</div>
@@ -209,40 +210,37 @@ footer{border-top:1px solid var(--border);padding:36px 28px;display:flex;justify
 <!-- ABOUT + CONTACT PAGE -->
 <div class="inner-page" id="aboutView">
   <div class="about-grid">
-    <!-- LEFT: Contact info -->
+    <!-- COL 1: Contact info -->
     <div class="about-left">
       <span class="col-label">Contact</span>
       <p id="aboutName2">Jabari Jacobs</p>
       <p id="aboutLocation2">Los Angeles, CA</p>
       <a id="aboutEmail2" href="">—</a>
-      <span class="col-label" style="margin-top:24px">Instagram</span>
+      <span class="col-label">Instagram</span>
       <a id="aboutInsta2" href="" target="_blank">—</a>
-      <span class="col-label" style="margin-top:24px">Get In Touch</span>
-      <p id="aboutIntro2" style="color:var(--muted);font-size:0.72rem;line-height:1.6"></p>
     </div>
 
-    <!-- MIDDLE: Photo -->
+    <!-- COL 2: Photo -->
     <div class="about-middle">
       <img id="aboutPhoto" src="" alt="" style="display:none"/>
       <div class="photo-ph" id="aboutPlaceholder">Photo</div>
     </div>
 
-    <!-- RIGHT: Bio + contact form + clients -->
-    <div class="about-right">
-      <p class="bio" id="aboutBio"></p>
-
+    <!-- COL 3: Bio + contact form -->
+    <div class="about-bio-col">
+      <p class="bio" id="aboutBio">Los Angeles-based photographer and director working across advertising, editorial, music, and food.</p>
       <span class="col-label">Send a Message</span>
-      <input class="cf-field" type="text" id="cfName" placeholder="Your name"/>
-      <input class="cf-field" type="email" id="cfEmail" placeholder="your@email.com"/>
-      <input class="cf-field" type="text" id="cfType" placeholder="Project type (Advertising, Editorial…)"/>
+      <input class="cf-field" type="text" id="cfName" placeholder="Name"/>
+      <input class="cf-field" type="email" id="cfEmail" placeholder="Email"/>
+      <input class="cf-field" type="text" id="cfType" placeholder="Project type"/>
       <textarea class="cf-field" id="cfMsg" placeholder="Tell me about your project…"></textarea>
-      <button class="cf-submit" id="cfSubmit">Send Message →</button>
+      <button class="cf-submit" id="cfSubmit">Send →</button>
+    </div>
 
-      <!-- Client list -->
-      <div class="client-section" id="clientSection" style="display:none">
-        <span class="col-label" style="margin-top:0">Select Clients</span>
-        <div class="client-list" id="clientList"></div>
-      </div>
+    <!-- COL 4: Client list -->
+    <div class="about-clients" id="clientSection" style="display:none">
+      <span class="col-label">Select Clients</span>
+      <div class="client-list" id="clientList"></div>
     </div>
   </div>
 </div>
@@ -289,6 +287,7 @@ function toggleTheme(){
   html.setAttribute('data-theme',n);
   localStorage.setItem('jj_theme',n);
   updateLogo();
+  updateFooterLogo();
 }
 document.getElementById('themeToggle').addEventListener('click',toggleTheme);
 document.getElementById('mobileTheme').addEventListener('click',()=>{toggleTheme();closeMobile();});
@@ -296,17 +295,15 @@ document.getElementById('mobileTheme').addEventListener('click',()=>{toggleTheme
 // Apply settings
 function applySettings(){
   const s=settings;
+  const instaUrl='https://instagram.com/'+(s.insta||'').replace('@','');
   // Font
   document.documentElement.style.setProperty('--font-body',`'${s.fontBody||'Karla'}',sans-serif`);
   document.documentElement.style.setProperty('--font-display',`'${s.fontDisplay||'Cormorant Garamond'}',serif`);
-  // Logo
+  // Nav logo
   updateLogo();
-  // Footer
-  const fImg=document.getElementById('footerLogoImg'),fTxt=document.getElementById('footerName');
-  if(s.logoLightSrc){fImg.src=s.logoLightSrc;fImg.style.height=(s.logoSize||32)+'px';fImg.style.display='block';fTxt.style.display='none';}
-  else{fImg.style.display='none';fTxt.style.display='block';fTxt.textContent=s.name||'Jabari Jacobs';}
+  // Footer logo — switch with theme
+  updateFooterLogo();
   document.getElementById('footerCopy').textContent=`© ${new Date().getFullYear()} ${s.name||'Jabari Jacobs'}`;
-  const instaUrl='https://instagram.com/'+(s.insta||'').replace('@','');
   document.getElementById('footerInsta').href=instaUrl;
   // About left col
   document.getElementById('aboutName2').textContent=s.name||'Jabari Jacobs';
@@ -315,23 +312,36 @@ function applySettings(){
   document.getElementById('aboutEmail2').href='mailto:'+(s.email||'');
   document.getElementById('aboutInsta2').textContent=s.insta||'';
   document.getElementById('aboutInsta2').href=instaUrl;
-  document.getElementById('aboutIntro2').textContent=s.contactIntro||'';
-  // About middle
+  // About photo
   const ap=document.getElementById('aboutPhoto'),aph=document.getElementById('aboutPlaceholder');
   if(s.aboutPhotoSrc){ap.src=s.aboutPhotoSrc;ap.style.display='block';aph.style.display='none';}
   else{ap.style.display='none';aph.style.display='flex';}
-  // About right bio
+  // Bio
   document.getElementById('aboutBio').textContent=s.about||'';
   // Clients
   const cs=document.getElementById('clientSection'),cl=document.getElementById('clientList');
-  if(s.clients&&s.clients.length){
-    cs.style.display='block';
-    cl.innerHTML=s.clients.map(c=>`<span>${c}</span>`).join('');
-  } else cs.style.display='none';
-  // Filters — build dynamically
+  if(s.clients&&s.clients.length){cs.style.display='block';cl.innerHTML=s.clients.map(c=>`<span>${c}</span>`).join('');}
+  else cs.style.display='none';
+  // Filters
   buildFilters();
-  // Title
   document.title=s.name||'Jabari Jacobs';
+}
+
+function updateFooterLogo(){
+  const s=settings;
+  const fll=document.getElementById('footerLogoLight');
+  const fld=document.getElementById('footerLogoDark');
+  const flt=document.getElementById('footerName');
+  const isDark=html.getAttribute('data-theme')==='dark';
+  if(s.logoLightSrc||s.logoDarkSrc){
+    flt.style.display='none';
+    if(isDark&&s.logoDarkSrc){fll.style.display='none';fld.src=s.logoDarkSrc;fld.style.height='40px';fld.style.display='block';}
+    else if(s.logoLightSrc){fld.style.display='none';fll.src=s.logoLightSrc;fll.style.height='40px';fll.style.display='block';}
+    else{fll.style.display='none';fld.src=s.logoDarkSrc;fld.style.height='40px';fld.style.display='block';}
+  } else {
+    fll.style.display='none';fld.style.display='none';flt.style.display='block';
+    flt.textContent=s.name||'Jabari Jacobs';
+  }
 }
 
 function updateLogo(){
@@ -449,10 +459,8 @@ function showView(view){
 
 document.getElementById('navHome').addEventListener('click',e=>{e.preventDefault();showView('home');});
 document.getElementById('navAbout').addEventListener('click',e=>{e.preventDefault();showView('about');});
-document.getElementById('navContact').addEventListener('click',e=>{e.preventDefault();showView('contact');});
 document.getElementById('homeLink').addEventListener('click',e=>{e.preventDefault();showView('home');});
 document.getElementById('footerAbout').addEventListener('click',e=>{e.preventDefault();showView('about');});
-document.getElementById('footerContact').addEventListener('click',e=>{e.preventDefault();showView('contact');});
 document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobileMenu').classList.add('open'));
 document.getElementById('mobileClose').addEventListener('click',closeMobile);
 function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');}
