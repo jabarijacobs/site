@@ -15,7 +15,9 @@
     "fontBody": "Karla",
     "fontDisplay": "Cormorant Garamond",
     "accentColor": "#000000",
-    "clients": [],
+    "clients": [
+      "Apple, ABC, Adidas, A&E, AMC Networks, Audible, BET, Billboard, CBS, Disney, Freeform, Hallmark Channel, HarperCollins, Hypebeast, MSNBC, Netflix, Nike, Paramount, Puma, Reebok, Roc Nation, Starz, Universal Music Group, Warner Records, Wired, Warner Music Group, The Washington Post"
+    ],
     "filters": [
       "advertising",
       "editorial",
