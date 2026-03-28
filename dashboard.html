@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JJ Portfolio — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0f0f;--surface:#181818;--surface2:#222;--border:#2e2e2e;
+  --text:#f0ede8;--muted:#888;--accent:#c8b89a;--accent2:#e8d5b7;
+  --red:#e05555;--green:#4caf7d;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Karla',sans-serif;font-weight:300;min-height:100vh}
+
+/* ── LAYOUT ── */
+.shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+
+/* ── SIDEBAR ── */
+aside{background:var(--surface);border-right:1px solid var(--border);padding:32px 0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+.brand{padding:0 24px 32px;border-bottom:1px solid var(--border)}
+.brand h1{font-family:'Cormorant Garamond',serif;font-size:1.25rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:400}
+.brand p{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+nav{padding:24px 0;flex:1}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 24px;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;color:var(--muted);transition:all 0.2s;border-left:2px solid transparent}
+.nav-item:hover{color:var(--text);background:var(--surface2)}
+.nav-item.active{color:var(--accent);border-left-color:var(--accent);background:rgba(200,184,154,0.06)}
+.nav-item svg{flex-shrink:0;opacity:0.7}
+.sidebar-footer{padding:20px 24px;border-top:1px solid var(--border)}
+.export-btn{width:100%;padding:10px;background:var(--accent);color:#0f0f0f;border:none;border-radius:4px;font-family:'Karla',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
+.export-btn:hover{background:var(--accent2)}
+
+/* ── MAIN ── */
+main{padding:40px;overflow-y:auto}
+.page{display:none}
+.page.active{display:block}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;letter-spacing:0.05em;margin-bottom:6px}
+.page-sub{font-size:0.78rem;color:var(--muted);letter-spacing:0.08em;margin-bottom:36px}
+
+/* ── CARDS ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px}
+.stat-label{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.stat-val{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--accent)}
+
+/* ── UPLOAD ZONE ── */
+.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:60px 40px;text-align:center;cursor:pointer;transition:all 0.25s;margin-bottom:32px;position:relative}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:rgba(200,184,154,0.04)}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:2.5rem;margin-bottom:12px;opacity:0.4}
+.upload-zone h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;margin-bottom:6px}
+.upload-zone p{font-size:0.75rem;color:var(--muted);letter-spacing:0.06em}
+
+/* ── CATEGORY PILLS ── */
+.cat-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.cat-pill{padding:5px 14px;border-radius:20px;border:1px solid var(--border);font-size:0.7rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:var(--muted);background:transparent}
+.cat-pill:hover{border-color:var(--accent);color:var(--accent)}
+.cat-pill.selected{background:var(--accent);border-color:var(--accent);color:#0f0f0f}
+
+/* ── PENDING UPLOADS ── */
+.pending-title{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.pending-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:32px}
+.pending-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative}
+.pending-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.pending-card .card-info{padding:10px}
+.pending-card .card-name{font-size:0.7rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:6px}
+.pending-card .card-cats{display:flex;flex-wrap:wrap;gap:4px}
+.pending-card .card-cat{font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;background:rgba(200,184,154,0.15);color:var(--accent);padding:2px 7px;border-radius:10px}
+.pending-card .remove-btn{position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.7);border:none;color:#fff;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:0.9rem;line-height:22px;text-align:center;display:none}
+.pending-card:hover .remove-btn{display:block}
+
+/* ── TAG MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:100;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px;width:520px;max-width:90vw;max-height:85vh;overflow-y:auto}
+.modal h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;margin-bottom:4px}
+.modal .modal-sub{font-size:0.72rem;color:var(--muted);margin-bottom:24px}
+.modal-img{width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin-bottom:20px}
+.modal label{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+.modal-cats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.modal-actions{display:flex;gap:10px}
+.btn{padding:10px 22px;border-radius:4px;border:none;font-family:'Karla',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s}
+.btn-primary{background:var(--accent);color:#0f0f0f}
+.btn-primary:hover{background:var(--accent2)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.btn-ghost:hover{border-color:var(--text);color:var(--text)}
+
+/* ── PHOTO MANAGER ── */
+.toolbar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.search-box{flex:1;min-width:200px;padding:9px 14px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.82rem;outline:none}
+.search-box:focus{border-color:var(--accent)}
+.filter-select{padding:9px 14px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.78rem;outline:none;cursor:pointer}
+.filter-select:focus{border-color:var(--accent)}
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.photo-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative;cursor:pointer}
+.photo-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.photo-card .overlay{position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;gap:6px;transition:background 0.2s;opacity:0}
+.photo-card:hover .overlay{background:rgba(0,0,0,0.6);opacity:1}
+.overlay-btn{padding:6px 12px;border-radius:4px;border:none;font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer}
+.overlay-btn.edit{background:var(--accent);color:#0f0f0f}
+.overlay-btn.del{background:var(--red);color:#fff}
+.photo-card .card-footer{padding:8px 10px;display:flex;flex-wrap:wrap;gap:3px}
+.photo-card .tag{font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;background:rgba(200,184,154,0.12);color:var(--accent);padding:2px 6px;border-radius:8px}
+.photo-card .no-tag{font-size:0.62rem;color:var(--red);padding:2px 6px}
+
+/* ── SETTINGS ── */
+.settings-section{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:20px}
+.settings-section h3{font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.field input,.field textarea{width:100%;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.85rem;outline:none;resize:vertical}
+.field input:focus,.field textarea:focus{border-color:var(--accent)}
+.field textarea{min-height:80px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--green);color:#fff;padding:12px 20px;border-radius:6px;font-size:0.78rem;font-weight:500;letter-spacing:0.06em;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;z-index:200}
+.toast.show{opacity:1;transform:translateY(0)}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty p{font-size:0.82rem;letter-spacing:0.06em}
+
+/* ── DRAG INDICATOR ── */
+.drag-num{display:inline-block;background:var(--accent);color:#0f0f0f;border-radius:50%;width:20px;height:20px;line-height:20px;text-align:center;font-size:0.7rem;font-weight:700;margin-left:6px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<div class="shell">
+<!-- SIDEBAR -->
+<aside>
+  <div class="brand">
+    <h1>Jabari Jacobs</h1>
+    <p>Portfolio Dashboard</p>
+  </div>
+  <nav>
+    <div class="nav-item active" data-page="overview">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Overview
+    </div>
+    <div class="nav-item" data-page="upload">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Upload Photos
+      <span class="drag-num" id="pendingCount" style="display:none">0</span>
+    </div>
+    <div class="nav-item" data-page="photos">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      Manage Photos
+    </div>
+    <div class="nav-item" data-page="settings">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Site Settings
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="export-btn" id="exportBtn">⬇ Export site data</button>
+    <p style="font-size:0.62rem;color:var(--muted);margin-top:10px;line-height:1.5">Exports a <code style="color:var(--accent)">portfolio-data.json</code> file. Place it next to your <code style="color:var(--accent)">index.html</code> to update your site.</p>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main>
+
+  <!-- OVERVIEW PAGE -->
+  <div class="page active" id="page-overview">
+    <div class="page-title">Overview</div>
+    <div class="page-sub">Your portfolio at a glance</div>
+    <div class="stats">
+      <div class="stat-card"><div class="stat-label">Total Photos</div><div class="stat-val" id="statTotal">0</div></div>
+      <div class="stat-card"><div class="stat-label">Untagged</div><div class="stat-val" id="statUntagged" style="color:var(--red)">0</div></div>
+      <div class="stat-card"><div class="stat-label">Categories</div><div class="stat-val">7</div></div>
+      <div class="stat-card"><div class="stat-label">Pending Upload</div><div class="stat-val" id="statPending" style="color:var(--accent)">0</div></div>
+    </div>
+    <div class="settings-section">
+      <h3>Category Breakdown</h3>
+      <div id="catBreakdown" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px"></div>
+    </div>
+    <div class="settings-section">
+      <h3>Quick Actions</h3>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showPage('upload')">Upload Photos</button>
+        <button class="btn btn-ghost" onclick="showPage('photos')">Manage Photos</button>
+        <button class="btn btn-ghost" id="exportBtn2">Export Site Data</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPLOAD PAGE -->
+  <div class="page" id="page-upload">
+    <div class="page-title">Upload Photos</div>
+    <div class="page-sub">Drag & drop your photos, then tag each one with categories</div>
+
+    <div class="upload-zone" id="dropZone">
+      <input type="file" id="fileInput" multiple accept="image/*"/>
+      <div class="upload-icon">📸</div>
+      <h3>Drop photos here</h3>
+      <p>or click to browse &nbsp;·&nbsp; JPG, PNG, GIF, WebP</p>
+    </div>
+
+    <div id="pendingSection" style="display:none">
+      <p class="pending-title">Staged photos — tag before adding to site <span id="pendingCountLabel"></span></p>
+      <div class="pending-grid" id="pendingGrid"></div>
+      <div style="display:flex;gap:10px;margin-bottom:20px">
+        <button class="btn btn-primary" id="addAllBtn">Add All to Portfolio</button>
+        <button class="btn btn-ghost" id="clearPendingBtn">Clear Staged</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHOTOS PAGE -->
+  <div class="page" id="page-photos">
+    <div class="page-title">Manage Photos</div>
+    <div class="page-sub">Edit tags, reorder, or remove photos from your portfolio</div>
+    <div class="toolbar">
+      <input class="search-box" id="searchBox" placeholder="Search by filename or tag…"/>
+      <select class="filter-select" id="filterSelect">
+        <option value="all">All Categories</option>
+        <option value="advertising">Advertising</option>
+        <option value="editorial">Editorial</option>
+        <option value="music">Music</option>
+        <option value="food">Food</option>
+        <option value="motion">Motion</option>
+        <option value="design">Design</option>
+        <option value="about">About</option>
+        <option value="__untagged">Untagged Only</option>
+      </select>
+    </div>
+    <div class="photo-grid" id="photoGrid"></div>
+    <div class="empty" id="photoEmpty" style="display:none"><p>No photos yet. Upload some on the Upload page.</p></div>
+  </div>
+
+  <!-- SETTINGS PAGE -->
+  <div class="page" id="page-settings">
+    <div class="page-title">Site Settings</div>
+    <div class="page-sub">Edit text and information shown on your portfolio</div>
+    <div class="settings-section">
+      <h3>Identity</h3>
+      <div class="field-row">
+        <div class="field"><label>Your Name</label><input id="sName" placeholder="Jabari Jacobs"/></div>
+        <div class="field"><label>Tagline / Role</label><input id="sTagline" placeholder="Photographer & Director"/></div>
+      </div>
+      <div class="field"><label>Email (Contact)</label><input id="sEmail" placeholder="jabari@jabarijacobs.com"/></div>
+    </div>
+    <div class="settings-section">
+      <h3>About Page</h3>
+      <div class="field"><label>About Text</label><textarea id="sAbout" placeholder="Write a short bio…"></textarea></div>
+      <div class="field"><label>Based In</label><input id="sLocation" placeholder="Los Angeles, CA"/></div>
+      <div class="field"><label>Instagram Handle</label><input id="sInsta" placeholder="@jabarijacobs"/></div>
+    </div>
+    <div class="settings-section">
+      <h3>Motion Page</h3>
+      <div class="field"><label>Motion Page Intro Text</label><textarea id="sMotion" placeholder="Intro text for Motion page…"></textarea></div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" id="saveSettings">Save Settings</button>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<!-- TAG MODAL -->
+<div class="modal-overlay" id="tagModal">
+  <div class="modal">
+    <h2>Tag this photo</h2>
+    <p class="modal-sub" id="modalFilename">filename.jpg</p>
+    <img class="modal-img" id="modalImg" src="" alt=""/>
+    <label>Select categories (pick all that apply)</label>
+    <div class="modal-cats" id="modalCats"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" id="modalSave">Save Tags</button>
+      <button class="btn btn-ghost" id="modalSkip">Skip for now</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const CATEGORIES = ['advertising','editorial','music','food','motion','design','about'];
+let photos = [];      // {id, name, src, dataUrl, categories, dateAdded}
+let pending = [];     // {id, name, dataUrl, categories}
+let settings = {name:'Jabari Jacobs',tagline:'Photographer & Director',email:'jabari@jabarijacobs.com',about:'',location:'Los Angeles, CA',insta:'@jabarijacobs',motionText:''};
+let editingId = null;
+let modalQueue = [];
+let modalQueueIdx = 0;
+
+// ── LOAD ──
+try {
+  const d = localStorage.getItem('jj_photos'); if(d) photos = JSON.parse(d);
+  const s = localStorage.getItem('jj_settings'); if(s) settings = {...settings,...JSON.parse(s)};
+} catch(e){}
+
+// ── NAV ──
+document.querySelectorAll('.nav-item').forEach(el=>{
+  el.addEventListener('click',()=>showPage(el.dataset.page));
+});
+function showPage(id){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===id));
+  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+id));
+  if(id==='overview') renderOverview();
+  if(id==='photos') renderPhotoGrid();
+  if(id==='settings') loadSettings();
+}
+
+// ── UPLOAD ──
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+
+dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('drag-over')});
+dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('drag-over');handleFiles(e.dataTransfer.files)});
+fileInput.addEventListener('change',()=>handleFiles(fileInput.files));
+
+function handleFiles(files){
+  const arr = [...files].filter(f=>f.type.startsWith('image/'));
+  if(!arr.length) return;
+  let done=0;
+  arr.forEach(file=>{
+    const reader = new FileReader();
+    reader.onload = ev=>{
+      pending.push({id:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2),name:file.name,dataUrl:ev.target.result,categories:[]});
+      done++;
+      if(done===arr.length){renderPending();updateCounts();}
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderPending(){
+  const section = document.getElementById('pendingSection');
+  const grid = document.getElementById('pendingGrid');
+  section.style.display = pending.length?'block':'none';
+  document.getElementById('pendingCountLabel').textContent = `(${pending.length} photo${pending.length!==1?'s':''})`;
+  grid.innerHTML='';
+  pending.forEach(p=>{
+    const card=document.createElement('div');
+    card.className='pending-card';
+    card.innerHTML=`
+      <img src="${p.dataUrl}" alt="${p.name}"/>
+      <button class="remove-btn" data-id="${p.id}">×</button>
+      <div class="card-info">
+        <div class="card-name">${p.name}</div>
+        <div class="card-cats">${p.categories.length?p.categories.map(c=>`<span class="card-cat">${c}</span>`).join(''):'<span style="font-size:0.62rem;color:var(--red)">Untagged</span>'}</div>
+      </div>`;
+    card.querySelector('img').addEventListener('click',()=>openTagModal(p.id,'pending'));
+    card.querySelector('.remove-btn').addEventListener('click',e=>{e.stopPropagation();pending=pending.filter(x=>x.id!==p.id);renderPending();updateCounts()});
+    grid.appendChild(card);
+  });
+}
+
+document.getElementById('addAllBtn').addEventListener('click',()=>{
+  photos=[...photos,...pending.map(p=>({...p,dateAdded:new Date().toISOString()}))];
+  pending=[];
+  savePhotos();
+  renderPending();
+  renderPhotoGrid();
+  renderOverview();
+  updateCounts();
+  showToast(`Added to portfolio!`);
+});
+
+document.getElementById('clearPendingBtn').addEventListener('click',()=>{pending=[];renderPending();updateCounts()});
+
+// ── TAG MODAL ──
+function openTagModal(id, pool='photos'){
+  editingId = {id, pool};
+  const item = pool==='pending' ? pending.find(p=>p.id===id) : photos.find(p=>p.id===id);
+  if(!item) return;
+  document.getElementById('modalFilename').textContent = item.name;
+  document.getElementById('modalImg').src = item.dataUrl;
+  const catsDiv = document.getElementById('modalCats');
+  catsDiv.innerHTML='';
+  CATEGORIES.forEach(cat=>{
+    const pill=document.createElement('button');
+    pill.className='cat-pill'+(item.categories.includes(cat)?' selected':'');
+    pill.textContent=cat;
+    pill.addEventListener('click',()=>pill.classList.toggle('selected'));
+    catsDiv.appendChild(pill);
+  });
+  document.getElementById('tagModal').classList.add('open');
+}
+
+document.getElementById('modalSave').addEventListener('click',()=>{
+  const selected=[...document.querySelectorAll('#modalCats .cat-pill.selected')].map(p=>p.textContent);
+  const {id,pool}=editingId;
+  const arr = pool==='pending' ? pending : photos;
+  const item = arr.find(p=>p.id===id);
+  if(item) item.categories=selected;
+  if(pool==='photos') savePhotos();
+  document.getElementById('tagModal').classList.remove('open');
+  if(pool==='pending') renderPending();
+  else renderPhotoGrid();
+  renderOverview();
+  showToast('Tags saved!');
+});
+
+document.getElementById('modalSkip').addEventListener('click',()=>{
+  document.getElementById('tagModal').classList.remove('open');
+});
+
+document.getElementById('tagModal').addEventListener('click',e=>{
+  if(e.target===e.currentTarget) document.getElementById('tagModal').classList.remove('open');
+});
+
+// ── PHOTO GRID ──
+function renderPhotoGrid(){
+  const grid=document.getElementById('photoGrid');
+  const empty=document.getElementById('photoEmpty');
+  const q=document.getElementById('searchBox').value.toLowerCase();
+  const f=document.getElementById('filterSelect').value;
+  let filtered=photos.filter(p=>{
+    if(f==='__untagged') return !p.categories||!p.categories.length;
+    if(f!=='all'&&!p.categories.includes(f)) return false;
+    if(q&&!p.name.toLowerCase().includes(q)&&!p.categories.join(' ').includes(q)) return false;
+    return true;
+  });
+  grid.style.display=filtered.length?'grid':'none';
+  empty.style.display=filtered.length?'none':'block';
+  grid.innerHTML='';
+  filtered.forEach(p=>{
+    const card=document.createElement('div');
+    card.className='photo-card';
+    card.innerHTML=`
+      <img src="${p.dataUrl}" alt="${p.name}" loading="lazy"/>
+      <div class="overlay">
+        <button class="overlay-btn edit" data-id="${p.id}">Edit Tags</button>
+        <button class="overlay-btn del" data-id="${p.id}">Remove</button>
+      </div>
+      <div class="card-footer">
+        ${p.categories&&p.categories.length?p.categories.map(c=>`<span class="tag">${c}</span>`).join(''):'<span class="no-tag">Untagged</span>'}
+      </div>`;
+    card.querySelector('.edit').addEventListener('click',()=>openTagModal(p.id,'photos'));
+    card.querySelector('.del').addEventListener('click',()=>{
+      if(confirm(`Remove "${p.name}" from portfolio?`)){photos=photos.filter(x=>x.id!==p.id);savePhotos();renderPhotoGrid();renderOverview();showToast('Photo removed.');}
+    });
+    grid.appendChild(card);
+  });
+}
+
+document.getElementById('searchBox').addEventListener('input',renderPhotoGrid);
+document.getElementById('filterSelect').addEventListener('change',renderPhotoGrid);
+
+// ── OVERVIEW ──
+function renderOverview(){
+  document.getElementById('statTotal').textContent=photos.length;
+  document.getElementById('statUntagged').textContent=photos.filter(p=>!p.categories||!p.categories.length).length;
+  document.getElementById('statPending').textContent=pending.length;
+  const breakdown=document.getElementById('catBreakdown');
+  breakdown.innerHTML='';
+  CATEGORIES.forEach(cat=>{
+    const count=photos.filter(p=>p.categories&&p.categories.includes(cat)).length;
+    const el=document.createElement('div');
+    el.style.cssText='background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:14px;';
+    el.innerHTML=`<div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">${cat}</div><div style="font-family:\'Cormorant Garamond\',serif;font-size:1.6rem;color:var(--accent)">${count}</div>`;
+    breakdown.appendChild(el);
+  });
+}
+
+// ── SETTINGS ──
+function loadSettings(){
+  document.getElementById('sName').value=settings.name||'';
+  document.getElementById('sTagline').value=settings.tagline||'';
+  document.getElementById('sEmail').value=settings.email||'';
+  document.getElementById('sAbout').value=settings.about||'';
+  document.getElementById('sLocation').value=settings.location||'';
+  document.getElementById('sInsta').value=settings.insta||'';
+  document.getElementById('sMotion').value=settings.motionText||'';
+}
+document.getElementById('saveSettings').addEventListener('click',()=>{
+  settings={
+    name:document.getElementById('sName').value,
+    tagline:document.getElementById('sTagline').value,
+    email:document.getElementById('sEmail').value,
+    about:document.getElementById('sAbout').value,
+    location:document.getElementById('sLocation').value,
+    insta:document.getElementById('sInsta').value,
+    motionText:document.getElementById('sMotion').value,
+  };
+  localStorage.setItem('jj_settings',JSON.stringify(settings));
+  showToast('Settings saved!');
+});
+
+// ── EXPORT ──
+function doExport(){
+  const data={photos:photos.map(p=>({id:p.id,name:p.name,src:p.dataUrl,categories:p.categories,dateAdded:p.dateAdded})),settings};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='portfolio-data.json';a.click();
+  showToast('portfolio-data.json exported!');
+}
+document.getElementById('exportBtn').addEventListener('click',doExport);
+document.getElementById('exportBtn2').addEventListener('click',doExport);
+
+// ── HELPERS ──
+function savePhotos(){localStorage.setItem('jj_photos',JSON.stringify(photos));}
+function updateCounts(){
+  const n=pending.length;
+  const badge=document.getElementById('pendingCount');
+  badge.style.display=n?'inline-block':'none';
+  badge.textContent=n;
+  document.getElementById('statPending').textContent=n;
+}
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ── INIT ──
+renderOverview();
+renderPhotoGrid();
+loadSettings();
+</script>
+</body>
+</html>

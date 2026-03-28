@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Jabari Jacobs</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Karla:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ── THEME ── */
+:root{
+  --bg:#f7f5f2;--text:#0a0a0a;--muted:#888;--border:rgba(0,0,0,0.09);
+  --nav-bg:rgba(247,245,242,0.92);--pill-bg:#0a0a0a;--pill-text:#f7f5f2;
+  --pill-idle-bg:transparent;--pill-idle-text:rgba(10,10,10,0.45);--pill-idle-border:rgba(10,10,10,0.18);
+  --overlay:rgba(247,245,242,0.96);--toggle-icon:'☀️';
+}
+[data-theme="dark"]{
+  --bg:#0c0c0c;--text:#f0ede8;--muted:#666;--border:rgba(255,255,255,0.07);
+  --nav-bg:rgba(12,12,12,0.92);--pill-bg:#f0ede8;--pill-text:#0c0c0c;
+  --pill-idle-bg:transparent;--pill-idle-text:rgba(240,237,232,0.38);--pill-idle-border:rgba(240,237,232,0.15);
+  --overlay:rgba(12,12,12,0.96);
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Karla',sans-serif;font-weight:300;transition:background 0.35s,color 0.35s;min-height:100vh}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:80;
+  background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;
+  transition:background 0.35s,border-color 0.35s;
+}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;color:var(--text);transition:color 0.35s}
+.nav-right{display:flex;align-items:center;gap:28px}
+.nav-links{display:flex;gap:22px;list-style:none}
+.nav-links a{font-size:0.68rem;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.45;transition:opacity 0.2s}
+.nav-links a:hover,.nav-links a.active{opacity:1}
+
+/* ── DARK/LIGHT TOGGLE ── */
+.theme-toggle{background:none;border:1px solid var(--border);border-radius:20px;padding:5px 12px;cursor:pointer;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);opacity:0.6;transition:all 0.25s;white-space:nowrap}
+.theme-toggle:hover{opacity:1;border-color:var(--text)}
+
+/* ── HAMBURGER ── */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
+.hamburger span{display:block;width:20px;height:1.5px;background:var(--text);transition:background 0.35s}
+
+/* ── MOBILE MENU ── */
+.mobile-menu{display:none;position:fixed;inset:0;background:var(--overlay);z-index:90;flex-direction:column;align-items:center;justify-content:center;gap:28px;transition:background 0.35s}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.6;transition:opacity 0.2s}
+.mobile-menu a:hover{opacity:1}
+.mobile-close{position:absolute;top:18px;right:28px;font-size:1.8rem;cursor:pointer;background:none;border:none;color:var(--text);line-height:1}
+.mobile-theme{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;background:none;border:1px solid var(--border);border-radius:20px;padding:7px 16px}
+
+/* ── FILTER BAR ── */
+.filter-wrap{
+  position:sticky;top:60px;z-index:70;
+  background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  padding:10px 36px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;
+  transition:background 0.35s,border-color 0.35s;
+}
+.filter-pill{padding:6px 16px;border-radius:20px;border:1px solid var(--pill-idle-border);font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:var(--pill-idle-text);background:var(--pill-idle-bg)}
+.filter-pill:hover{opacity:1;border-color:var(--text);color:var(--text)}
+.filter-pill.active{background:var(--pill-bg);color:var(--pill-text);border-color:var(--pill-bg)}
+.filter-count{font-size:0.6rem;opacity:0.6;margin-left:3px}
+
+/* ── GALLERY ── */
+.gallery-wrap{padding-top:10px}
+.gallery{columns:3;column-gap:6px;padding:6px 36px 100px}
+.gallery-item{break-inside:avoid;margin-bottom:6px;overflow:hidden;cursor:pointer;position:relative}
+.gallery-item img{display:block;width:100%;height:auto;transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)}
+.gallery-item:hover img{transform:scale(1.04)}
+.gallery-item.hidden{display:none}
+
+/* ── IMAGE TAGS HOVER ── */
+.img-tags{position:absolute;bottom:0;left:0;right:0;padding:8px;display:flex;flex-wrap:wrap;gap:3px;opacity:0;transform:translateY(4px);transition:all 0.25s;pointer-events:none}
+.gallery-item:hover .img-tags{opacity:1;transform:translateY(0)}
+.img-tag{font-size:0.55rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;background:rgba(0,0,0,0.75);color:#fff;padding:3px 7px;border-radius:8px;backdrop-filter:blur(4px)}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:100px 20px;color:var(--muted)}
+.empty-state p{font-size:0.85rem;letter-spacing:0.06em;margin-bottom:16px}
+.empty-state a{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);opacity:0.5}
+
+/* ── LIGHTBOX ── */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:200;align-items:center;justify-content:center}
+.lightbox.open{display:flex}
+.lightbox img{max-width:90vw;max-height:90vh;object-fit:contain}
+.lb-close{position:absolute;top:20px;right:26px;color:rgba(255,255,255,0.6);font-size:2rem;cursor:pointer;background:none;border:none;line-height:1;transition:color 0.2s}
+.lb-close:hover{color:#fff}
+.lb-btn{position:absolute;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.4);font-size:2.4rem;cursor:pointer;padding:20px;transition:color 0.2s;line-height:1}
+.lb-btn:hover{color:#fff}
+.lb-prev{left:8px}
+.lb-next{right:8px}
+
+/* ── PAGES (about / contact / motion) ── */
+.inner-page{display:none;padding:120px 36px 100px;max-width:780px;margin:0 auto}
+.inner-page.open{display:block}
+
+.inner-page h1{font-family:'Cormorant Garamond',serif;font-size:3.5rem;font-weight:300;letter-spacing:0.04em;margin-bottom:6px;line-height:1.1}
+.inner-page .sub{font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:48px}
+.inner-page p{font-size:1.05rem;line-height:1.8;color:var(--text);opacity:0.8;margin-bottom:24px}
+.inner-page .detail-row{display:flex;gap:12px;align-items:baseline;margin-bottom:12px}
+.inner-page .detail-label{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);width:90px;flex-shrink:0}
+.inner-page .detail-val{font-size:0.88rem;color:var(--text)}
+.inner-page .detail-val a{color:var(--text);text-decoration:underline;text-underline-offset:3px}
+
+.contact-form{margin-top:40px}
+.contact-form label{display:block;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.contact-form input,.contact-form textarea{width:100%;padding:12px 16px;background:transparent;border:1px solid var(--border);color:var(--text);font-family:'Karla',sans-serif;font-size:0.9rem;outline:none;margin-bottom:20px;transition:border-color 0.2s;border-radius:2px}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--text)}
+.contact-form textarea{min-height:120px;resize:vertical}
+.contact-form button{padding:12px 28px;background:var(--text);color:var(--bg);border:none;font-family:'Karla',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;border-radius:2px}
+.contact-form button:hover{opacity:0.75}
+
+/* Motion grid */
+.motion-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px;margin-top:32px}
+.motion-item{overflow:hidden;cursor:pointer;position:relative}
+.motion-item img{width:100%;display:block;transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)}
+.motion-item:hover img{transform:scale(1.04)}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;transition:border-color 0.35s}
+footer .f-name{font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase}
+footer .f-links{display:flex;gap:24px}
+footer .f-links a{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;color:var(--muted);transition:color 0.2s}
+footer .f-links a:hover{color:var(--text)}
+footer .f-copy{font-size:0.65rem;color:var(--muted);letter-spacing:0.06em}
+
+/* ── ANIMS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.gallery-item{animation:fadeUp 0.45s ease both}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .gallery{columns:2;padding:6px 18px 80px}
+  .filter-wrap{padding:10px 18px}
+  nav{padding:0 18px}
+  .nav-links,.theme-toggle{display:none}
+  .hamburger{display:flex}
+  .inner-page{padding:100px 20px 80px}
+  footer{padding:32px 20px}
+}
+@media(max-width:500px){
+  .gallery{columns:1;padding:6px 10px 60px}
+  .filter-wrap{padding:8px 10px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#" id="homeLink">Jabari Jacobs</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#" class="active" id="navHome">Work</a></li>
+      <li><a href="#" id="navMotion">Motion</a></li>
+      <li><a href="#" id="navAbout">About</a></li>
+      <li><a href="#" id="navContact">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle">◑ Dark mode</button>
+  </div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">×</button>
+  <a href="#" class="mob-nav" data-view="home">Work</a>
+  <a href="#" class="mob-nav" data-view="motion">Motion</a>
+  <a href="#" class="mob-nav" data-view="about">About</a>
+  <a href="#" class="mob-nav" data-view="contact">Contact</a>
+  <button class="mobile-theme" id="mobileTheme">◑ Toggle Dark / Light</button>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-wrap" id="filterBar">
+  <button class="filter-pill active" data-cat="all">All <span class="filter-count" id="countAll"></span></button>
+  <button class="filter-pill" data-cat="advertising">Advertising <span class="filter-count" id="countAdvertising"></span></button>
+  <button class="filter-pill" data-cat="editorial">Editorial <span class="filter-count" id="countEditorial"></span></button>
+  <button class="filter-pill" data-cat="music">Music <span class="filter-count" id="countMusic"></span></button>
+  <button class="filter-pill" data-cat="food">Food <span class="filter-count" id="countFood"></span></button>
+  <button class="filter-pill" data-cat="design">Design <span class="filter-count" id="countDesign"></span></button>
+  <button class="filter-pill" data-cat="about">Portrait <span class="filter-count" id="countAbout"></span></button>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-wrap" id="galleryView">
+  <div class="gallery" id="gallery"></div>
+  <div class="empty-state" id="emptyState" style="display:none">
+    <p>No photos here yet.</p>
+    <a href="#">Open your dashboard to add photos →</a>
+  </div>
+  <footer>
+    <div class="f-name" id="footerName">Jabari Jacobs</div>
+    <div class="f-links">
+      <a href="#" id="footerAbout">About</a>
+      <a href="#" id="footerContact">Contact</a>
+      <a href="#" id="footerInsta" target="_blank">Instagram</a>
+    </div>
+    <div class="f-copy" id="footerCopy">&copy; 2025 Jabari Jacobs</div>
+  </footer>
+</div>
+
+<!-- MOTION PAGE -->
+<div class="inner-page" id="motionView">
+  <h1>Motion</h1>
+  <p class="sub" id="motionSub">Directed & Photographed</p>
+  <p id="motionText">A selection of motion work spanning advertising, editorial, and music.</p>
+  <div class="motion-grid" id="motionGrid"></div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div class="inner-page" id="aboutView">
+  <h1 id="aboutName">Jabari Jacobs</h1>
+  <p class="sub" id="aboutTagline">Photographer & Director</p>
+  <p id="aboutText">Jabari Jacobs is a Los Angeles-based photographer and director working across advertising, editorial, music, and food.</p>
+  <div style="margin-top:40px">
+    <div class="detail-row"><span class="detail-label">Based in</span><span class="detail-val" id="aboutLocation">Los Angeles, CA</span></div>
+    <div class="detail-row"><span class="detail-label">Email</span><span class="detail-val"><a id="aboutEmail" href="">jabari@jabarijacobs.com</a></span></div>
+    <div class="detail-row"><span class="detail-label">Instagram</span><span class="detail-val"><a id="aboutInsta" href="" target="_blank">@jabarijacobs</a></span></div>
+  </div>
+</div>
+
+<!-- CONTACT PAGE -->
+<div class="inner-page" id="contactView">
+  <h1>Contact</h1>
+  <p class="sub">Let's work together</p>
+  <div class="detail-row" style="margin-bottom:32px"><span class="detail-label">Email</span><span class="detail-val"><a id="contactEmail" href="">jabari@jabarijacobs.com</a></span></div>
+  <div class="contact-form">
+    <label>Name</label>
+    <input type="text" placeholder="Your name" id="cfName"/>
+    <label>Email</label>
+    <input type="email" placeholder="your@email.com" id="cfEmail"/>
+    <label>Message</label>
+    <textarea placeholder="Tell me about your project…" id="cfMsg"></textarea>
+    <button id="cfSubmit">Send Message</button>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose">×</button>
+  <button class="lb-btn lb-prev" id="lbPrev">‹</button>
+  <img id="lbImg" src="" alt=""/>
+  <button class="lb-btn lb-next" id="lbNext">›</button>
+</div>
+
+<script>
+// ── CONFIG / DATA ──
+const CATEGORIES=['advertising','editorial','music','food','motion','design','about'];
+let photos=[];
+let settings={name:'Jabari Jacobs',tagline:'Photographer & Director',email:'jabari@jabarijacobs.com',about:'Jabari Jacobs is a Los Angeles-based photographer and director working across advertising, editorial, music, and food.',location:'Los Angeles, CA',insta:'@jabarijacobs',motionText:'A selection of motion work spanning advertising, editorial, and music.'};
+let currentFilter='all';
+let visibleImgs=[];
+let lbIdx=0;
+
+// Load from portfolio-data.json if available, else localStorage
+async function loadData(){
+  try{
+    const res=await fetch('portfolio-data.json?v='+Date.now());
+    if(res.ok){const d=await res.json();photos=d.photos||[];if(d.settings)settings={...settings,...d.settings};return;}
+  }catch(e){}
+  // fallback: localStorage (same origin as dashboard if opened locally)
+  try{
+    const p=localStorage.getItem('jj_photos');if(p)photos=JSON.parse(p);
+    const s=localStorage.getItem('jj_settings');if(s)settings={...settings,...JSON.parse(s)};
+  }catch(e){}
+}
+
+// ── THEME ──
+const html=document.documentElement;
+const saved=localStorage.getItem('jj_theme')||'light';
+html.setAttribute('data-theme',saved);
+updateToggleLabel();
+
+function updateToggleLabel(){
+  const dark=html.getAttribute('data-theme')==='dark';
+  document.getElementById('themeToggle').textContent=dark?'◑ Light mode':'◑ Dark mode';
+}
+function toggleTheme(){
+  const next=html.getAttribute('data-theme')==='dark'?'light':'dark';
+  html.setAttribute('data-theme',next);
+  localStorage.setItem('jj_theme',next);
+  updateToggleLabel();
+}
+document.getElementById('themeToggle').addEventListener('click',toggleTheme);
+document.getElementById('mobileTheme').addEventListener('click',()=>{toggleTheme();closeMobile();});
+
+// ── VIEWS ──
+function showView(view){
+  ['galleryView','motionView','aboutView','contactView'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.style.display='none';
+    el.classList.remove('open');
+  });
+  document.getElementById('filterBar').style.display=view==='home'?'flex':'none';
+  const viewId=view==='home'?'galleryView':view+'View';
+  const el=document.getElementById(viewId);
+  el.style.display='block';
+  el.classList.add('open');
+  // nav active states
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  if(view==='home')document.getElementById('navHome').classList.add('active');
+  if(view==='motion')document.getElementById('navMotion').classList.add('active');
+  if(view==='about')document.getElementById('navAbout').classList.add('active');
+  if(view==='contact')document.getElementById('navContact').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+document.getElementById('navHome').addEventListener('click',e=>{e.preventDefault();showView('home')});
+document.getElementById('navMotion').addEventListener('click',e=>{e.preventDefault();showView('motion');renderMotion()});
+document.getElementById('navAbout').addEventListener('click',e=>{e.preventDefault();showView('about');applySettings()});
+document.getElementById('navContact').addEventListener('click',e=>{e.preventDefault();showView('contact');applySettings()});
+document.getElementById('homeLink').addEventListener('click',e=>{e.preventDefault();showView('home')});
+document.getElementById('footerAbout').addEventListener('click',e=>{e.preventDefault();showView('about');applySettings()});
+document.getElementById('footerContact').addEventListener('click',e=>{e.preventDefault();showView('contact');applySettings()});
+
+// ── MOBILE NAV ──
+document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobileMenu').classList.add('open'));
+document.getElementById('mobileClose').addEventListener('click',closeMobile);
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open')}
+document.querySelectorAll('.mob-nav').forEach(a=>{
+  a.addEventListener('click',e=>{e.preventDefault();const v=a.dataset.view;closeMobile();showView(v);if(v==='motion')renderMotion();if(v==='about'||v==='contact')applySettings();});
+});
+
+// ── GALLERY ──
+function renderGallery(){
+  const gallery=document.getElementById('gallery');
+  const empty=document.getElementById('emptyState');
+  const filtered=photos.filter(p=>{
+    if(p.categories&&p.categories.includes('motion')) return false; // motion has own page
+    if(currentFilter==='all') return true;
+    return p.categories&&p.categories.includes(currentFilter);
+  });
+  visibleImgs=filtered;
+  gallery.style.display=filtered.length?'':' ';
+  empty.style.display=filtered.length?'none':'block';
+  gallery.innerHTML='';
+  filtered.forEach((p,i)=>{
+    const item=document.createElement('div');
+    item.className='gallery-item';
+    item.style.animationDelay=(i*0.03)+'s';
+    const cats=(p.categories||[]).filter(c=>c!=='motion');
+    item.innerHTML=`<img src="${p.src||p.dataUrl}" alt="${p.name}" loading="lazy"/>
+    <div class="img-tags">${cats.map(c=>`<span class="img-tag">${c}</span>`).join('')}</div>`;
+    item.addEventListener('click',()=>openLightbox(i));
+    gallery.appendChild(item);
+  });
+  updateCounts();
+}
+
+function updateCounts(){
+  const nonMotion=photos.filter(p=>!p.categories||!p.categories.includes('motion'));
+  document.getElementById('countAll').textContent=nonMotion.length||'';
+  CATEGORIES.filter(c=>c!=='motion').forEach(cat=>{
+    const el=document.getElementById('count'+cat.charAt(0).toUpperCase()+cat.slice(1));
+    if(el)el.textContent=photos.filter(p=>p.categories&&p.categories.includes(cat)).length||'';
+  });
+}
+
+// ── FILTERS ──
+document.querySelectorAll('.filter-pill').forEach(pill=>{
+  pill.addEventListener('click',()=>{
+    currentFilter=pill.dataset.cat;
+    document.querySelectorAll('.filter-pill').forEach(p=>p.classList.toggle('active',p===pill));
+    renderGallery();
+  });
+});
+
+// ── MOTION PAGE ──
+function renderMotion(){
+  document.getElementById('motionText').textContent=settings.motionText||'A selection of motion work spanning advertising, editorial, and music.';
+  const grid=document.getElementById('motionGrid');
+  grid.innerHTML='';
+  const motionPhotos=photos.filter(p=>p.categories&&p.categories.includes('motion'));
+  motionPhotos.forEach(p=>{
+    const item=document.createElement('div');
+    item.className='motion-item';
+    item.innerHTML=`<img src="${p.src||p.dataUrl}" alt="${p.name}" loading="lazy"/>`;
+    grid.appendChild(item);
+  });
+  if(!motionPhotos.length)grid.innerHTML='<p style="color:var(--muted);font-size:0.82rem">No motion work added yet.</p>';
+}
+
+// ── SETTINGS APPLY ──
+function applySettings(){
+  document.getElementById('footerName').textContent=settings.name||'Jabari Jacobs';
+  document.getElementById('footerCopy').textContent=`© ${new Date().getFullYear()} ${settings.name||'Jabari Jacobs'}`;
+  const instaUrl='https://instagram.com/'+(settings.insta||'').replace('@','');
+  document.getElementById('footerInsta').href=instaUrl;
+  document.getElementById('aboutName').textContent=settings.name||'Jabari Jacobs';
+  document.getElementById('aboutTagline').textContent=settings.tagline||'Photographer & Director';
+  document.getElementById('aboutText').textContent=settings.about||'';
+  document.getElementById('aboutLocation').textContent=settings.location||'';
+  document.getElementById('aboutEmail').textContent=settings.email||'';
+  document.getElementById('aboutEmail').href='mailto:'+(settings.email||'');
+  document.getElementById('aboutInsta').textContent=settings.insta||'';
+  document.getElementById('aboutInsta').href=instaUrl;
+  document.getElementById('contactEmail').textContent=settings.email||'';
+  document.getElementById('contactEmail').href='mailto:'+(settings.email||'');
+  document.getElementById('navHome').closest('ul').previousElementSibling; // logo
+  document.querySelector('.nav-logo').textContent=settings.name||'Jabari Jacobs';
+}
+
+// ── CONTACT FORM ──
+document.getElementById('cfSubmit').addEventListener('click',()=>{
+  const name=document.getElementById('cfName').value;
+  const email=document.getElementById('cfEmail').value;
+  const msg=document.getElementById('cfMsg').value;
+  if(!name||!email||!msg)return alert('Please fill in all fields.');
+  window.location.href=`mailto:${settings.email||'jabari@jabarijacobs.com'}?subject=Portfolio Inquiry from ${name}&body=${encodeURIComponent(msg+'\n\nFrom: '+name+'\nEmail: '+email)}`;
+});
+
+// ── LIGHTBOX ──
+function openLightbox(idx){
+  lbIdx=idx;
+  document.getElementById('lbImg').src=visibleImgs[idx].src||visibleImgs[idx].dataUrl;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+document.getElementById('lbClose').addEventListener('click',closeLightbox);
+document.getElementById('lightbox').addEventListener('click',e=>{if(e.target===e.currentTarget)closeLightbox()});
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow=''}
+document.getElementById('lbPrev').addEventListener('click',()=>{lbIdx=(lbIdx-1+visibleImgs.length)%visibleImgs.length;openLightbox(lbIdx)});
+document.getElementById('lbNext').addEventListener('click',()=>{lbIdx=(lbIdx+1)%visibleImgs.length;openLightbox(lbIdx)});
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('lightbox').classList.contains('open'))return;
+  if(e.key==='Escape')closeLightbox();
+  if(e.key==='ArrowLeft'){lbIdx=(lbIdx-1+visibleImgs.length)%visibleImgs.length;openLightbox(lbIdx)}
+  if(e.key==='ArrowRight'){lbIdx=(lbIdx+1)%visibleImgs.length;openLightbox(lbIdx)}
+});
+
+// ── INIT ──
+loadData().then(()=>{
+  applySettings();
+  renderGallery();
+  showView('home');
+});
+</script>
+</body>
+</html>
