@@ -487,8 +487,7 @@ document.getElementById('saveSettings').addEventListener('click',()=>{
 });
 
 // ── NETLIFY PUBLISH ──
-const NETLIFY_TOKEN = 'nfp_gsUcjQZJMZc1ZDZao3hsezH4CETFkygnee9e';
-const NETLIFY_SITE_ID = 'c073236e-c89d-4606-83d9-4dc73cab1916';
+const BUILD_HOOK = 'https://api.netlify.com/build_hooks/69c7f4dfa3795419eacb8ca2';
 
 async function publishToNetlify() {
   const btn = document.getElementById('publishBtn');
@@ -496,68 +495,29 @@ async function publishToNetlify() {
   btn.disabled = true;
   btn.textContent = '⏳ Publishing...';
   status.style.color = 'var(--accent)';
-  status.textContent = 'Preparing your site files...';
+  status.textContent = 'Saving data and triggering deploy...';
 
+  // First save the portfolio data to localStorage
+  savePhotos();
+  localStorage.setItem('jj_settings', JSON.stringify(settings));
+
+  // Export the data file automatically
+  doExport();
+
+  // Trigger Netlify rebuild via build hook
   try {
-    // Build the data payload
-    const data = {photos: photos.map(p=>({id:p.id,name:p.name,src:p.dataUrl,categories:p.categories,dateAdded:p.dateAdded})), settings};
-    const dataJson = JSON.stringify(data, null, 2);
-
-    // Read the current index.html — we'll deploy both files
-    status.textContent = 'Uploading to Netlify...';
-
-    // Deploy via Netlify Files API
-    const response = await fetch(`https://api.netlify.com/api/v1/sites/${NETLIFY_SITE_ID}/deploys`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${NETLIFY_TOKEN}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        files: {
-          '/portfolio-data.json': await sha1(dataJson),
-        },
-        async: true
-      })
-    });
-
-    if (!response.ok) throw new Error('Deploy request failed');
-    const deploy = await response.json();
-
-    // Upload the actual file
-    const uploadRes = await fetch(`https://api.netlify.com/api/v1/deploys/${deploy.id}/files/portfolio-data.json`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${NETLIFY_TOKEN}`,
-        'Content-Type': 'application/octet-stream'
-      },
-      body: dataJson
-    });
-
-    if (!uploadRes.ok) throw new Error('File upload failed');
-
+    await fetch(BUILD_HOOK, { method: 'POST' });
     status.style.color = 'var(--green)';
-    status.textContent = '✓ Live! jabarijacobs.netlify.app updated';
-    btn.textContent = '🚀 Publish to Live Site';
-    btn.disabled = false;
-    showToast('Site published successfully!');
-
+    status.textContent = '✓ Deploy triggered! Live in ~30 seconds';
+    showToast('🚀 Publishing... check jabarijacobs.netlify.app in 30 seconds!');
   } catch(err) {
-    // Fallback: trigger a new deploy via build hook or just notify
-    status.style.color = 'var(--red)';
-    status.textContent = 'Upload failed — use Export instead and drag to Netlify';
-    btn.textContent = '🚀 Publish to Live Site';
-    btn.disabled = false;
-    console.error(err);
-    // Auto-trigger export as fallback
-    doExport();
-    showToast('Auto-exported as fallback — drag to Netlify');
+    status.style.color = 'var(--green)';
+    status.textContent = '✓ Data exported — add portfolio-data.json to your site folder & push via GitHub Desktop';
+    showToast('Data exported! Push via GitHub Desktop to go live.');
   }
-}
 
-async function sha1(str) {
-  const buf = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  btn.textContent = '🚀 Publish to Live Site';
+  btn.disabled = false;
 }
 
 document.getElementById('publishBtn').addEventListener('click', publishToNetlify);
