@@ -552,6 +552,20 @@ document.getElementById('bulkClearBtn').addEventListener('click',()=>{
 }
 document.getElementById('addPhotoBtn').addEventListener('click',()=>addPhoto(false));
 document.getElementById('addNextBtn').addEventListener('click',()=>addPhoto(true));
+function addPhoto(keepOpen){
+  const fn=document.getElementById('newFilename').value.trim();
+  if(!fn){showToast('Enter a filename!','var(--red)');return;}
+  if(photos.find(p=>p.filename===fn&&!p.isYt)){showToast('Already in portfolio!','var(--yellow)');return;}
+  const cats=getChecked('newCatGrid');
+  const title=document.getElementById('newTitle').value.trim();
+  photos.push({id:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2),filename:fn,title,categories:cats,src:'photos/'+fn,dateAdded:new Date().toISOString()});
+  savePhotos();renderPhotoGrid();renderOverview();
+  showToast(`✓ "${fn}" added!`);
+  document.getElementById('newFilename').value='';
+  document.getElementById('newTitle').value='';
+  if(!keepOpen)clearCats('newCatGrid');
+  else document.getElementById('newFilename').focus();
+}
 document.getElementById('newFilename').addEventListener('keydown',e=>{if(e.key==='Enter')addPhoto(true);});
 
 // PHOTO GRID with drag-to-reorder
