@@ -145,7 +145,7 @@ main{padding:40px;overflow-y:auto}
   <div class="sidebar-footer">
     <button class="publish-btn" id="publishBtn">🚀 Publish to Live Site</button>
     <div id="publishStatus">Ready to publish</div>
-    <a class="view-site-btn" href="https://jabarijacobs.netlify.app" target="_blank">🌐 View Live Site</a>
+    <a class="view-site-btn" href="https://site-9y7.pages.dev" target="_blank">🌐 View Live Site</a>
     <button class="export-btn-sm" id="exportBtn">⬇ Export data only</button>
   </div>
 </aside>
@@ -171,7 +171,7 @@ main{padding:40px;overflow-y:auto}
         <button class="btn btn-primary" onclick="showPage('upload')">Upload Files</button>
         <button class="btn btn-ghost" onclick="showPage('photos')">Manage Files</button>
         <button class="btn btn-ghost" onclick="publishToNetlify()">🚀 Publish</button>
-        <a class="btn btn-ghost" href="https://jabarijacobs.netlify.app" target="_blank" style="text-decoration:none">🌐 Live Site</a>
+        <a class="btn btn-ghost" href="https://site-9y7.pages.dev" target="_blank" style="text-decoration:none">🌐 Live Site</a>
       </div>
     </div>
   </div>
@@ -363,7 +363,7 @@ main{padding:40px;overflow-y:auto}
 
 <script>
 const CATEGORIES=['advertising','editorial','music','food','motion','design','about'];
-const BUILD_HOOK='https://api.netlify.com/build_hooks/69c7f4dfa3795419eacb8ca2';
+const BUILD_HOOK='https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/cf348d16-d276-48a7-a908-00100546b1f2';
 const MAX_PHOTO_MB=3,MAX_VIDEO_MB=50;
 let photos=[],pending=[],settings={name:'Jabari Jacobs',tagline:'Photographer & Director',email:'jabari@jabarijacobs.com',about:'',contactIntro:'Available for advertising, editorial, music, and food projects worldwide.',location:'Los Angeles, CA',insta:'@jabarijacobs',motionText:'',logoLightSrc:'',logoDarkSrc:'',aboutPhotoSrc:'',cols:4,gap:4};
 let editingId=null,selectedPending=new Set();
