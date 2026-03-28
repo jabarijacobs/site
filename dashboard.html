@@ -313,12 +313,21 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
     <div class="sec">
       <h3>Gallery Layout</h3>
       <div class="field">
+        <label>Columns (desktop)</label>
+        <select id="galleryCols" style="width:100%;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.82rem;outline:none;cursor:pointer">
+          <option value="2">2 columns</option>
+          <option value="3">3 columns</option>
+          <option value="4" selected>4 columns (default)</option>
+          <option value="5">5 columns</option>
+        </select>
+      </div>
+      <div class="field">
         <label>Space Between Photos</label>
         <div style="display:flex;align-items:center;gap:12px;margin-top:4px">
           <input type="range" id="galleryGap" min="0" max="24" value="4" step="2" style="flex:1;accent-color:var(--accent)"/>
           <span id="galleryGapVal" style="font-size:0.72rem;color:var(--accent);min-width:34px">4px</span>
         </div>
-        <p style="font-size:0.63rem;color:var(--muted);margin-top:6px">0 = no gap (tight), 24 = lots of space</p>
+        <p style="font-size:0.63rem;color:var(--muted);margin-top:6px">0 = no gap, 24 = lots of space</p>
       </div>
     </div>
 
@@ -427,7 +436,7 @@ let photos=[],settings={
   name:'Jabari Jacobs',tagline:'Photographer & Director',
   email:'jabari@jabarijacobs.com',about:'',location:'Los Angeles, CA',
   insta:'@jabarijacobs',logoLightSrc:'',logoDarkSrc:'',aboutPhotoSrc:'',
-  logoSize:48,galleryGap:4,fontBody:'Karla',fontDisplay:'Cormorant Garamond',
+  logoSize:48,galleryGap:4,galleryCols:4,fontBody:'Karla',fontDisplay:'Cormorant Garamond',
   clients:[],filters:[...ALL_CATS]
 };
 let editingId=null;
@@ -764,6 +773,7 @@ function loadSettings(){
   document.getElementById('sInsta').value=s.insta||'';
   document.getElementById('logoSize').value=s.logoSize||48;
   document.getElementById('logoSizeVal').textContent=(s.logoSize||48)+'px';
+  document.getElementById('galleryCols').value=s.galleryCols||4;
   document.getElementById('galleryGap').value=s.galleryGap||4;
   document.getElementById('galleryGapVal').textContent=(s.galleryGap||4)+'px';
   const llp=document.getElementById('logoLightPrev');
@@ -803,6 +813,7 @@ document.getElementById('saveSettings').addEventListener('click',()=>{
   settings.insta=document.getElementById('sInsta').value;
   settings.logoSize=parseInt(document.getElementById('logoSize').value)||48;
   settings.galleryGap=parseInt(document.getElementById('galleryGap').value)||4;
+  settings.galleryCols=parseInt(document.getElementById('galleryCols').value)||4;
   localStorage.setItem('jj_settings',JSON.stringify(settings));
   const btn=document.getElementById('saveSettings');
   btn.textContent='✓ Saved!';btn.style.background='var(--green)';
