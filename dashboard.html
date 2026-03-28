@@ -8,10 +8,8 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#0f0f0f;--surface:#181818;--surface2:#222;--border:#2e2e2e;--text:#f0ede8;--muted:#888;--accent:#c8b89a;--accent2:#e8d5b7;--red:#e05555;--green:#4caf7d;--yellow:#e0a930;}
-html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Karla',sans-serif;font-weight:300;min-height:100vh}
 .shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
-
 aside{background:var(--surface);border-right:1px solid var(--border);padding:32px 0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
 .brand{padding:0 24px 32px;border-bottom:1px solid var(--border)}
 .brand h1{font-family:'Cormorant Garamond',serif;font-size:1.25rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:400}
@@ -25,23 +23,20 @@ nav{padding:24px 0;flex:1}
 .publish-btn{width:100%;padding:12px;background:var(--accent);color:#0f0f0f;border:none;border-radius:4px;font-family:'Karla',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
 .publish-btn:hover{background:var(--accent2)}
 .publish-btn:disabled{opacity:0.5;cursor:not-allowed}
-.view-site-btn{width:100%;padding:10px;background:transparent;color:var(--accent);border:1px solid var(--accent);border-radius:4px;font-family:'Karla',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block;text-align:center}
+.view-site-btn{width:100%;padding:10px;background:transparent;color:var(--accent);border:1px solid var(--accent);border-radius:4px;font-family:'Karla',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:block;text-align:center;transition:all 0.2s}
 .view-site-btn:hover{background:rgba(200,184,154,0.1)}
 .export-btn-sm{width:100%;padding:9px;background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:4px;font-family:'Karla',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s}
 .export-btn-sm:hover{border-color:var(--muted);color:var(--text)}
 #publishStatus{font-size:0.62rem;line-height:1.6;color:var(--muted);text-align:center}
-
 main{padding:40px;overflow-y:auto}
 .page{display:none}
 .page.active{display:block}
 .page-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;letter-spacing:0.05em;margin-bottom:6px}
 .page-sub{font-size:0.78rem;color:var(--muted);letter-spacing:0.08em;margin-bottom:36px}
-
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px}
 .stat-label{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
 .stat-val{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--accent)}
-
 .upload-zone{border:2px dashed var(--border);border-radius:12px;padding:60px 40px;text-align:center;cursor:pointer;transition:all 0.25s;margin-bottom:12px;position:relative}
 .upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:rgba(200,184,154,0.04)}
 .upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
@@ -49,7 +44,6 @@ main{padding:40px;overflow-y:auto}
 .upload-zone h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;margin-bottom:6px}
 .upload-zone p{font-size:0.75rem;color:var(--muted);letter-spacing:0.06em}
 .size-info{font-size:0.68rem;color:var(--muted);margin-bottom:20px;padding:10px 14px;background:var(--surface);border-radius:6px;border:1px solid var(--border)}
-
 .bulk-bar{background:var(--surface);border:1px solid var(--accent);border-radius:8px;padding:14px 18px;margin-bottom:16px;display:none;align-items:center;gap:10px;flex-wrap:wrap}
 .bulk-bar.visible{display:flex}
 .bulk-bar-label{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
@@ -59,11 +53,9 @@ main{padding:40px;overflow-y:auto}
 .bulk-pill.selected{background:var(--accent);border-color:var(--accent);color:#0f0f0f}
 .bulk-apply{padding:7px 16px;border-radius:4px;border:none;background:var(--green);color:#fff;font-family:'Karla',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
 .bulk-clear{padding:7px 12px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Karla',sans-serif;font-size:0.7rem;cursor:pointer}
-
 .pending-title{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .select-all-btn{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;background:none;border:1px solid var(--border);color:var(--muted);padding:3px 10px;border-radius:10px;cursor:pointer;transition:all 0.2s}
 .select-all-btn:hover{border-color:var(--accent);color:var(--accent)}
-
 .pending-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:20px}
 .pending-card{background:var(--surface);border:2px solid var(--border);border-radius:8px;overflow:hidden;position:relative;cursor:pointer;transition:border-color 0.15s}
 .pending-card.selected{border-color:var(--accent)}
@@ -75,16 +67,14 @@ main{padding:40px;overflow-y:auto}
 .card-info{padding:8px 10px}
 .card-name{font-size:0.64rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
 .card-size{font-size:0.6rem;margin-bottom:4px}
-.size-ok{color:var(--green)} .size-warn{color:var(--yellow)} .size-big{color:var(--red)}
+.size-ok{color:var(--green)}.size-warn{color:var(--yellow)}.size-big{color:var(--red)}
 .card-cats{display:flex;flex-wrap:wrap;gap:3px}
 .card-cat{font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;background:rgba(200,184,154,0.15);color:var(--accent);padding:2px 6px;border-radius:8px}
 .tag-icon{font-size:0.62rem;color:var(--accent);cursor:pointer;margin-top:4px;display:inline-block;text-decoration:underline}
-
 .action-row{display:flex;gap:10px;margin-bottom:32px;flex-wrap:wrap}
 .btn{padding:10px 22px;border-radius:4px;border:none;font-family:'Karla',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s}
 .btn-primary{background:var(--accent);color:#0f0f0f}.btn-primary:hover{background:var(--accent2)}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}.btn-ghost:hover{border-color:var(--text);color:var(--text)}
-
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:100;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px;width:520px;max-width:90vw;max-height:88vh;overflow-y:auto}
@@ -98,12 +88,10 @@ main{padding:40px;overflow-y:auto}
 .cat-pill:hover{border-color:var(--accent);color:var(--accent)}
 .cat-pill.selected{background:var(--accent);border-color:var(--accent);color:#0f0f0f}
 .modal-actions{display:flex;gap:10px}
-
 .confirm-modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:36px;width:400px;max-width:90vw;text-align:center}
 .confirm-modal h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;margin-bottom:12px}
 .confirm-modal p{font-size:0.82rem;color:var(--muted);line-height:1.7;margin-bottom:28px}
 .confirm-actions{display:flex;gap:10px;justify-content:center}
-
 .toolbar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
 .search-box{flex:1;min-width:200px;padding:9px 14px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.82rem;outline:none}
 .search-box:focus{border-color:var(--accent)}
@@ -120,7 +108,6 @@ main{padding:40px;overflow-y:auto}
 .video-badge{position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.75);color:#fff;font-size:0.55rem;font-weight:700;letter-spacing:0.08em;padding:2px 6px;border-radius:6px}
 .tag{font-size:0.56rem;letter-spacing:0.08em;text-transform:uppercase;background:rgba(200,184,154,0.12);color:var(--accent);padding:2px 5px;border-radius:6px}
 .no-tag{font-size:0.6rem;color:var(--red)}
-
 .settings-section{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:20px}
 .settings-section h3{font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
 .field{margin-bottom:18px}
@@ -129,7 +116,7 @@ main{padding:40px;overflow-y:auto}
 .field input:focus,.field textarea:focus{border-color:var(--accent)}
 .field textarea{min-height:80px}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-
+.img-preview-box{width:100%;max-width:200px;border-radius:6px;border:1px solid var(--border);object-fit:cover;display:block;margin-bottom:10px}
 .toast{position:fixed;bottom:28px;right:28px;color:#fff;padding:12px 20px;border-radius:6px;font-size:0.78rem;font-weight:500;letter-spacing:0.06em;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;z-index:300}
 .toast.show{opacity:1;transform:translateY(0)}
 .empty{text-align:center;padding:60px 20px;color:var(--muted)}
@@ -138,7 +125,6 @@ main{padding:40px;overflow-y:auto}
 </head>
 <body>
 <div class="shell">
-
 <aside>
   <div class="brand"><h1>Jabari Jacobs</h1><p>Portfolio Dashboard</p></div>
   <nav>
@@ -184,8 +170,8 @@ main{padding:40px;overflow-y:auto}
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn btn-primary" onclick="showPage('upload')">Upload Files</button>
         <button class="btn btn-ghost" onclick="showPage('photos')">Manage Files</button>
-        <button class="btn btn-ghost" onclick="publishToNetlify()">🚀 Publish Site</button>
-        <a class="btn btn-ghost" href="https://jabarijacobs.netlify.app" target="_blank" style="text-decoration:none">🌐 View Live Site</a>
+        <button class="btn btn-ghost" onclick="publishToNetlify()">🚀 Publish</button>
+        <a class="btn btn-ghost" href="https://jabarijacobs.netlify.app" target="_blank" style="text-decoration:none">🌐 Live Site</a>
       </div>
     </div>
   </div>
@@ -193,15 +179,14 @@ main{padding:40px;overflow-y:auto}
   <!-- UPLOAD -->
   <div class="page" id="page-upload">
     <div class="page-title">Upload Files</div>
-    <div class="page-sub">Drag in multiple photos & videos at once — then bulk tag or tag individually</div>
+    <div class="page-sub">Drag in multiple photos & videos — bulk tag or tag individually</div>
     <div class="upload-zone" id="dropZone">
       <input type="file" id="fileInput" multiple accept="image/*,video/*"/>
       <div class="upload-icon">📸</div>
       <h3>Drop photos or videos here</h3>
-      <p>JPG, PNG, GIF, WebP &nbsp;·&nbsp; MP4, MOV, WebM &nbsp;·&nbsp; Select multiple at once</p>
+      <p>JPG, PNG, GIF, WebP · MP4, MOV, WebM · Select multiple at once</p>
     </div>
-    <div class="size-info">⚠ <strong>Recommended max:</strong> 3MB per photo · 50MB per video. Files flagged in <span style="color:var(--red)">red</span> may slow your site. <span style="color:var(--yellow)">Yellow</span> = getting large.</div>
-
+    <div class="size-info">⚠ <strong>Recommended max:</strong> 3MB per photo · 50MB per video. <span style="color:var(--red)">Red</span> = too large. <span style="color:var(--yellow)">Yellow</span> = getting large.</div>
     <div id="pendingSection" style="display:none">
       <div class="bulk-bar" id="bulkBar">
         <span class="bulk-bar-label">Tag <span id="bulkCountLabel">0</span> selected:</span>
@@ -210,7 +195,7 @@ main{padding:40px;overflow-y:auto}
         <button class="bulk-clear" id="bulkClearSel">Deselect All</button>
       </div>
       <div class="pending-title">
-        Staged files — select &amp; bulk tag, or click ✏ Tag individually
+        Staged files — click to select, then bulk tag · or click ✏ Tag individually
         <button class="select-all-btn" id="selectAllBtn">Select All</button>
         <span id="pendingCountLabel" style="color:var(--muted)"></span>
       </div>
@@ -222,7 +207,7 @@ main{padding:40px;overflow-y:auto}
     </div>
   </div>
 
-  <!-- PHOTOS -->
+  <!-- MANAGE -->
   <div class="page" id="page-photos">
     <div class="page-title">Manage Files</div>
     <div class="page-sub">Edit tags, check file sizes, or remove files</div>
@@ -243,33 +228,65 @@ main{padding:40px;overflow-y:auto}
       </select>
     </div>
     <div class="photo-grid" id="photoGrid"></div>
-    <div class="empty" id="photoEmpty" style="display:none"><p>No files yet — upload some!</p></div>
+    <div class="empty" id="photoEmpty" style="display:none"><p>No files yet.</p></div>
   </div>
 
   <!-- SETTINGS -->
   <div class="page" id="page-settings">
     <div class="page-title">Site Settings</div>
-    <div class="page-sub">Edit text shown on your live portfolio</div>
+    <div class="page-sub">Edit text, photos, and branding shown on your live portfolio</div>
+
     <div class="settings-section">
       <h3>Identity</h3>
       <div class="field-row">
         <div class="field"><label>Your Name</label><input id="sName" placeholder="Jabari Jacobs"/></div>
-        <div class="field"><label>Tagline</label><input id="sTagline" placeholder="Photographer & Director"/></div>
+        <div class="field"><label>Tagline / Role</label><input id="sTagline" placeholder="Photographer & Director"/></div>
       </div>
       <div class="field"><label>Email</label><input id="sEmail" placeholder="jabari@jabarijacobs.com"/></div>
     </div>
+
     <div class="settings-section">
-      <h3>About Page</h3>
-      <div class="field"><label>Bio</label><textarea id="sAbout" placeholder="Write a short bio…"></textarea></div>
-      <div class="field-row">
-        <div class="field"><label>Based In</label><input id="sLocation" placeholder="Los Angeles, CA"/></div>
-        <div class="field"><label>Instagram</label><input id="sInsta" placeholder="@jabarijacobs"/></div>
+      <h3>Logo</h3>
+      <div class="field">
+        <label>Upload Logo (PNG with transparent background works best)</label>
+        <img id="logoPreview" src="" class="img-preview-box" style="display:none;max-height:60px;width:auto"/>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+          <input type="file" id="logoFile" accept="image/*" style="display:none"/>
+          <button class="btn btn-ghost" onclick="document.getElementById('logoFile').click()">Upload Logo</button>
+          <button class="btn btn-ghost" id="clearLogo" style="color:var(--red);border-color:var(--red)">Remove Logo</button>
+        </div>
+        <p style="font-size:0.65rem;color:var(--muted);margin-top:8px">When a logo is uploaded it replaces your name text in the nav and footer. Logo automatically inverts in dark mode.</p>
       </div>
     </div>
+
+    <div class="settings-section">
+      <h3>About Page</h3>
+      <div class="field">
+        <label>About Photo (portrait/headshot)</label>
+        <img id="aboutPhotoPreview" src="" style="display:none;max-height:120px;width:auto;border-radius:4px;margin-bottom:10px;object-fit:cover"/>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <input type="file" id="aboutPhotoFile" accept="image/*" style="display:none"/>
+          <button class="btn btn-ghost" onclick="document.getElementById('aboutPhotoFile').click()">Upload Photo</button>
+          <button class="btn btn-ghost" id="clearAboutPhoto" style="color:var(--red);border-color:var(--red)">Remove</button>
+        </div>
+      </div>
+      <div class="field"><label>Bio Text</label><textarea id="sAbout" placeholder="Write your bio here…" rows="5"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Based In</label><input id="sLocation" placeholder="Los Angeles, CA"/></div>
+        <div class="field"><label>Instagram Handle</label><input id="sInsta" placeholder="@jabarijacobs"/></div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h3>Contact Page</h3>
+      <div class="field"><label>Contact Intro Text</label><textarea id="sContactIntro" placeholder="Available for advertising, editorial, music, and food projects worldwide." rows="3"></textarea></div>
+    </div>
+
     <div class="settings-section">
       <h3>Motion Page</h3>
-      <div class="field"><label>Intro Text</label><textarea id="sMotion" placeholder="Intro text…"></textarea></div>
+      <div class="field"><label>Intro Text</label><textarea id="sMotion" placeholder="Intro text for Motion page…" rows="3"></textarea></div>
     </div>
+
     <button class="btn btn-primary" id="saveSettings">Save Settings</button>
   </div>
 </main>
@@ -308,8 +325,8 @@ main{padding:40px;overflow-y:auto}
 <script>
 const CATEGORIES=['advertising','editorial','music','food','motion','design','about'];
 const BUILD_HOOK='https://api.netlify.com/build_hooks/69c7f4dfa3795419eacb8ca2';
-const MAX_PHOTO_MB=3, MAX_VIDEO_MB=50;
-let photos=[],pending=[],settings={name:'Jabari Jacobs',tagline:'Photographer & Director',email:'jabari@jabarijacobs.com',about:'',location:'Los Angeles, CA',insta:'@jabarijacobs',motionText:''};
+const MAX_PHOTO_MB=3,MAX_VIDEO_MB=50;
+let photos=[],pending=[],settings={name:'Jabari Jacobs',tagline:'Photographer & Director',email:'jabari@jabarijacobs.com',about:'',contactIntro:'Available for advertising, editorial, music, and food projects worldwide.',location:'Los Angeles, CA',insta:'@jabarijacobs',motionText:'',logoSrc:'',aboutPhotoSrc:''};
 let editingId=null,selectedPending=new Set();
 
 try{const d=localStorage.getItem('jj_photos');if(d)photos=JSON.parse(d);}catch(e){}
@@ -317,7 +334,6 @@ try{const s=localStorage.getItem('jj_settings');if(s)settings={...settings,...JS
 
 function formatSize(b){if(!b)return '';if(b<1024*1024)return (b/1024).toFixed(0)+'KB';return (b/(1024*1024)).toFixed(1)+'MB';}
 function sizeClass(b,vid){const mb=b/(1024*1024),max=vid?MAX_VIDEO_MB:MAX_PHOTO_MB;if(mb>max)return 'size-big';if(mb>max*0.7)return 'size-warn';return 'size-ok';}
-function isVid(name){return /\.(mp4|mov|webm|avi|m4v)$/i.test(name);}
 function showToast(msg,bg='var(--green)'){const t=document.getElementById('toast');t.textContent=msg;t.style.background=bg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
 function savePhotos(){localStorage.setItem('jj_photos',JSON.stringify(photos));}
 
@@ -378,11 +394,7 @@ function renderPending(){
 }
 
 function toggleSelect(id){selectedPending.has(id)?selectedPending.delete(id):selectedPending.add(id);renderPending();}
-
-document.getElementById('selectAllBtn').addEventListener('click',()=>{
-  if(selectedPending.size===pending.length)selectedPending.clear();else pending.forEach(p=>selectedPending.add(p.id));
-  renderPending();
-});
+document.getElementById('selectAllBtn').addEventListener('click',()=>{if(selectedPending.size===pending.length)selectedPending.clear();else pending.forEach(p=>selectedPending.add(p.id));renderPending();});
 
 function updateBulkBar(){
   const bar=document.getElementById('bulkBar'),n=selectedPending.size;
@@ -399,17 +411,15 @@ document.getElementById('bulkApply').addEventListener('click',()=>{
   selectedPending.clear();
   document.querySelectorAll('#bulkCats .bulk-pill').forEach(p=>p.classList.remove('selected'));
   renderPending();updateBulkBar();
-  showToast(`✓ Tags applied to ${sel.length} categor${sel.length===1?'y':'ies'}!`);
+  showToast(`✓ Tags applied!`);
 });
-
 document.getElementById('bulkClearSel').addEventListener('click',()=>{selectedPending.clear();renderPending();updateBulkBar();});
 
-// ADD ALL with confirmation
 document.getElementById('addAllBtn').addEventListener('click',()=>{
   const untagged=pending.filter(p=>!p.categories.length).length;
   document.getElementById('confirmMsg').textContent=untagged>0
-    ?`Add ${pending.length} file${pending.length!==1?'s':''} to portfolio? Note: ${untagged} file${untagged!==1?'s':''} ${untagged!==1?'are':'is'} still untagged and won't appear in category filters.`
-    :`Add all ${pending.length} file${pending.length!==1?'s':''} to your portfolio? This can't be undone but you can remove them later.`;
+    ?`Add ${pending.length} file${pending.length!==1?'s':''} to portfolio? Note: ${untagged} file${untagged!==1?'s are':' is'} still untagged and won't appear in category filters.`
+    :`Add all ${pending.length} file${pending.length!==1?'s':''} to your portfolio?`;
   document.getElementById('confirmModal').classList.add('open');
 });
 document.getElementById('confirmYes').addEventListener('click',()=>{
@@ -417,7 +427,7 @@ document.getElementById('confirmYes').addEventListener('click',()=>{
   pending=[];selectedPending.clear();
   savePhotos();renderPending();renderPhotoGrid();renderOverview();updateCounts();
   document.getElementById('confirmModal').classList.remove('open');
-  showToast(`✓ ${photos.length} file${photos.length!==1?'s':''} in portfolio!`);
+  showToast(`✓ Added to portfolio!`);
 });
 document.getElementById('confirmNo').addEventListener('click',()=>document.getElementById('confirmModal').classList.remove('open'));
 document.getElementById('clearPendingBtn').addEventListener('click',()=>{pending=[];selectedPending.clear();renderPending();updateCounts();});
@@ -500,10 +510,53 @@ function renderOverview(){
 }
 
 // SETTINGS
-function loadSettings(){['sName','sTagline','sEmail','sAbout','sLocation','sInsta','sMotion'].forEach(id=>{const key=id.replace('s','').toLowerCase();const map={sName:'name',sTagline:'tagline',sEmail:'email',sAbout:'about',sLocation:'location',sInsta:'insta',sMotion:'motionText'};document.getElementById(id).value=settings[map[id]]||'';});}
+function loadSettings(){
+  const s=settings;
+  document.getElementById('sName').value=s.name||'';
+  document.getElementById('sTagline').value=s.tagline||'';
+  document.getElementById('sEmail').value=s.email||'';
+  document.getElementById('sAbout').value=s.about||'';
+  document.getElementById('sLocation').value=s.location||'';
+  document.getElementById('sInsta').value=s.insta||'';
+  document.getElementById('sMotion').value=s.motionText||'';
+  document.getElementById('sContactIntro').value=s.contactIntro||'';
+  // Logo preview
+  const lp=document.getElementById('logoPreview');
+  if(s.logoSrc){lp.src=s.logoSrc;lp.style.display='block';}else{lp.style.display='none';}
+  // About photo preview
+  const ap=document.getElementById('aboutPhotoPreview');
+  if(s.aboutPhotoSrc){ap.src=s.aboutPhotoSrc;ap.style.display='block';}else{ap.style.display='none';}
+}
+
+// Logo upload
+document.getElementById('logoFile').addEventListener('change',function(){
+  const file=this.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{settings.logoSrc=ev.target.result;const lp=document.getElementById('logoPreview');lp.src=ev.target.result;lp.style.display='block';showToast('Logo uploaded! Save settings to apply.');};
+  reader.readAsDataURL(file);
+});
+document.getElementById('clearLogo').addEventListener('click',()=>{settings.logoSrc='';document.getElementById('logoPreview').style.display='none';showToast('Logo removed.');});
+
+// About photo upload
+document.getElementById('aboutPhotoFile').addEventListener('change',function(){
+  const file=this.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{settings.aboutPhotoSrc=ev.target.result;const ap=document.getElementById('aboutPhotoPreview');ap.src=ev.target.result;ap.style.display='block';showToast('About photo uploaded! Save settings to apply.');};
+  reader.readAsDataURL(file);
+});
+document.getElementById('clearAboutPhoto').addEventListener('click',()=>{settings.aboutPhotoSrc='';document.getElementById('aboutPhotoPreview').style.display='none';showToast('About photo removed.');});
+
 document.getElementById('saveSettings').addEventListener('click',()=>{
-  settings={name:document.getElementById('sName').value,tagline:document.getElementById('sTagline').value,email:document.getElementById('sEmail').value,about:document.getElementById('sAbout').value,location:document.getElementById('sLocation').value,insta:document.getElementById('sInsta').value,motionText:document.getElementById('sMotion').value};
-  localStorage.setItem('jj_settings',JSON.stringify(settings));showToast('Settings saved!');
+  settings.name=document.getElementById('sName').value;
+  settings.tagline=document.getElementById('sTagline').value;
+  settings.email=document.getElementById('sEmail').value;
+  settings.about=document.getElementById('sAbout').value;
+  settings.location=document.getElementById('sLocation').value;
+  settings.insta=document.getElementById('sInsta').value;
+  settings.motionText=document.getElementById('sMotion').value;
+  settings.contactIntro=document.getElementById('sContactIntro').value;
+  localStorage.setItem('jj_settings',JSON.stringify(settings));
+  showToast('Settings saved!');
 });
 
 // PUBLISH
