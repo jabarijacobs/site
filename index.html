@@ -360,7 +360,7 @@ function buildFilters(){
   const allPill=document.createElement('button');
   allPill.className='filter-pill'+(currentFilter==='all'?' active':'');
   allPill.dataset.cat='all';
-  allPill.innerHTML='All <span class="filter-count" id="countAll"></span>';
+  allPill.innerHTML='All';
   allPill.addEventListener('click',()=>setFilter('all'));
   bar.appendChild(allPill);
   activeFilters.forEach(cat=>{
@@ -368,7 +368,7 @@ function buildFilters(){
     pill.className='filter-pill'+(currentFilter===cat?' active':'');
     pill.dataset.cat=cat;
     const label=cat.charAt(0).toUpperCase()+cat.slice(1);
-    pill.innerHTML=`${label} <span class="filter-count" id="count${label}"></span>`;
+    pill.innerHTML=`${label}`;
     pill.addEventListener('click',()=>setFilter(cat));
     bar.appendChild(pill);
   });
@@ -413,15 +413,7 @@ function renderGallery(){
   updateCounts();
 }
 
-function updateCounts(){
-  const el=document.getElementById('countAll');
-  if(el)el.textContent=photos.length||'';
-  (settings.filters||CATS).forEach(cat=>{
-    const label=cat.charAt(0).toUpperCase()+cat.slice(1);
-    const el=document.getElementById('count'+label);
-    if(el)el.textContent=photos.filter(p=>p.categories&&p.categories.includes(cat)).length||'';
-  });
-}
+function updateCounts(){}
 
 // Views
 function showView(view){
@@ -449,10 +441,33 @@ document.querySelectorAll('.mob-nav').forEach(a=>{
 });
 
 // Contact form
-document.getElementById('cfSubmit').addEventListener('click',()=>{
+document.getElementById('cfSubmit').addEventListener('click',async()=>{
   const name=document.getElementById('cfName').value,email=document.getElementById('cfEmail').value,type=document.getElementById('cfType').value,msg=document.getElementById('cfMsg').value;
   if(!name||!email||!msg)return alert('Please fill in all fields.');
-  window.location.href=`mailto:${settings.email||'jabari@jabarijacobs.com'}?subject=Portfolio Inquiry — ${type||'Project'}&body=${encodeURIComponent('Hi Jabari,\n\n'+msg+'\n\nFrom: '+name+'\nEmail: '+email+(type?'\nProject: '+type:''))}`;
+  const btn=document.getElementById('cfSubmit');
+  btn.textContent='Sending…';
+  btn.style.opacity='0.5';
+  try{
+    const res=await fetch('https://formspree.io/f/xkopjwdk',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({name,email,project:type,message:msg})
+    });
+    if(res.ok){
+      btn.textContent='Sent ✓';
+      document.getElementById('cfName').value='';
+      document.getElementById('cfEmail').value='';
+      document.getElementById('cfType').value='';
+      document.getElementById('cfMsg').value='';
+      setTimeout(()=>{btn.textContent='Send →';btn.style.opacity='1';},3000);
+    } else {
+      btn.textContent='Send →';btn.style.opacity='1';
+      alert('Something went wrong. Please try again.');
+    }
+  }catch(e){
+    btn.textContent='Send →';btn.style.opacity='1';
+    alert('Something went wrong. Please try again.');
+  }
 });
 
 // Lightbox
