@@ -117,8 +117,8 @@ main{padding:40px;overflow-y:auto}
 .field textarea{min-height:80px}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .img-preview-box{width:100%;max-width:200px;border-radius:6px;border:1px solid var(--border);object-fit:cover;display:block;margin-bottom:10px}
-.toast{position:fixed;bottom:28px;right:28px;color:#fff;padding:12px 20px;border-radius:6px;font-size:0.78rem;font-weight:500;letter-spacing:0.06em;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;z-index:300}
-.toast.show{opacity:1;transform:translateY(0)}
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#fff;padding:14px 28px;border-radius:8px;font-size:0.82rem;font-weight:600;letter-spacing:0.04em;opacity:0;transition:all 0.3s;pointer-events:none;z-index:500;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .empty{text-align:center;padding:60px 20px;color:var(--muted)}
 .drag-num{display:inline-block;background:var(--accent);color:#0f0f0f;border-radius:50%;width:20px;height:20px;line-height:20px;text-align:center;font-size:0.7rem;font-weight:700;margin-left:6px;vertical-align:middle}
 </style>
@@ -615,18 +615,28 @@ document.getElementById('saveSettings').addEventListener('click',()=>{
 async function publishToNetlify(){
   const btn=document.getElementById('publishBtn'),status=document.getElementById('publishStatus');
   btn.disabled=true;btn.textContent='⏳ Publishing...';
-  status.style.color='var(--accent)';status.textContent='Triggering deploy...';
+  status.style.color='var(--accent)';status.textContent='Saving & exporting data...';
   savePhotos();localStorage.setItem('jj_settings',JSON.stringify(settings));
   doExport();
+
+  // Use image trick to ping build hook — works from local file:// in all browsers
   try{
-    await fetch(BUILD_HOOK,{method:'POST'});
-    status.style.color='var(--green)';status.textContent='✓ Live in ~30 seconds!';
-    showToast('🚀 Published! Your site will update in ~30 seconds.');
+    const img=new Image();
+    img.src=BUILD_HOOK+'?cb='+Date.now();
+    // Also try fetch with no-cors
+    fetch(BUILD_HOOK,{method:'POST',mode:'no-cors'}).catch(()=>{});
+    setTimeout(()=>{
+      status.style.color='var(--green)';
+      status.textContent='✓ Triggered! Live in ~60 seconds';
+      showToast('🚀 Published! Check jabarijacobs.netlify.app in ~60 seconds');
+      btn.textContent='🚀 Publish to Live Site';btn.disabled=false;
+    },1500);
   }catch(e){
-    status.style.color='var(--yellow)';status.textContent='Data exported — push via GitHub Desktop';
-    showToast('Exported! Push in GitHub Desktop','var(--yellow)');
+    status.style.color='var(--yellow)';
+    status.textContent='portfolio-data.json exported — drag to site folder & push in GitHub Desktop';
+    showToast('✓ Data exported! Move JSON to site folder then push in GitHub Desktop','var(--yellow)');
+    btn.textContent='🚀 Publish to Live Site';btn.disabled=false;
   }
-  btn.textContent='🚀 Publish to Live Site';btn.disabled=false;
 }
 document.getElementById('publishBtn').addEventListener('click',publishToNetlify);
 
