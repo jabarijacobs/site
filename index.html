@@ -4,137 +4,150 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Jabari Jacobs</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Karla:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link id="googleFont" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Karla:wght@300;400;500&family=Playfair+Display:wght@300;400&family=DM+Sans:wght@300;400;500&family=Libre+Baskerville:wght@400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ── THEME ── */
 :root{
-  --bg:#f7f5f2;--text:#0a0a0a;--muted:#888;--border:rgba(0,0,0,0.09);
-  --nav-bg:rgba(247,245,242,0.92);--pill-bg:#0a0a0a;--pill-text:#f7f5f2;
-  --pill-idle-text:rgba(10,10,10,0.45);--pill-idle-border:rgba(10,10,10,0.18);
-  --overlay:rgba(247,245,242,0.96);
+  --bg:#ffffff;--text:#000000;--muted:#999;--border:rgba(0,0,0,0.08);
+  --nav-bg:rgba(255,255,255,0.95);--pill-bg:#000000;--pill-text:#ffffff;
+  --pill-idle-text:rgba(0,0,0,0.4);--pill-idle-border:rgba(0,0,0,0.15);
+  --overlay:rgba(255,255,255,0.97);--lb-bg:rgba(255,255,255,0.97);--lb-text:#000;
+  --lb-btn:rgba(0,0,0,0.5);--lb-btn-hover:#000;
+  --font-body:'Karla',sans-serif;--font-display:'Cormorant Garamond',serif;
+  --accent:#000000;
 }
 [data-theme="dark"]{
-  --bg:#0c0c0c;--text:#f0ede8;--muted:#666;--border:rgba(255,255,255,0.07);
-  --nav-bg:rgba(12,12,12,0.92);--pill-bg:#f0ede8;--pill-text:#0c0c0c;
-  --pill-idle-text:rgba(240,237,232,0.38);--pill-idle-border:rgba(240,237,232,0.15);
-  --overlay:rgba(12,12,12,0.96);
+  --bg:#0a0a0a;--text:#ffffff;--muted:#777;--border:rgba(255,255,255,0.08);
+  --nav-bg:rgba(10,10,10,0.95);--pill-bg:#ffffff;--pill-text:#000000;
+  --pill-idle-text:rgba(255,255,255,0.4);--pill-idle-border:rgba(255,255,255,0.15);
+  --overlay:rgba(10,10,10,0.97);--lb-bg:rgba(0,0,0,0.97);--lb-text:#fff;
+  --lb-btn:rgba(255,255,255,0.5);--lb-btn-hover:#fff;
 }
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'Karla',sans-serif;font-weight:300;transition:background 0.35s,color 0.35s;min-height:100vh}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;transition:background 0.35s,border-color 0.35s;}
-.nav-logo{display:flex;align-items:center;text-decoration:none;color:var(--text);transition:color 0.35s}
-.nav-logo img{height:34px;width:auto;object-fit:contain}
-.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:400;letter-spacing:0.14em;text-transform:uppercase}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-weight:300;transition:background 0.3s,color 0.3s;min-height:100vh}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;transition:background 0.3s,border-color 0.3s}
+.nav-logo{display:flex;align-items:center;text-decoration:none;color:var(--text);transition:color 0.3s;gap:0}
+.nav-logo img{object-fit:contain;transition:height 0.3s}
+.nav-logo-text{font-family:var(--font-display);font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:var(--text);transition:font-size 0.3s,color 0.3s;font-size:1.1rem}
 .nav-right{display:flex;align-items:center;gap:32px}
 .nav-links{display:flex;gap:28px;list-style:none}
 .nav-links a{font-size:0.65rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.4;transition:opacity 0.2s}
 .nav-links a:hover,.nav-links a.active{opacity:1}
-/* Dark mode as a subtle icon button instead of pill */
-.theme-toggle{background:none;border:none;cursor:pointer;font-size:0.75rem;color:var(--text);opacity:0.4;transition:opacity 0.2s;padding:4px;line-height:1}
-.theme-toggle:hover{opacity:1}
+.theme-toggle{background:none;border:none;cursor:pointer;font-size:1rem;color:var(--text);opacity:0.35;transition:opacity 0.2s;padding:4px;line-height:1}
+.theme-toggle:hover{opacity:0.8}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
-.hamburger span{display:block;width:20px;height:1.5px;background:var(--text);transition:background 0.35s}
+.hamburger span{display:block;width:20px;height:1.5px;background:var(--text);transition:background 0.3s}
 .mobile-menu{display:none;position:fixed;inset:0;background:var(--overlay);z-index:90;flex-direction:column;align-items:center;justify-content:center;gap:32px}
 .mobile-menu.open{display:flex}
-.mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.6;transition:opacity 0.2s}
+.mobile-menu a{font-family:var(--font-display);font-size:2rem;font-weight:300;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:0.6;transition:opacity 0.2s}
 .mobile-menu a:hover{opacity:1}
 .mobile-close{position:absolute;top:18px;right:28px;font-size:1.8rem;cursor:pointer;background:none;border:none;color:var(--text)}
-.mobile-theme{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;background:none;border:1px solid var(--border);border-radius:20px;padding:7px 16px}
+.mobile-theme{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;background:none;border:1px solid var(--border);border-radius:20px;padding:7px 16px;color:var(--text)}
 
-/* FILTER BAR */
-.filter-wrap{position:sticky;top:56px;z-index:70;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;transition:background 0.35s,border-color 0.35s;}
+/* ── FILTER BAR ── */
+.filter-wrap{position:sticky;top:56px;z-index:70;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;transition:background 0.3s,border-color 0.3s}
 .filter-pill{padding:5px 14px;border-radius:20px;border:1px solid var(--pill-idle-border);font-size:0.63rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:var(--pill-idle-text);background:transparent}
 .filter-pill:hover{border-color:var(--text);color:var(--text)}
 .filter-pill.active{background:var(--pill-bg);color:var(--pill-text);border-color:var(--pill-bg)}
 .filter-count{font-size:0.56rem;opacity:0.55;margin-left:2px}
 
-/* GALLERY — padding-top pushes content below the sticky bars so first photo never clips */
+/* ── GALLERY ── */
 .gallery-wrap{padding-top:16px}
 .gallery{columns:4;column-gap:3px;padding:0 3px 80px}
 .gallery-item{break-inside:avoid;margin-bottom:3px;cursor:pointer;position:relative}
 .gallery-item img,.gallery-item video{display:block;width:100%;height:auto;transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)}
 .gallery-item:hover img,.gallery-item:hover video{transform:scale(1.03)}
 .gallery-item.hidden{display:none}
-.img-tags{position:absolute;bottom:0;left:0;right:0;padding:8px;display:flex;flex-wrap:wrap;gap:3px;opacity:0;transform:translateY(4px);transition:all 0.25s;pointer-events:none}
-.gallery-item:hover .img-tags{opacity:1;transform:translateY(0)}
-.img-tag{font-size:0.55rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;background:rgba(0,0,0,0.75);color:#fff;padding:3px 7px;border-radius:8px;backdrop-filter:blur(4px)}
-.video-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;background:rgba(0,0,0,0.6);border-radius:50%;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity 0.2s}
-.gallery-item:hover .video-play{opacity:1}
+.img-tags{position:absolute;bottom:0;left:0;right:0;padding:8px;display:flex;flex-wrap:wrap;gap:3px;opacity:0;transition:opacity 0.25s;pointer-events:none}
+.gallery-item:hover .img-tags{opacity:1}
+.img-tag{font-size:0.55rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;background:rgba(0,0,0,0.7);color:#fff;padding:3px 7px;border-radius:6px}
+/* YouTube play button overlay */
+.yt-thumb{position:relative}
+.yt-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;background:rgba(0,0,0,0.65);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s}
+.yt-play svg{margin-left:3px}
+.gallery-item:hover .yt-play{opacity:1}
 
 .empty-state{text-align:center;padding:100px 20px;color:var(--muted)}
-.empty-state p{font-size:0.85rem;letter-spacing:0.06em;margin-bottom:16px}
+.empty-state p{font-size:0.85rem;letter-spacing:0.06em}
 
-/* LIGHTBOX */
-.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:200;align-items:center;justify-content:center}
+/* ── LIGHTBOX ── */
+.lightbox{display:none;position:fixed;inset:0;background:var(--lb-bg);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 .lightbox.open{display:flex}
-.lightbox img,.lightbox video{max-width:90vw;max-height:90vh;object-fit:contain}
-.lb-close{position:absolute;top:20px;right:26px;color:rgba(255,255,255,0.6);font-size:2rem;cursor:pointer;background:none;border:none;line-height:1;transition:color 0.2s}
-.lb-close:hover{color:#fff}
-.lb-btn{position:absolute;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.4);font-size:2.4rem;cursor:pointer;padding:20px;transition:color 0.2s;line-height:1}
-.lb-btn:hover{color:#fff}
+.lightbox img{max-width:88vw;max-height:88vh;object-fit:contain}
+.lb-close{position:absolute;top:20px;right:26px;color:var(--lb-btn);font-size:1.8rem;cursor:pointer;background:none;border:none;line-height:1;transition:color 0.2s}
+.lb-close:hover{color:var(--lb-btn-hover)}
+.lb-btn{position:absolute;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--lb-btn);font-size:2.4rem;cursor:pointer;padding:20px;transition:color 0.2s;line-height:1}
+.lb-btn:hover{color:var(--lb-btn-hover)}
 .lb-prev{left:8px}.lb-next{right:8px}
+.lb-yt{width:88vw;max-width:900px;aspect-ratio:16/9}
 
-/* INNER PAGES */
-.inner-page{display:none;padding:100px 36px 100px;max-width:860px;margin:0 auto}
+/* ── INNER PAGES ── */
+.inner-page{display:none;padding:96px 28px 80px;max-width:900px;margin:0 auto}
 .inner-page.open{display:block}
-.inner-page h1{font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:300;letter-spacing:0.04em;margin-bottom:6px;line-height:1.1}
-.inner-page .sub{font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:40px}
+.inner-page h1{font-family:var(--font-display);font-size:3rem;font-weight:300;letter-spacing:0.04em;margin-bottom:6px;line-height:1.1;color:var(--text)}
+.inner-page .sub{font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:48px}
 
-/* About layout */
-.about-layout{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
-.about-photo{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
-.about-photo-placeholder{width:100%;aspect-ratio:3/4;background:var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase}
-.about-text p{font-size:1rem;line-height:1.85;color:var(--text);opacity:0.8;margin-bottom:20px}
-.detail-row{display:flex;gap:12px;align-items:baseline;margin-bottom:10px;margin-top:32px}
-.detail-label{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);width:90px;flex-shrink:0}
-.detail-val{font-size:0.88rem;color:var(--text)}
+/* ── ABOUT+CONTACT combined ── */
+.about-contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.about-col{}
+.about-photo-wrap{margin-bottom:32px}
+.about-photo{width:100%;display:block;max-height:500px;object-fit:cover}
+.about-photo-placeholder{width:100%;aspect-ratio:3/4;background:var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase}
+.about-bio{font-size:0.95rem;line-height:1.85;color:var(--text);margin-bottom:28px}
+.detail-row{display:flex;gap:12px;align-items:baseline;margin-bottom:8px}
+.detail-label{font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);width:80px;flex-shrink:0}
+.detail-val{font-size:0.85rem;color:var(--text)}
 .detail-val a{color:var(--text);text-decoration:underline;text-underline-offset:3px}
 
-/* Contact */
-.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;margin-top:20px}
-.contact-info p{font-size:1rem;line-height:1.85;opacity:0.7;margin-bottom:24px}
-.contact-form label{display:block;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
-.contact-form input,.contact-form textarea{width:100%;padding:12px 16px;background:transparent;border:1px solid var(--border);color:var(--text);font-family:'Karla',sans-serif;font-size:0.9rem;outline:none;margin-bottom:18px;transition:border-color 0.2s;border-radius:2px}
+/* Contact col */
+.contact-col h2{font-family:var(--font-display);font-size:2rem;font-weight:300;letter-spacing:0.04em;margin-bottom:6px;color:var(--text)}
+.contact-col .sub2{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:32px}
+.contact-details{margin-bottom:36px}
+.contact-form label{display:block;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.contact-form input,.contact-form textarea,.contact-form select{width:100%;padding:11px 14px;background:transparent;border:1px solid var(--border);color:var(--text);font-family:var(--font-body);font-size:0.88rem;outline:none;margin-bottom:16px;transition:border-color 0.2s;border-radius:2px}
 .contact-form input:focus,.contact-form textarea:focus{border-color:var(--text)}
-.contact-form textarea{min-height:120px;resize:vertical}
-.contact-form button{padding:12px 28px;background:var(--text);color:var(--bg);border:none;font-family:'Karla',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;border-radius:2px}
-.contact-form button:hover{opacity:0.75}
+.contact-form textarea{min-height:110px;resize:vertical}
+.contact-form button{padding:12px 28px;background:var(--text);color:var(--bg);border:none;font-family:var(--font-body);font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;border-radius:2px}
+.contact-form button:hover{opacity:0.7}
 
-/* Motion */
-.motion-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;margin-top:32px}
-.motion-item{overflow:hidden;cursor:pointer;position:relative}
-.motion-item img,.motion-item video{width:100%;display:block;transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)}
-.motion-item:hover img,.motion-item:hover video{transform:scale(1.04)}
+/* Client list */
+.client-section{margin-top:60px;padding-top:40px;border-top:1px solid var(--border);grid-column:1/-1}
+.client-section h2{font-family:var(--font-display);font-size:1.6rem;font-weight:300;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:28px;color:var(--text)}
+.client-list{columns:3;column-gap:20px}
+.client-list span{display:block;font-size:0.82rem;color:var(--text);line-height:2;letter-spacing:0.02em;break-inside:avoid}
 
-/* FOOTER */
-footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;transition:border-color 0.35s}
-.f-logo img{height:24px;width:auto;object-fit:contain}
-[data-theme="dark"] .f-logo img{filter:invert(1)}
-.f-logo-text{font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase}
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:36px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;transition:border-color 0.3s}
+.f-logo img{object-fit:contain}
+.f-logo-text{font-family:var(--font-display);font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text)}
 .f-links{display:flex;gap:24px}
-.f-links a{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;color:var(--muted);transition:color 0.2s}
+.f-links a{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;color:var(--muted);transition:color 0.2s}
 .f-links a:hover{color:var(--text)}
-.f-copy{font-size:0.65rem;color:var(--muted);letter-spacing:0.06em}
+.f-copy{font-size:0.62rem;color:var(--muted);letter-spacing:0.06em}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.gallery-item{animation:fadeUp 0.45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.gallery-item{animation:fadeUp 0.4s ease both}
 
 @media(max-width:900px){
   .gallery{columns:2;column-gap:2px;padding:0 2px 60px}
   .gallery-item{margin-bottom:2px}
-  .filter-wrap{padding:8px 18px;top:56px}
-  nav{padding:0 18px}
+  .filter-wrap{padding:8px 16px;top:56px}
+  nav{padding:0 16px}
   .nav-links,.theme-toggle{display:none}
   .hamburger{display:flex}
-  .inner-page{padding:90px 20px 80px}
-  .about-layout,.contact-layout{grid-template-columns:1fr;gap:32px}
-  footer{padding:32px 20px}
+  .inner-page{padding:80px 16px 60px}
+  .about-contact-wrap{grid-template-columns:1fr;gap:40px}
+  .client-list{columns:2}
+  footer{padding:28px 16px}
 }
 @media(max-width:500px){
-  .gallery{columns:2;column-gap:2px;padding:0 2px 60px}
-  .gallery-item{margin-bottom:2px}
+  .gallery{columns:2;column-gap:2px}
+  .client-list{columns:1}
 }
 </style>
 </head>
@@ -142,18 +155,17 @@ footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify
 
 <nav>
   <a class="nav-logo" href="#" id="homeLink">
-    <img id="navLogoLight" class="logo-light" src="" alt="Jabari Jacobs" style="display:none"/>
-    <img id="navLogoDark" class="logo-dark" src="" alt="Jabari Jacobs" style="display:none"/>
+    <img id="navLogoLight" src="" alt="" style="display:none"/>
+    <img id="navLogoDark" src="" alt="" style="display:none"/>
     <span class="nav-logo-text" id="navLogoText">Jabari Jacobs</span>
   </a>
   <div class="nav-right">
     <ul class="nav-links">
       <li><a href="#" class="active" id="navHome">Work</a></li>
-      <li><a href="#" id="navMotion">Motion</a></li>
       <li><a href="#" id="navAbout">About</a></li>
       <li><a href="#" id="navContact">Contact</a></li>
     </ul>
-    <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">◐</button>
+    <button class="theme-toggle" id="themeToggle" title="Toggle dark/light">◐</button>
   </div>
   <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
 </nav>
@@ -161,10 +173,9 @@ footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" id="mobileClose">×</button>
   <a href="#" class="mob-nav" data-view="home">Work</a>
-  <a href="#" class="mob-nav" data-view="motion">Motion</a>
   <a href="#" class="mob-nav" data-view="about">About</a>
   <a href="#" class="mob-nav" data-view="contact">Contact</a>
-  <button class="mobile-theme" id="mobileTheme">◑ Toggle Dark / Light</button>
+  <button class="mobile-theme" id="mobileTheme">◐ Toggle Dark / Light</button>
 </div>
 
 <!-- FILTER BAR -->
@@ -174,16 +185,14 @@ footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify
   <button class="filter-pill" data-cat="editorial">Editorial <span class="filter-count" id="countEditorial"></span></button>
   <button class="filter-pill" data-cat="music">Music <span class="filter-count" id="countMusic"></span></button>
   <button class="filter-pill" data-cat="food">Food <span class="filter-count" id="countFood"></span></button>
+  <button class="filter-pill" data-cat="motion">Motion <span class="filter-count" id="countMotion"></span></button>
   <button class="filter-pill" data-cat="design">Design <span class="filter-count" id="countDesign"></span></button>
-  <button class="filter-pill" data-cat="about">Portrait <span class="filter-count" id="countAbout"></span></button>
 </div>
 
 <!-- GALLERY -->
 <div class="gallery-wrap" id="galleryView">
   <div class="gallery" id="gallery"></div>
-  <div class="empty-state" id="emptyState" style="display:none">
-    <p>No photos here yet.</p>
-  </div>
+  <div class="empty-state" id="emptyState" style="display:none"><p>No photos here yet.</p></div>
   <footer>
     <div class="f-logo" id="footerLogo">
       <img id="footerLogoImg" src="" alt="" style="display:none"/>
@@ -198,49 +207,51 @@ footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify
   </footer>
 </div>
 
-<!-- MOTION PAGE -->
-<div class="inner-page" id="motionView">
-  <h1>Motion</h1>
-  <p class="sub">Directed &amp; Photographed</p>
-  <p id="motionText" style="opacity:0.7;line-height:1.8;margin-bottom:8px"></p>
-  <div class="motion-grid" id="motionGrid"></div>
-</div>
-
-<!-- ABOUT PAGE -->
+<!-- ABOUT + CONTACT PAGE -->
 <div class="inner-page" id="aboutView">
-  <h1 id="aboutName">Jabari Jacobs</h1>
-  <p class="sub" id="aboutTagline">Photographer &amp; Director</p>
-  <div class="about-layout">
-    <div>
-      <img id="aboutPhoto" src="" alt="" class="about-photo" style="display:none"/>
-      <div class="about-photo-placeholder" id="aboutPhotoPlaceholder">No photo uploaded</div>
-    </div>
-    <div class="about-text">
-      <p id="aboutBio">Based in Los Angeles, working across advertising, editorial, music, and food.</p>
+  <div class="about-contact-wrap">
+    <div class="about-col">
+      <h1 id="aboutName">Jabari Jacobs</h1>
+      <p class="sub" id="aboutTagline">Photographer &amp; Director</p>
+      <div class="about-photo-wrap">
+        <img id="aboutPhoto" src="" alt="" class="about-photo" style="display:none"/>
+        <div class="about-photo-placeholder" id="aboutPlaceholder">Photo</div>
+      </div>
+      <p class="about-bio" id="aboutBio"></p>
       <div class="detail-row"><span class="detail-label">Based in</span><span class="detail-val" id="aboutLocation">Los Angeles, CA</span></div>
       <div class="detail-row"><span class="detail-label">Email</span><span class="detail-val"><a id="aboutEmail" href="">—</a></span></div>
       <div class="detail-row"><span class="detail-label">Instagram</span><span class="detail-val"><a id="aboutInsta" href="" target="_blank">—</a></span></div>
     </div>
-  </div>
-</div>
-
-<!-- CONTACT PAGE -->
-<div class="inner-page" id="contactView">
-  <h1>Contact</h1>
-  <p class="sub">Let's work together</p>
-  <div class="contact-layout">
-    <div class="contact-info">
-      <p id="contactIntro">Available for advertising, editorial, music, and food projects worldwide.</p>
-      <div class="detail-row" style="margin-top:0"><span class="detail-label">Email</span><span class="detail-val"><a id="contactEmail" href="">—</a></span></div>
-      <div class="detail-row"><span class="detail-label">Instagram</span><span class="detail-val"><a id="contactInsta" href="" target="_blank">—</a></span></div>
-      <div class="detail-row"><span class="detail-label">Based in</span><span class="detail-val" id="contactLocation">—</span></div>
+    <div class="contact-col">
+      <h2>Contact</h2>
+      <p class="sub2">Let's work together</p>
+      <div class="contact-details">
+        <div class="detail-row"><span class="detail-label">Email</span><span class="detail-val"><a id="contactEmail" href="">—</a></span></div>
+        <div class="detail-row"><span class="detail-label">Instagram</span><span class="detail-val"><a id="contactInsta" href="" target="_blank">—</a></span></div>
+        <div class="detail-row"><span class="detail-label">Based in</span><span class="detail-val" id="contactLocation">—</span></div>
+      </div>
+      <div class="contact-form">
+        <label>Name</label><input type="text" id="cfName" placeholder="Your name"/>
+        <label>Email</label><input type="email" id="cfEmail" placeholder="your@email.com"/>
+        <label>Project Type</label>
+        <select id="cfType">
+          <option value="">Select a type…</option>
+          <option>Advertising</option>
+          <option>Editorial</option>
+          <option>Music</option>
+          <option>Food</option>
+          <option>Motion</option>
+          <option>Design</option>
+          <option>Other</option>
+        </select>
+        <label>Message</label><textarea id="cfMsg" placeholder="Tell me about your project…"></textarea>
+        <button id="cfSubmit">Send Message</button>
+      </div>
     </div>
-    <div class="contact-form">
-      <label>Name</label><input type="text" id="cfName" placeholder="Your name"/>
-      <label>Email</label><input type="email" id="cfEmail" placeholder="your@email.com"/>
-      <label>Project Type</label><input type="text" id="cfType" placeholder="Advertising, Editorial, Music…"/>
-      <label>Message</label><textarea id="cfMsg" placeholder="Tell me about your project…"></textarea>
-      <button id="cfSubmit">Send Message</button>
+    <!-- CLIENT LIST spans full width -->
+    <div class="client-section" id="clientSection" style="display:none">
+      <h2>Select Clients</h2>
+      <div class="client-list" id="clientList"></div>
     </div>
   </div>
 </div>
@@ -250,62 +261,142 @@ footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify
   <button class="lb-close" id="lbClose">×</button>
   <button class="lb-btn lb-prev" id="lbPrev">‹</button>
   <img id="lbImg" src="" alt="" style="display:none"/>
-  <video id="lbVideo" controls style="display:none;max-width:90vw;max-height:90vh"></video>
+  <iframe id="lbYt" class="lb-yt" frameborder="0" allow="autoplay;encrypted-media" allowfullscreen style="display:none"></iframe>
   <button class="lb-btn lb-next" id="lbNext">›</button>
 </div>
 
 <script>
-const CATEGORIES=['advertising','editorial','music','food','motion','design','about'];
-let photos=[],settings={name:'Jabari Jacobs',tagline:'Photographer & Director',email:'jabari@jabarijacobs.com',about:'Based in Los Angeles, working across advertising, editorial, music, and food.',contactIntro:'Available for advertising, editorial, music, and food projects worldwide.',location:'Los Angeles, CA',insta:'@jabarijacobs',motionText:'',logoSrc:'',aboutPhotoSrc:''},currentFilter='all',visibleImgs=[],lbIdx=0;
-
-// Theme
-const html=document.documentElement;
-const saved=localStorage.getItem('jj_theme')||'light';
-html.setAttribute('data-theme',saved);
-updateToggleLabel();
-function updateToggleLabel(){
-  // Icon stays as ◐ — tooltip changes
-  const dark=html.getAttribute('data-theme')==='dark';
-  document.getElementById('themeToggle').title=dark?'Switch to light mode':'Switch to dark mode';
-}
-function toggleTheme(){const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('jj_theme',n);updateToggleLabel();}
-document.getElementById('themeToggle').addEventListener('click',toggleTheme);
-document.getElementById('mobileTheme').addEventListener('click',()=>{toggleTheme();closeMobile();});
+const CATS=['advertising','editorial','music','food','motion','design'];
+let photos=[],settings={
+  name:'Jabari Jacobs',tagline:'Photographer & Director',
+  email:'jabari@jabarijacobs.com',about:'',contactIntro:'',
+  location:'Los Angeles, CA',insta:'@jabarijacobs',
+  logoLightSrc:'',logoDarkSrc:'',aboutPhotoSrc:'',
+  logoSize:32,fontBody:'Karla',fontDisplay:'Cormorant Garamond',
+  accentColor:'#000000',clients:[],
+  filters:['advertising','editorial','music','food','motion','design']
+},currentFilter='all',visibleImgs=[],lbIdx=0;
 
 // Load data
 async function loadData(){
-  try{const res=await fetch('portfolio-data.json?v='+Date.now());if(res.ok){const d=await res.json();photos=d.photos||[];if(d.settings)settings={...settings,...d.settings};return;}}catch(e){}
-  try{const p=localStorage.getItem('jj_photos');if(p)photos=JSON.parse(p);const s=localStorage.getItem('jj_settings');if(s)settings={...settings,...JSON.parse(s)};}catch(e){}
+  try{
+    const r=await fetch('portfolio-data.json?v='+Date.now());
+    if(r.ok){const d=await r.json();photos=d.photos||[];if(d.settings)settings={...settings,...d.settings};return;}
+  }catch(e){}
+  try{
+    const p=localStorage.getItem('jj_photos');if(p)photos=JSON.parse(p);
+    const s=localStorage.getItem('jj_settings');if(s)settings={...settings,...JSON.parse(s)};
+  }catch(e){}
 }
 
-// Views
-function showView(view){
-  ['galleryView','motionView','aboutView','contactView'].forEach(id=>{const el=document.getElementById(id);el.style.display='none';el.classList.remove('open');});
-  document.getElementById('filterBar').style.display=view==='home'?'flex':'none';
-  const el=document.getElementById(view==='home'?'galleryView':view+'View');
-  el.style.display='block';el.classList.add('open');
-  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
-  const map={home:'navHome',motion:'navMotion',about:'navAbout',contact:'navContact'};
-  if(map[view])document.getElementById(map[view]).classList.add('active');
-  window.scrollTo(0,0);
+// Theme
+const html=document.documentElement;
+const savedTheme=localStorage.getItem('jj_theme')||'light';
+html.setAttribute('data-theme',savedTheme);
+function toggleTheme(){
+  const n=html.getAttribute('data-theme')==='dark'?'light':'dark';
+  html.setAttribute('data-theme',n);localStorage.setItem('jj_theme',n);
+  updateLogo();
 }
-document.getElementById('navHome').addEventListener('click',e=>{e.preventDefault();showView('home');});
-document.getElementById('navMotion').addEventListener('click',e=>{e.preventDefault();showView('motion');renderMotion();});
-document.getElementById('navAbout').addEventListener('click',e=>{e.preventDefault();showView('about');});
-document.getElementById('navContact').addEventListener('click',e=>{e.preventDefault();showView('contact');});
-document.getElementById('homeLink').addEventListener('click',e=>{e.preventDefault();showView('home');});
-document.getElementById('footerAbout').addEventListener('click',e=>{e.preventDefault();showView('about');});
-document.getElementById('footerContact').addEventListener('click',e=>{e.preventDefault();showView('contact');});
-document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobileMenu').classList.add('open'));
-document.getElementById('mobileClose').addEventListener('click',closeMobile);
-function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');}
-document.querySelectorAll('.mob-nav').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const v=a.dataset.view;closeMobile();showView(v);if(v==='motion')renderMotion();});});
+document.getElementById('themeToggle').addEventListener('click',toggleTheme);
+document.getElementById('mobileTheme').addEventListener('click',()=>{toggleTheme();closeMobile();});
+
+// Apply settings
+function applySettings(){
+  const s=settings;
+  // Font
+  document.documentElement.style.setProperty('--font-body',`'${s.fontBody||'Karla'}',sans-serif`);
+  document.documentElement.style.setProperty('--font-display',`'${s.fontDisplay||'Cormorant Garamond'}',serif`);
+  // Logo
+  updateLogo();
+  // Footer
+  const fImg=document.getElementById('footerLogoImg'),fTxt=document.getElementById('footerName');
+  if(s.logoLightSrc){fImg.src=s.logoLightSrc;fImg.style.height=(s.logoSize||32)+'px';fImg.style.display='block';fTxt.style.display='none';}
+  else{fImg.style.display='none';fTxt.style.display='block';fTxt.textContent=s.name||'Jabari Jacobs';}
+  document.getElementById('footerCopy').textContent=`© ${new Date().getFullYear()} ${s.name||'Jabari Jacobs'}`;
+  const instaUrl='https://instagram.com/'+(s.insta||'').replace('@','');
+  document.getElementById('footerInsta').href=instaUrl;
+  // About
+  document.getElementById('aboutName').textContent=s.name||'Jabari Jacobs';
+  document.getElementById('aboutTagline').textContent=s.tagline||'';
+  document.getElementById('aboutBio').textContent=s.about||'';
+  document.getElementById('aboutLocation').textContent=s.location||'';
+  document.getElementById('aboutEmail').textContent=s.email||'';
+  document.getElementById('aboutEmail').href='mailto:'+(s.email||'');
+  document.getElementById('aboutInsta').textContent=s.insta||'';
+  document.getElementById('aboutInsta').href=instaUrl;
+  // About photo
+  const ap=document.getElementById('aboutPhoto'),aph=document.getElementById('aboutPlaceholder');
+  if(s.aboutPhotoSrc){ap.src=s.aboutPhotoSrc;ap.style.display='block';aph.style.display='none';}
+  else{ap.style.display='none';aph.style.display='flex';}
+  // Contact
+  document.getElementById('contactEmail').textContent=s.email||'';
+  document.getElementById('contactEmail').href='mailto:'+(s.email||'');
+  document.getElementById('contactInsta').textContent=s.insta||'';
+  document.getElementById('contactInsta').href=instaUrl;
+  document.getElementById('contactLocation').textContent=s.location||'';
+  // Clients
+  const cs=document.getElementById('clientSection'),cl=document.getElementById('clientList');
+  if(s.clients&&s.clients.length){
+    cs.style.display='block';
+    cl.innerHTML=s.clients.map(c=>`<span>${c}</span>`).join('');
+  } else cs.style.display='none';
+  // Filters — build dynamically
+  buildFilters();
+  // Title
+  document.title=s.name||'Jabari Jacobs';
+}
+
+function updateLogo(){
+  const s=settings;
+  const ll=document.getElementById('navLogoLight'),ld=document.getElementById('navLogoDark'),lt=document.getElementById('navLogoText');
+  const isDark=html.getAttribute('data-theme')==='dark';
+  const sz=(s.logoSize||32)+'px';
+  if(s.logoLightSrc||s.logoDarkSrc){
+    lt.style.display='none';
+    if(isDark&&s.logoDarkSrc){ll.style.display='none';ld.src=s.logoDarkSrc;ld.style.height=sz;ld.style.display='block';}
+    else if(s.logoLightSrc){ld.style.display='none';ll.src=s.logoLightSrc;ll.style.height=sz;ll.style.display='block';}
+    else if(s.logoDarkSrc){ll.style.display='none';ld.src=s.logoDarkSrc;ld.style.height=sz;ld.style.display='block';}
+  } else {
+    ll.style.display='none';ld.style.display='none';lt.style.display='block';
+    lt.textContent=s.name||'Jabari Jacobs';
+  }
+}
+
+// Build filter pills dynamically
+function buildFilters(){
+  const bar=document.getElementById('filterBar');
+  bar.innerHTML='';
+  const activeFilters=settings.filters&&settings.filters.length?settings.filters:CATS;
+  // All pill
+  const allPill=document.createElement('button');
+  allPill.className='filter-pill'+(currentFilter==='all'?' active':'');
+  allPill.dataset.cat='all';
+  allPill.innerHTML='All <span class="filter-count" id="countAll"></span>';
+  allPill.addEventListener('click',()=>setFilter('all'));
+  bar.appendChild(allPill);
+  activeFilters.forEach(cat=>{
+    const pill=document.createElement('button');
+    pill.className='filter-pill'+(currentFilter===cat?' active':'');
+    pill.dataset.cat=cat;
+    const label=cat.charAt(0).toUpperCase()+cat.slice(1);
+    pill.innerHTML=`${label} <span class="filter-count" id="count${label}"></span>`;
+    pill.addEventListener('click',()=>setFilter(cat));
+    bar.appendChild(pill);
+  });
+  updateCounts();
+}
+
+function setFilter(cat){
+  currentFilter=cat;
+  document.querySelectorAll('.filter-pill').forEach(p=>p.classList.toggle('active',p.dataset.cat===cat));
+  renderGallery();
+}
 
 // Gallery
 function renderGallery(){
   const gallery=document.getElementById('gallery'),empty=document.getElementById('emptyState');
   const filtered=photos.filter(p=>{
-    if(p.categories&&p.categories.includes('motion'))return false;
     if(currentFilter==='all')return true;
     return p.categories&&p.categories.includes(currentFilter);
   });
@@ -316,12 +407,18 @@ function renderGallery(){
   filtered.forEach((p,i)=>{
     const item=document.createElement('div');
     item.className='gallery-item';
-    item.style.animationDelay=(i*0.025)+'s';
-    const cats=(p.categories||[]).filter(c=>c!=='motion');
+    item.style.animationDelay=(i*0.02)+'s';
+    const cats=(p.categories||[]);
+    const isYt=!!(p.youtubeId);
     const isVid=p.isVideo||/\.(mp4|mov|webm)$/i.test(p.name||'');
-    item.innerHTML=isVid
-      ?`<video src="${p.src||p.dataUrl}" muted playsinline preload="metadata"></video><div class="video-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div><div class="img-tags">${cats.map(c=>`<span class="img-tag">${c}</span>`).join('')}</div>`
-      :`<img src="${p.src||p.dataUrl}" alt="${p.name||''}" loading="lazy"/><div class="img-tags">${cats.map(c=>`<span class="img-tag">${c}</span>`).join('')}</div>`;
+    if(isYt){
+      const thumb=`https://img.youtube.com/vi/${p.youtubeId}/hqdefault.jpg`;
+      item.innerHTML=`<div class="yt-thumb"><img src="${thumb}" alt="${p.title||'Video'}" loading="lazy"/><div class="yt-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div></div><div class="img-tags">${cats.map(c=>`<span class="img-tag">${c}</span>`).join('')}</div>`;
+    } else if(isVid){
+      item.innerHTML=`<video src="${p.src}" muted playsinline preload="metadata" loading="lazy"></video><div class="img-tags">${cats.map(c=>`<span class="img-tag">${c}</span>`).join('')}</div>`;
+    } else {
+      item.innerHTML=`<img src="${p.src}" alt="${p.name||''}" loading="lazy"/><div class="img-tags">${cats.map(c=>`<span class="img-tag">${c}</span>`).join('')}</div>`;
+    }
     item.addEventListener('click',()=>openLightbox(i));
     gallery.appendChild(item);
   });
@@ -329,126 +426,74 @@ function renderGallery(){
 }
 
 function updateCounts(){
-  const nonMotion=photos.filter(p=>!p.categories||!p.categories.includes('motion'));
-  document.getElementById('countAll').textContent=nonMotion.length||'';
-  ['advertising','editorial','music','food','design','about'].forEach(cat=>{
-    const el=document.getElementById('count'+cat.charAt(0).toUpperCase()+cat.slice(1));
+  const el=document.getElementById('countAll');
+  if(el)el.textContent=photos.length||'';
+  (settings.filters||CATS).forEach(cat=>{
+    const label=cat.charAt(0).toUpperCase()+cat.slice(1);
+    const el=document.getElementById('count'+label);
     if(el)el.textContent=photos.filter(p=>p.categories&&p.categories.includes(cat)).length||'';
   });
 }
 
-document.querySelectorAll('.filter-pill').forEach(pill=>{
-  pill.addEventListener('click',()=>{
-    currentFilter=pill.dataset.cat;
-    document.querySelectorAll('.filter-pill').forEach(p=>p.classList.toggle('active',p===pill));
-    renderGallery();
-  });
+// Views
+function showView(view){
+  document.getElementById('galleryView').style.display='none';
+  document.getElementById('aboutView').style.display='none';
+  document.getElementById('galleryView').classList.remove('open');
+  document.getElementById('aboutView').classList.remove('open');
+  document.getElementById('filterBar').style.display=view==='home'?'flex':'none';
+  if(view==='home'){document.getElementById('galleryView').style.display='block';}
+  else{document.getElementById('aboutView').style.display='block';document.getElementById('aboutView').classList.add('open');}
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  if(view==='home')document.getElementById('navHome').classList.add('active');
+  if(view==='about'||view==='contact')document.getElementById('navAbout').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+document.getElementById('navHome').addEventListener('click',e=>{e.preventDefault();showView('home');});
+document.getElementById('navAbout').addEventListener('click',e=>{e.preventDefault();showView('about');});
+document.getElementById('navContact').addEventListener('click',e=>{e.preventDefault();showView('contact');});
+document.getElementById('homeLink').addEventListener('click',e=>{e.preventDefault();showView('home');});
+document.getElementById('footerAbout').addEventListener('click',e=>{e.preventDefault();showView('about');});
+document.getElementById('footerContact').addEventListener('click',e=>{e.preventDefault();showView('contact');});
+document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobileMenu').classList.add('open'));
+document.getElementById('mobileClose').addEventListener('click',closeMobile);
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');}
+document.querySelectorAll('.mob-nav').forEach(a=>{
+  a.addEventListener('click',e=>{e.preventDefault();closeMobile();showView(a.dataset.view);});
 });
-
-// Motion
-function renderMotion(){
-  document.getElementById('motionText').textContent=settings.motionText||'';
-  const grid=document.getElementById('motionGrid');grid.innerHTML='';
-  const mp=photos.filter(p=>p.categories&&p.categories.includes('motion'));
-  mp.forEach(p=>{
-    const isVid=p.isVideo||/\.(mp4|mov|webm)$/i.test(p.name||'');
-    const item=document.createElement('div');item.className='motion-item';
-    item.innerHTML=isVid?`<video src="${p.src||p.dataUrl}" controls playsinline></video>`:`<img src="${p.src||p.dataUrl}" loading="lazy"/>`;
-    grid.appendChild(item);
-  });
-  if(!mp.length)grid.innerHTML='<p style="color:var(--muted);font-size:0.82rem">No motion work added yet.</p>';
-}
-
-// Apply settings
-function applySettings(){
-  const s=settings;
-  const instaUrl='https://instagram.com/'+(s.insta||'').replace('@','');
-
-  // Logo
-  const logoLight=document.getElementById('navLogoLight');
-  const logoDark=document.getElementById('navLogoDark');
-  const logoText=document.getElementById('navLogoText');
-  const hasLight=!!(s.logoLightSrc);
-  const hasDark=!!(s.logoDarkSrc);
-
-  function updateLogo(){
-    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
-    if(hasLight||hasDark){
-      logoText.style.display='none';
-      // Show dark logo in dark mode if available, else light logo
-      if(isDark&&hasDark){
-        logoLight.style.display='none';
-        logoDark.style.display='block';logoDark.src=s.logoDarkSrc;
-      } else if(hasLight){
-        logoDark.style.display='none';
-        logoLight.style.display='block';logoLight.src=s.logoLightSrc;
-      } else if(hasDark){
-        logoLight.style.display='none';
-        logoDark.style.display='block';logoDark.src=s.logoDarkSrc;
-      }
-    } else {
-      logoLight.style.display='none';
-      logoDark.style.display='none';
-      logoText.style.display='block';
-      logoText.textContent=s.name||'Jabari Jacobs';
-    }
-  }
-  updateLogo();
-  // Re-run on theme toggle
-  document.getElementById('themeToggle').addEventListener('click',updateLogo);
-  document.getElementById('mobileTheme').addEventListener('click',updateLogo);
-
-  // Footer
-  const fLogoImg=document.getElementById('footerLogoImg'),fLogoText=document.getElementById('footerName');
-  if(hasLight){fLogoImg.src=s.logoLightSrc;fLogoImg.style.display='block';fLogoText.style.display='none';}
-  else{fLogoImg.style.display='none';fLogoText.style.display='block';fLogoText.textContent=s.name||'Jabari Jacobs';}
-  document.getElementById('footerCopy').textContent=`© ${new Date().getFullYear()} ${s.name||'Jabari Jacobs'}`;
-  document.getElementById('footerInsta').href=instaUrl;
-
-  // About
-  document.getElementById('aboutName').textContent=s.name||'Jabari Jacobs';
-  document.getElementById('aboutTagline').textContent=s.tagline||'Photographer & Director';
-  document.getElementById('aboutBio').textContent=s.about||'';
-  document.getElementById('aboutLocation').textContent=s.location||'';
-  document.getElementById('aboutEmail').textContent=s.email||'';
-  document.getElementById('aboutEmail').href='mailto:'+(s.email||'');
-  document.getElementById('aboutInsta').textContent=s.insta||'';
-  document.getElementById('aboutInsta').href=instaUrl;
-  const aPhoto=document.getElementById('aboutPhoto'),aPlaceholder=document.getElementById('aboutPhotoPlaceholder');
-  if(s.aboutPhotoSrc){aPhoto.src=s.aboutPhotoSrc;aPhoto.style.display='block';aPlaceholder.style.display='none';}
-  else{aPhoto.style.display='none';aPlaceholder.style.display='flex';}
-
-  // Contact
-  document.getElementById('contactIntro').textContent=s.contactIntro||'';
-  document.getElementById('contactEmail').textContent=s.email||'';
-  document.getElementById('contactEmail').href='mailto:'+(s.email||'');
-  document.getElementById('contactInsta').textContent=s.insta||'';
-  document.getElementById('contactInsta').href=instaUrl;
-  document.getElementById('contactLocation').textContent=s.location||'';
-  document.title=s.name||'Jabari Jacobs';
-}
 
 // Contact form
 document.getElementById('cfSubmit').addEventListener('click',()=>{
   const name=document.getElementById('cfName').value,email=document.getElementById('cfEmail').value,type=document.getElementById('cfType').value,msg=document.getElementById('cfMsg').value;
   if(!name||!email||!msg)return alert('Please fill in all fields.');
-  window.location.href=`mailto:${settings.email||'jabari@jabarijacobs.com'}?subject=Portfolio Inquiry — ${type||'Project'}&body=${encodeURIComponent('Hi Jabari,\n\n'+msg+'\n\nFrom: '+name+'\nEmail: '+email+(type?'\nProject type: '+type:''))}`;
+  window.location.href=`mailto:${settings.email||'jabari@jabarijacobs.com'}?subject=Portfolio Inquiry — ${type||'Project'}&body=${encodeURIComponent('Hi Jabari,\n\n'+msg+'\n\nFrom: '+name+'\nEmail: '+email+(type?'\nProject: '+type:''))}`;
 });
 
 // Lightbox
 function openLightbox(idx){
   lbIdx=idx;
   const p=visibleImgs[idx];
-  const isVid=p.isVideo||/\.(mp4|mov|webm)$/i.test(p.name||'');
-  const lbImg=document.getElementById('lbImg'),lbVid=document.getElementById('lbVideo');
-  if(isVid){lbImg.style.display='none';lbVid.style.display='block';lbVid.src=p.src||p.dataUrl;}
-  else{lbVid.style.display='none';lbImg.style.display='block';lbImg.src=p.src||p.dataUrl;}
+  const lbImg=document.getElementById('lbImg'),lbYt=document.getElementById('lbYt');
+  if(p.youtubeId){
+    lbImg.style.display='none';
+    lbYt.style.display='block';
+    lbYt.src=`https://www.youtube.com/embed/${p.youtubeId}?autoplay=1`;
+  } else {
+    lbYt.style.display='none';lbYt.src='';
+    lbImg.style.display='block';
+    lbImg.src=p.src||p.dataUrl||'';
+  }
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow='hidden';
 }
 document.getElementById('lbClose').addEventListener('click',closeLightbox);
 document.getElementById('lightbox').addEventListener('click',e=>{if(e.target===e.currentTarget)closeLightbox();});
-function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';document.getElementById('lbVideo').pause();}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow='';
+  document.getElementById('lbYt').src='';
+}
 document.getElementById('lbPrev').addEventListener('click',()=>{lbIdx=(lbIdx-1+visibleImgs.length)%visibleImgs.length;openLightbox(lbIdx);});
 document.getElementById('lbNext').addEventListener('click',()=>{lbIdx=(lbIdx+1)%visibleImgs.length;openLightbox(lbIdx);});
 document.addEventListener('keydown',e=>{
@@ -458,11 +503,8 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowRight'){lbIdx=(lbIdx+1)%visibleImgs.length;openLightbox(lbIdx);}
 });
 
-loadData().then(()=>{
-  applySettings();
-  renderGallery();
-  showView('home');
-});
+// Init
+loadData().then(()=>{applySettings();renderGallery();showView('home');});
 </script>
 </body>
 </html>
