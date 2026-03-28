@@ -252,9 +252,9 @@ main{padding:40px;overflow-y:auto}
           <label>Gap between photos</label>
           <select id="sGap" style="width:100%;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.85rem;outline:none;cursor:pointer">
             <option value="0">No gap</option>
-            <option value="4">Tight (4px)</option>
+            <option value="4" selected>Tight (4px — default)</option>
             <option value="8">Small (8px)</option>
-            <option value="12" selected>Medium (12px — default)</option>
+            <option value="12">Medium (12px)</option>
             <option value="20">Large (20px)</option>
             <option value="32">Very large (32px)</option>
           </select>
@@ -274,16 +274,28 @@ main{padding:40px;overflow-y:auto}
 
     <div class="settings-section">
       <h3>Logo</h3>
-      <div class="field">
-        <label>Upload Logo (PNG with transparent background works best)</label>
-        <img id="logoPreview" src="" class="img-preview-box" style="display:none;max-height:60px;width:auto"/>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
-          <input type="file" id="logoFile" accept="image/*" style="display:none"/>
-          <button class="btn btn-ghost" onclick="document.getElementById('logoFile').click()">Upload Logo</button>
-          <button class="btn btn-ghost" id="clearLogo" style="color:var(--red);border-color:var(--red)">Remove Logo</button>
+      <p style="font-size:0.68rem;color:var(--muted);margin-bottom:18px">Upload separate logos for light and dark mode. PNG with transparent background works best.</p>
+      <div class="field-row">
+        <div class="field">
+          <label>Light Mode Logo (shown on white background)</label>
+          <img id="logoLightPreview" src="" style="display:none;max-height:50px;width:auto;border-radius:4px;margin-bottom:10px;background:var(--surface2);padding:8px"/>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <input type="file" id="logoLightFile" accept="image/*" style="display:none"/>
+            <button class="btn btn-ghost" onclick="document.getElementById('logoLightFile').click()">Upload Light Logo</button>
+            <button class="btn btn-ghost" id="clearLogoLight" style="color:var(--red);border-color:var(--red)">Remove</button>
+          </div>
         </div>
-        <p style="font-size:0.65rem;color:var(--muted);margin-top:8px">When a logo is uploaded it replaces your name text in the nav and footer. Logo automatically inverts in dark mode.</p>
+        <div class="field">
+          <label>Dark Mode Logo (shown on black background)</label>
+          <img id="logoDarkPreview" src="" style="display:none;max-height:50px;width:auto;border-radius:4px;margin-bottom:10px;background:#333;padding:8px"/>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <input type="file" id="logoDarkFile" accept="image/*" style="display:none"/>
+            <button class="btn btn-ghost" onclick="document.getElementById('logoDarkFile').click()">Upload Dark Logo</button>
+            <button class="btn btn-ghost" id="clearLogoDark" style="color:var(--red);border-color:var(--red)">Remove</button>
+          </div>
+        </div>
       </div>
+      <p style="font-size:0.63rem;color:var(--muted);margin-top:4px">If only one is uploaded, it shows in both modes. If neither is uploaded, your name text shows instead.</p>
     </div>
 
     <div class="settings-section">
@@ -353,7 +365,7 @@ main{padding:40px;overflow-y:auto}
 const CATEGORIES=['advertising','editorial','music','food','motion','design','about'];
 const BUILD_HOOK='https://api.netlify.com/build_hooks/69c7f4dfa3795419eacb8ca2';
 const MAX_PHOTO_MB=3,MAX_VIDEO_MB=50;
-let photos=[],pending=[],settings={name:'Jabari Jacobs',tagline:'Photographer & Director',email:'jabari@jabarijacobs.com',about:'',contactIntro:'Available for advertising, editorial, music, and food projects worldwide.',location:'Los Angeles, CA',insta:'@jabarijacobs',motionText:'',logoSrc:'',aboutPhotoSrc:'',cols:3,gap:12};
+let photos=[],pending=[],settings={name:'Jabari Jacobs',tagline:'Photographer & Director',email:'jabari@jabarijacobs.com',about:'',contactIntro:'Available for advertising, editorial, music, and food projects worldwide.',location:'Los Angeles, CA',insta:'@jabarijacobs',motionText:'',logoLightSrc:'',logoDarkSrc:'',aboutPhotoSrc:'',cols:4,gap:4};
 let editingId=null,selectedPending=new Set();
 
 try{const d=localStorage.getItem('jj_photos');if(d)photos=JSON.parse(d);}catch(e){}
@@ -438,7 +450,7 @@ document.getElementById('bulkApply').addEventListener('click',()=>{
   selectedPending.clear();
   document.querySelectorAll('#bulkCats .bulk-pill').forEach(p=>p.classList.remove('selected'));
   renderPending();updateBulkBar();
-  showToast(`✓ Tags applied!`);
+  showToast(`✓ Tags applied to ${sel.length} categor${sel.length===1?'y':'ies'}!`);
 });
 document.getElementById('bulkClearSel').addEventListener('click',()=>{selectedPending.clear();renderPending();updateBulkBar();});
 
@@ -454,7 +466,7 @@ document.getElementById('confirmYes').addEventListener('click',()=>{
   pending=[];selectedPending.clear();
   savePhotos();renderPending();renderPhotoGrid();renderOverview();updateCounts();
   document.getElementById('confirmModal').classList.remove('open');
-  showToast(`✓ Added to portfolio!`);
+  showToast(`✓ ${photos.length} file${photos.length!==1?'s':''} in portfolio! Hit Publish to go live.`);
 });
 document.getElementById('confirmNo').addEventListener('click',()=>document.getElementById('confirmModal').classList.remove('open'));
 document.getElementById('clearPendingBtn').addEventListener('click',()=>{pending=[];selectedPending.clear();renderPending();updateCounts();});
@@ -514,7 +526,7 @@ function renderPhotoGrid(){
         <div style="display:flex;flex-wrap:wrap;gap:3px">${p.categories&&p.categories.length?p.categories.map(c=>`<span class="tag">${c}</span>`).join(''):'<span class="no-tag">Untagged</span>'}</div>
       </div>`;
     card.querySelector('.edit').addEventListener('click',()=>openTagModal(p.id,'photos'));
-    card.querySelector('.del').addEventListener('click',()=>{if(confirm(`Remove "${p.name}"?`)){photos=photos.filter(x=>x.id!==p.id);savePhotos();renderPhotoGrid();renderOverview();showToast('Removed.');}});
+    card.querySelector('.del').addEventListener('click',()=>{if(confirm(`Remove "${p.name}"?`)){photos=photos.filter(x=>x.id!==p.id);savePhotos();renderPhotoGrid();renderOverview();showToast('✓ Photo removed from portfolio.');}});
     grid.appendChild(card);
   });
 }
@@ -547,31 +559,42 @@ function loadSettings(){
   document.getElementById('sInsta').value=s.insta||'';
   document.getElementById('sMotion').value=s.motionText||'';
   document.getElementById('sContactIntro').value=s.contactIntro||'';
-  document.getElementById('sCols').value=s.cols||3;
-  document.getElementById('sGap').value=s.gap||12;
-  const lp=document.getElementById('logoPreview');
-  if(s.logoSrc){lp.src=s.logoSrc;lp.style.display='block';}else{lp.style.display='none';}
+  document.getElementById('sCols').value=s.cols||4;
+  document.getElementById('sGap').value=s.gap||4;
+  const llp=document.getElementById('logoLightPreview');
+  if(s.logoLightSrc){llp.src=s.logoLightSrc;llp.style.display='block';}else{llp.style.display='none';}
+  const ldp=document.getElementById('logoDarkPreview');
+  if(s.logoDarkSrc){ldp.src=s.logoDarkSrc;ldp.style.display='block';}else{ldp.style.display='none';}
   const ap=document.getElementById('aboutPhotoPreview');
   if(s.aboutPhotoSrc){ap.src=s.aboutPhotoSrc;ap.style.display='block';}else{ap.style.display='none';}
 }
 
-// Logo upload
-document.getElementById('logoFile').addEventListener('change',function(){
+// Logo uploads — light
+document.getElementById('logoLightFile').addEventListener('change',function(){
   const file=this.files[0];if(!file)return;
   const reader=new FileReader();
-  reader.onload=ev=>{settings.logoSrc=ev.target.result;const lp=document.getElementById('logoPreview');lp.src=ev.target.result;lp.style.display='block';showToast('Logo uploaded! Save settings to apply.');};
+  reader.onload=ev=>{settings.logoLightSrc=ev.target.result;const p=document.getElementById('logoLightPreview');p.src=ev.target.result;p.style.display='block';showToast('✓ Light mode logo uploaded! Hit Save Settings to apply.');};
   reader.readAsDataURL(file);
 });
-document.getElementById('clearLogo').addEventListener('click',()=>{settings.logoSrc='';document.getElementById('logoPreview').style.display='none';showToast('Logo removed.');});
+document.getElementById('clearLogoLight').addEventListener('click',()=>{settings.logoLightSrc='';document.getElementById('logoLightPreview').style.display='none';showToast('Light mode logo removed.');});
+
+// Logo uploads — dark
+document.getElementById('logoDarkFile').addEventListener('change',function(){
+  const file=this.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{settings.logoDarkSrc=ev.target.result;const p=document.getElementById('logoDarkPreview');p.src=ev.target.result;p.style.display='block';showToast('✓ Dark mode logo uploaded! Hit Save Settings to apply.');};
+  reader.readAsDataURL(file);
+});
+document.getElementById('clearLogoDark').addEventListener('click',()=>{settings.logoDarkSrc='';document.getElementById('logoDarkPreview').style.display='none';showToast('Dark mode logo removed.');});
 
 // About photo upload
 document.getElementById('aboutPhotoFile').addEventListener('change',function(){
   const file=this.files[0];if(!file)return;
   const reader=new FileReader();
-  reader.onload=ev=>{settings.aboutPhotoSrc=ev.target.result;const ap=document.getElementById('aboutPhotoPreview');ap.src=ev.target.result;ap.style.display='block';showToast('About photo uploaded! Save settings to apply.');};
+  reader.onload=ev=>{settings.aboutPhotoSrc=ev.target.result;const ap=document.getElementById('aboutPhotoPreview');ap.src=ev.target.result;ap.style.display='block';showToast('✓ About photo uploaded! Hit Save Settings to apply.');};
   reader.readAsDataURL(file);
 });
-document.getElementById('clearAboutPhoto').addEventListener('click',()=>{settings.aboutPhotoSrc='';document.getElementById('aboutPhotoPreview').style.display='none';showToast('About photo removed.');});
+document.getElementById('clearAboutPhoto').addEventListener('click',()=>{settings.aboutPhotoSrc='';document.getElementById('aboutPhotoPreview').style.display='none';showToast('✓ About photo removed.');});
 
 document.getElementById('saveSettings').addEventListener('click',()=>{
   settings.name=document.getElementById('sName').value;
@@ -582,10 +605,10 @@ document.getElementById('saveSettings').addEventListener('click',()=>{
   settings.insta=document.getElementById('sInsta').value;
   settings.motionText=document.getElementById('sMotion').value;
   settings.contactIntro=document.getElementById('sContactIntro').value;
-  settings.cols=parseInt(document.getElementById('sCols').value)||3;
-  settings.gap=parseInt(document.getElementById('sGap').value)||12;
+  settings.cols=parseInt(document.getElementById('sCols').value)||4;
+  settings.gap=parseInt(document.getElementById('sGap').value)||4;
   localStorage.setItem('jj_settings',JSON.stringify(settings));
-  showToast('Settings saved!');
+  showToast('✓ Settings saved! Hit Publish to make changes live.');
 });
 
 // PUBLISH
@@ -598,7 +621,7 @@ async function publishToNetlify(){
   try{
     await fetch(BUILD_HOOK,{method:'POST'});
     status.style.color='var(--green)';status.textContent='✓ Live in ~30 seconds!';
-    showToast('🚀 Deploying! Check your site in 30s');
+    showToast('🚀 Published! Your site will update in ~30 seconds.');
   }catch(e){
     status.style.color='var(--yellow)';status.textContent='Data exported — push via GitHub Desktop';
     showToast('Exported! Push in GitHub Desktop','var(--yellow)');

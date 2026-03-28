@@ -25,8 +25,10 @@ body{background:var(--bg);color:var(--text);font-family:'Karla',sans-serif;font-
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;transition:background 0.35s,border-color 0.35s;}
 .nav-logo{display:flex;align-items:center;text-decoration:none;color:var(--text);transition:color 0.35s}
-.nav-logo img{height:32px;width:auto;object-fit:contain;filter:var(--logo-filter,none)}
-[data-theme="dark"] .nav-logo img{filter:invert(1)}
+.nav-logo img.logo-light{height:32px;width:auto;object-fit:contain}
+.nav-logo img.logo-dark{height:32px;width:auto;object-fit:contain;display:none}
+[data-theme="dark"] .nav-logo img.logo-light{display:none}
+[data-theme="dark"] .nav-logo img.logo-dark{display:block}
 .nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;letter-spacing:0.14em;text-transform:uppercase}
 .nav-right{display:flex;align-items:center;gap:20px}
 .nav-links{display:flex;gap:22px;list-style:none}
@@ -51,11 +53,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);back
 .filter-count{font-size:0.58rem;opacity:0.6;margin-left:2px}
 
 /* GALLERY */
-.gallery-wrap{padding-top:10px}
-.gallery{columns:3;column-gap:12px;padding:12px 36px 100px}
-.gallery-item{break-inside:avoid;margin-bottom:12px;overflow:hidden;cursor:pointer;position:relative}
-.gallery-item img,.gallery-item video{display:block;width:100%;height:auto;transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)}
-.gallery-item:hover img,.gallery-item:hover video{transform:scale(1.03)}
+.gallery-wrap{padding-top:4px}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:4px 4px 80px}
+.gallery-item{overflow:hidden;cursor:pointer;position:relative;aspect-ratio:1;background:#eee}
+.gallery-item img,.gallery-item video{display:block;width:100%;height:100%;object-fit:cover;transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)}
+.gallery-item:hover img,.gallery-item:hover video{transform:scale(1.04)}
 .gallery-item.hidden{display:none}
 .img-tags{position:absolute;bottom:0;left:0;right:0;padding:8px;display:flex;flex-wrap:wrap;gap:3px;opacity:0;transform:translateY(4px);transition:all 0.25s;pointer-events:none}
 .gallery-item:hover .img-tags{opacity:1;transform:translateY(0)}
@@ -122,8 +124,7 @@ footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify
 .gallery-item{animation:fadeUp 0.45s ease both}
 
 @media(max-width:900px){
-  .gallery{columns:2;column-gap:8px;padding:8px 18px 80px}
-  .gallery-item{margin-bottom:8px}
+  .gallery{grid-template-columns:repeat(2,1fr);gap:3px;padding:3px 3px 60px}
   .filter-wrap{padding:8px 18px}
   nav{padding:0 18px}
   .nav-links,.theme-toggle{display:none}
@@ -133,8 +134,7 @@ footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify
   footer{padding:32px 20px}
 }
 @media(max-width:500px){
-  .gallery{columns:2;column-gap:6px;padding:6px 10px 60px}
-  .gallery-item{margin-bottom:6px}
+  .gallery{grid-template-columns:repeat(2,1fr);gap:2px;padding:2px 2px 60px}
 }
 </style>
 </head>
@@ -142,7 +142,8 @@ footer{border-top:1px solid var(--border);padding:40px 36px;display:flex;justify
 
 <nav>
   <a class="nav-logo" href="#" id="homeLink">
-    <img id="navLogoImg" src="" alt="Jabari Jacobs" style="display:none"/>
+    <img id="navLogoLight" class="logo-light" src="" alt="Jabari Jacobs" style="display:none"/>
+    <img id="navLogoDark" class="logo-dark" src="" alt="Jabari Jacobs" style="display:none"/>
     <span class="nav-logo-text" id="navLogoText">Jabari Jacobs</span>
   </a>
   <div class="nav-right">
@@ -358,13 +359,20 @@ function renderMotion(){
 function applySettings(){
   const s=settings;
   const instaUrl='https://instagram.com/'+(s.insta||'').replace('@','');
-  // Logo
-  const logoImg=document.getElementById('navLogoImg'),logoText=document.getElementById('navLogoText');
-  if(s.logoSrc){logoImg.src=s.logoSrc;logoImg.style.display='block';logoText.style.display='none';}
-  else{logoImg.style.display='none';logoText.style.display='block';logoText.textContent=s.name||'Jabari Jacobs';}
+  // Logo — separate light/dark
+  const logoLight=document.getElementById('navLogoLight'),logoDark=document.getElementById('navLogoDark'),logoText=document.getElementById('navLogoText');
+  const hasLight=!!s.logoLightSrc, hasDark=!!s.logoDarkSrc;
+  if(hasLight||hasDark){
+    logoText.style.display='none';
+    if(hasLight){logoLight.src=s.logoLightSrc;logoLight.style.display='';}else{logoLight.style.display='none';}
+    if(hasDark){logoDark.src=s.logoDarkSrc;logoDark.style.display='';}else{logoDark.style.display='none';}
+  }else{
+    logoLight.style.display='none';logoDark.style.display='none';logoText.style.display='';
+    logoText.textContent=s.name||'Jabari Jacobs';
+  }
   // Footer logo
   const fLogoImg=document.getElementById('footerLogoImg'),fLogoText=document.getElementById('footerName');
-  if(s.logoSrc){fLogoImg.src=s.logoSrc;fLogoImg.style.display='block';fLogoText.style.display='none';}
+  if(hasLight){fLogoImg.src=s.logoLightSrc;fLogoImg.style.display='block';fLogoText.style.display='none';}
   else{fLogoImg.style.display='none';fLogoText.style.display='block';fLogoText.textContent=s.name||'Jabari Jacobs';}
   document.getElementById('footerCopy').textContent=`© ${new Date().getFullYear()} ${s.name||'Jabari Jacobs'}`;
   document.getElementById('footerInsta').href=instaUrl;
