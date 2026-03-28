@@ -56,7 +56,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);back
 .filter-count{font-size:0.56rem;opacity:0.55;margin-left:2px}
 
 /* ── GALLERY ── */
-.gallery-wrap{padding-top:32px}
+.gallery-wrap{padding-top:20px}
 .gallery{columns:4;column-gap:4px;padding:0 48px 100px}
 .gallery-item{break-inside:avoid;margin-bottom:4px;cursor:pointer;position:relative}
 .gallery-item img,.gallery-item video{display:block;width:100%;height:auto;transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)}
@@ -454,7 +454,7 @@ function showView(view){
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
   if(view==='home')document.getElementById('navHome').classList.add('active');
   if(view==='about'||view==='contact')document.getElementById('navAbout').classList.add('active');
-  window.scrollTo(0,0);
+  window.scrollTo({top:0,behavior:'instant'});
 }
 
 document.getElementById('navHome').addEventListener('click',e=>{e.preventDefault();showView('home');});
