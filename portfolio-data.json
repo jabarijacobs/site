@@ -579,18 +579,6 @@
       "dateAdded": "2026-03-28T20:17:35.621Z"
     },
     {
-      "id": "p_1774745016846_nu7mrz3ikei",
-      "filename": "Herb 2.mov",
-      "title": "",
-      "src": "photos/Herb 2.mov",
-      "youtubeId": null,
-      "isYt": false,
-      "categories": [
-        "motion"
-      ],
-      "dateAdded": "2026-03-29T00:43:36.846Z"
-    },
-    {
       "id": "p_1774729055621_mr26hya1zs",
       "filename": "Herb0401.jpg",
       "title": "",
@@ -787,18 +775,6 @@
       "filename": "LYRIK 2.mov",
       "title": "",
       "src": "photos/LYRIK 2.mov",
-      "youtubeId": null,
-      "isYt": false,
-      "categories": [
-        "motion"
-      ],
-      "dateAdded": "2026-03-29T00:43:36.846Z"
-    },
-    {
-      "id": "p_1774745016846_43yarwvet6l",
-      "filename": "LYRIK 3 FINAL.mov",
-      "title": "",
-      "src": "photos/LYRIK 3 FINAL.mov",
       "youtubeId": null,
       "isYt": false,
       "categories": [
@@ -1402,6 +1378,26 @@
         "food"
       ],
       "dateAdded": "2026-03-28T20:17:35.621Z"
+    },
+    {
+      "id": "p_1774745860936_iutoxj9nz1h",
+      "filename": "Herb 2 small.mov",
+      "title": "",
+      "src": "photos/Herb 2 small.mov",
+      "youtubeId": null,
+      "isYt": false,
+      "categories": [],
+      "dateAdded": "2026-03-29T00:57:40.936Z"
+    },
+    {
+      "id": "p_1774745860936_k6rdqitq0i",
+      "filename": "LYRIK 3 FINAL smaller.mov",
+      "title": "",
+      "src": "photos/LYRIK 3 FINAL smaller.mov",
+      "youtubeId": null,
+      "isYt": false,
+      "categories": [],
+      "dateAdded": "2026-03-29T00:57:40.936Z"
     }
   ],
   "settings": {
