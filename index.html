@@ -37,7 +37,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);back
 .nav-links{display:flex;gap:36px;list-style:none}
 .nav-links a{font-size:0.82rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:1;transition:opacity 0.2s}
 .nav-links a:hover,.nav-links a.active{opacity:1}
-.theme-toggle{background:transparent;border:1px solid var(--pill-idle-border);border-radius:20px;cursor:pointer;font-family:var(--font-body);font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--text);padding:6px 14px;transition:all 0.2s}
+.theme-toggle{background:transparent;border:1px solid var(--pill-idle-border);border-radius:20px;cursor:pointer;font-size:1rem;padding:5px 12px;transition:all 0.2s;line-height:1}
 .theme-toggle:hover{border-color:var(--text)}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
 .hamburger span{display:block;width:22px;height:1.5px;background:var(--text);transition:background 0.3s}
@@ -162,7 +162,7 @@ footer{border-top:1px solid var(--border);padding:40px 48px;display:flex;justify
       <li><a href="#" class="active" id="navHome">Overview</a></li>
       <li><a href="#" id="navAbout">About / Contact</a></li>
     </ul>
-    <button class="theme-toggle" id="themeToggle" title="Toggle dark/light">Dark</button>
+    <button class="theme-toggle" id="themeToggle" title="Toggle dark/light">☀️</button>
   </div>
   <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
 </nav>
@@ -273,7 +273,7 @@ const savedTheme=localStorage.getItem('jj_theme')||'light';
 html.setAttribute('data-theme',savedTheme);
 function updateToggleLabel(){
   const isDark=html.getAttribute('data-theme')==='dark';
-  document.getElementById('themeToggle').textContent=isDark?'Light':'Dark';
+  document.getElementById('themeToggle').textContent=isDark?'☀️':'🌙';
 }
 function toggleTheme(){
   const n=html.getAttribute('data-theme')==='dark'?'light':'dark';
