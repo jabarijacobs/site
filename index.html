@@ -294,10 +294,12 @@ function applySettings(){
   updateFooterLogo();
   document.getElementById('footerCopy').textContent=`© ${new Date().getFullYear()} ${s.name||'Jabari Jacobs'}`;
   document.getElementById('footerInsta').href=instaUrl;
-  // About left col
-  document.getElementById('aboutLocation2').textContent=s.location||'Los Angeles, CA';
-  document.getElementById('aboutEmail2').textContent=s.email||'';
-  document.getElementById('aboutEmail2').href='mailto:'+(s.email||'');
+  // About left col — split by comma into separate lines
+  const locEl=document.getElementById('aboutLocation2');
+  locEl.innerHTML=(s.location||'Los Angeles, CA').split(',').map(l=>`<span style="display:block">${l.trim()}</span>`).join('');
+  const emailEl=document.getElementById('aboutEmail2');
+  const emails=(s.email||'').split(',').map(e=>e.trim()).filter(Boolean);
+  emailEl.innerHTML=emails.map(e=>`<a href="mailto:${e}" style="display:block;text-decoration:underline;text-underline-offset:3px;color:var(--text)">${e}</a>`).join('');
   document.getElementById('aboutInsta2').textContent=s.insta||'';
   document.getElementById('aboutInsta2').href=instaUrl;
   // About photo
@@ -404,7 +406,22 @@ function renderGallery(){
       const thumb=`https://img.youtube.com/vi/${p.youtubeId}/hqdefault.jpg`;
       item.innerHTML=`<div class="yt-thumb"><img src="${thumb}" alt="${p.title||'Video'}" loading="lazy"/><div class="yt-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div></div><div class="img-tags">${cats.map(c=>`<span class="img-tag">${c}</span>`).join('')}</div>`;
     } else if(isVid){
-      item.innerHTML=`<video src="${p.src}" autoplay muted loop playsinline preload="auto" style="width:100%;display:block"></video><div class="img-tags">${cats.map(c=>`<span class="img-tag">${c}</span>`).join('')}</div>`;
+      const vid=document.createElement('video');
+      vid.src=p.src;
+      vid.muted=true;
+      vid.autoplay=true;
+      vid.loop=true;
+      vid.playsInline=true;
+      vid.setAttribute('muted','');
+      vid.setAttribute('playsinline','');
+      vid.setAttribute('autoplay','');
+      vid.style.width='100%';
+      vid.style.display='block';
+      item.appendChild(vid);
+      const tags=document.createElement('div');
+      tags.className='img-tags';
+      tags.innerHTML=cats.map(c=>`<span class="img-tag">${c}</span>`).join('');
+      item.appendChild(tags);
     } else {
       item.innerHTML=`<img src="${p.src}" alt="${p.filename||p.name||''}" loading="lazy"/><div class="img-tags">${cats.map(c=>`<span class="img-tag">${c}</span>`).join('')}</div>`;
     }
