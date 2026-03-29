@@ -72,6 +72,7 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
 /* PHOTO GRID */
 .photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px}
 .photo-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative;cursor:grab}
+.photo-card.selected-card{border:2px solid var(--accent);box-shadow:0 0 0 2px rgba(200,184,154,0.3)}
 .photo-card.dragging{opacity:0.35;border:2px dashed var(--accent)}
 .photo-card.drag-over{border:2px solid var(--accent);transform:scale(1.02)}
 .photo-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--surface2)}
@@ -603,12 +604,12 @@ function renderPhotoGrid(){
   grid.style.display=filtered.length?'grid':'none';
   empty.style.display=filtered.length?'none':'block';
   grid.innerHTML='';
-  let dragSrc=null;
+  let dragSrcId=null;
   filtered.forEach(p=>{
     const globalIdx=real.indexOf(p)+1;
     const isSel=manageSelected.has(p.id);
     const card=document.createElement('div');
-    card.className='photo-card'+(isSel?' drag-over':'');
+    card.className='photo-card'+(isSel?' selected-card':'');
     card.draggable=true;card.dataset.id=p.id;
     card.innerHTML=`
       <div style="position:absolute;top:5px;left:5px;width:22px;height:22px;border-radius:50%;background:${isSel?'var(--accent)':'rgba(0,0,0,0.55)'};border:2px solid ${isSel?'var(--accent)':'rgba(255,255,255,0.4)'};display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:${isSel?'#0f0f0f':'#fff'};z-index:3">${isSel?'✓':globalIdx}</div>
@@ -627,17 +628,54 @@ function renderPhotoGrid(){
       if(manageSelected.has(p.id))manageSelected.delete(p.id);else manageSelected.add(p.id);
       renderPhotoGrid();updateManageBulkBar();
     });
-    // Drag to reorder
-    card.addEventListener('dragstart',()=>{dragSrc=p.id;setTimeout(()=>card.classList.add('dragging'),0);});
-    card.addEventListener('dragend',()=>{card.classList.remove('dragging');grid.querySelectorAll('.photo-card').forEach(c=>c.classList.remove('drag-over'));});
-    card.addEventListener('dragover',e=>{e.preventDefault();if(dragSrc!==p.id)card.classList.add('drag-over');});
+    // Drag to reorder — supports multi-select drag
+    card.addEventListener('dragstart',e=>{
+      dragSrcId=p.id;
+      // If dragging an unselected card, clear selection and drag just this one
+      if(!manageSelected.has(p.id)){
+        manageSelected.clear();
+        manageSelected.add(p.id);
+        updateManageBulkBar();
+      }
+      // Show count badge on drag
+      const ids=[...manageSelected];
+      e.dataTransfer.setData('text/plain', ids.join(','));
+      setTimeout(()=>{
+        grid.querySelectorAll('.photo-card').forEach(c=>{
+          if(manageSelected.has(c.dataset.id))c.classList.add('dragging');
+        });
+      },0);
+    });
+    card.addEventListener('dragend',()=>{
+      grid.querySelectorAll('.photo-card').forEach(c=>{
+        c.classList.remove('dragging');
+        c.classList.remove('drag-over');
+      });
+    });
+    card.addEventListener('dragover',e=>{
+      e.preventDefault();
+      if(!manageSelected.has(p.id))card.classList.add('drag-over');
+    });
     card.addEventListener('dragleave',()=>card.classList.remove('drag-over'));
     card.addEventListener('drop',e=>{
-      e.preventDefault();card.classList.remove('drag-over');if(dragSrc===p.id)return;
-      const fi=photos.findIndex(x=>x.id===dragSrc),ti=photos.findIndex(x=>x.id===p.id);
-      if(fi<0||ti<0)return;
-      const moved=photos.splice(fi,1)[0];photos.splice(ti,0,moved);
-      savePhotos();renderPhotoGrid();showToast('✓ Order updated!');
+      e.preventDefault();
+      card.classList.remove('drag-over');
+      if(manageSelected.has(p.id))return; // dropping on a selected card, ignore
+      const targetIdx=photos.findIndex(x=>x.id===p.id);
+      if(targetIdx<0)return;
+      // Pull selected photos out in their current order
+      const selectedIds=[...manageSelected];
+      const selectedPhotos=photos.filter(x=>selectedIds.includes(x.id));
+      // Remove them from array
+      const remaining=photos.filter(x=>!selectedIds.includes(x.id));
+      // Find new insert position in remaining array
+      const newTargetIdx=remaining.findIndex(x=>x.id===p.id);
+      // Insert after target
+      remaining.splice(newTargetIdx+1,0,...selectedPhotos);
+      photos=remaining;
+      manageSelected.clear();
+      savePhotos();renderPhotoGrid();updateManageBulkBar();
+      showToast(`✓ ${selectedPhotos.length>1?selectedPhotos.length+' photos moved':'Order updated!'}`);
     });
     card.querySelector('.ov-edit').addEventListener('click',()=>openTagModal(p.id));
     card.querySelector('.ov-del').addEventListener('click',()=>{if(confirm(`Remove "${p.filename}"?`)){photos=photos.filter(x=>x.id!==p.id);savePhotos();renderPhotoGrid();renderOverview();showToast('✓ Removed.');}});
