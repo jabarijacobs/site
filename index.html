@@ -409,14 +409,25 @@ function renderGallery(){
       const vid=document.createElement('video');
       vid.src=p.src;
       vid.muted=true;
-      vid.autoplay=true;
       vid.loop=true;
       vid.playsInline=true;
       vid.setAttribute('muted','');
       vid.setAttribute('playsinline','');
-      vid.setAttribute('autoplay','');
+      vid.setAttribute('loop','');
+      vid.preload='auto';
       vid.style.width='100%';
       vid.style.display='block';
+      // Use IntersectionObserver for iOS Safari autoplay
+      const observer=new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            vid.play().catch(()=>{});
+          } else {
+            vid.pause();
+          }
+        });
+      },{threshold:0.25});
+      observer.observe(vid);
       item.appendChild(vid);
       const tags=document.createElement('div');
       tags.className='img-tags';
