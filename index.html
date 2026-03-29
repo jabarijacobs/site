@@ -37,8 +37,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);back
 .nav-links{display:flex;gap:36px;list-style:none}
 .nav-links a{font-size:0.82rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;color:var(--text);opacity:1;transition:opacity 0.2s}
 .nav-links a:hover,.nav-links a.active{opacity:1}
-.theme-toggle{background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--text);opacity:0.3;transition:opacity 0.2s;padding:4px;line-height:1}
-.theme-toggle:hover{opacity:0.7}
+.theme-toggle{background:transparent;border:1px solid var(--pill-idle-border);border-radius:20px;cursor:pointer;font-family:var(--font-body);font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--text);padding:6px 14px;transition:all 0.2s}
+.theme-toggle:hover{border-color:var(--text)}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
 .hamburger span{display:block;width:22px;height:1.5px;background:var(--text);transition:background 0.3s}
 .mobile-menu{display:none;position:fixed;inset:0;background:var(--overlay);z-index:90;flex-direction:column;align-items:center;justify-content:center;gap:36px}
@@ -162,7 +162,7 @@ footer{border-top:1px solid var(--border);padding:40px 48px;display:flex;justify
       <li><a href="#" class="active" id="navHome">Overview</a></li>
       <li><a href="#" id="navAbout">About / Contact</a></li>
     </ul>
-    <button class="theme-toggle" id="themeToggle" title="Toggle dark/light">◐</button>
+    <button class="theme-toggle" id="themeToggle" title="Toggle dark/light">Dark</button>
   </div>
   <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
 </nav>
@@ -271,15 +271,21 @@ async function loadData(){
 const html=document.documentElement;
 const savedTheme=localStorage.getItem('jj_theme')||'light';
 html.setAttribute('data-theme',savedTheme);
+function updateToggleLabel(){
+  const isDark=html.getAttribute('data-theme')==='dark';
+  document.getElementById('themeToggle').textContent=isDark?'Light':'Dark';
+}
 function toggleTheme(){
   const n=html.getAttribute('data-theme')==='dark'?'light':'dark';
   html.setAttribute('data-theme',n);
   localStorage.setItem('jj_theme',n);
   updateLogo();
   updateFooterLogo();
+  updateToggleLabel();
 }
 document.getElementById('themeToggle').addEventListener('click',toggleTheme);
 document.getElementById('mobileTheme').addEventListener('click',()=>{toggleTheme();closeMobile();});
+updateToggleLabel();
 
 // Apply settings
 function applySettings(){
