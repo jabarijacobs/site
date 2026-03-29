@@ -310,7 +310,7 @@ function applySettings(){
   document.getElementById('aboutBio').textContent=s.about||'Los Angeles-based photographer and director working across advertising, editorial, music, and food.';
   // Clients
   const cs=document.getElementById('clientSection'),cl=document.getElementById('clientList');
-  if(s.clients&&s.clients.length){cs.style.display='block';cl.innerHTML=s.clients.map(c=>`<span>${c}</span>`).join('');}
+  if(s.clients&&s.clients.length){cs.style.display='block';cl.innerHTML=[...s.clients].sort((a,b)=>a.localeCompare(b)).map(c=>`<span>${c}</span>`).join('');}
   else cs.style.display='none';
   // Filters
   buildFilters();
