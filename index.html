@@ -382,6 +382,7 @@ function setFilter(cat){
   currentFilter=cat;
   document.querySelectorAll('.filter-pill').forEach(p=>p.classList.toggle('active',p.dataset.cat===cat));
   renderGallery();
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 // Gallery
