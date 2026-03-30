@@ -253,6 +253,15 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
         <option value="__untagged">⚠ Untagged</option>
       </select>
       <button class="btn btn-ghost" id="sortBtn" style="font-size:0.65rem;padding:7px 12px">Sort A–Z</button>
+      <select class="filter-sel" id="sortSelect" style="font-size:0.65rem">
+        <option value="">⇅ Sort / Arrange</option>
+        <option value="az">Sort A–Z</option>
+        <option value="cat">Sort by Category</option>
+        <option value="reverse">Reverse Order</option>
+        <option value="random">Full Random</option>
+        <option value="interleave">Interleave (Strict)</option>
+        <option value="interleave-random">Interleave (Random)</option>
+      </select>
       <button class="btn btn-ghost" id="manageSelAllBtn" style="font-size:0.65rem;padding:7px 12px">Select All</button>
     </div>
 
@@ -590,6 +599,7 @@ function addPhoto(keepOpen){
 document.getElementById('newFilename').addEventListener('keydown',e=>{if(e.key==='Enter')addPhoto(true);});
 
 // PHOTO GRID with drag-to-reorder
+let dragSrcId=null;
 function renderPhotoGrid(){
   const grid=document.getElementById('photoGrid'),empty=document.getElementById('photoEmpty');
   const q=document.getElementById('searchBox').value.toLowerCase();
@@ -604,7 +614,6 @@ function renderPhotoGrid(){
   grid.style.display=filtered.length?'grid':'none';
   empty.style.display=filtered.length?'none':'block';
   grid.innerHTML='';
-  let dragSrcId=null;
   filtered.forEach(p=>{
     const globalIdx=real.indexOf(p)+1;
     const isSel=manageSelected.has(p.id);
@@ -720,6 +729,79 @@ document.getElementById('sortBtn').addEventListener('click',()=>{
   const yts=photos.filter(p=>p.isYt);
   const real=photos.filter(p=>!p.isYt).sort((a,b)=>a.filename.localeCompare(b.filename));
   photos=[...real,...yts];savePhotos();renderPhotoGrid();showToast('✓ Sorted A–Z!');
+});
+document.getElementById('sortSelect').addEventListener('change',function(){
+  const val=this.value;
+  if(!val)return;
+  this.value='';
+  const yts=photos.filter(p=>p.isYt);
+  let real=photos.filter(p=>!p.isYt);
+  const SORT_CATS=['advertising','editorial','music','food','motion','design'];
+
+  if(val==='az'){
+    real=real.sort((a,b)=>a.filename.localeCompare(b.filename));
+    showToast('✓ Sorted A–Z!');
+  } else if(val==='cat'){
+    real=real.sort((a,b)=>{
+      const ac=(a.categories&&a.categories[0])||'zzz';
+      const bc=(b.categories&&b.categories[0])||'zzz';
+      const ai=SORT_CATS.indexOf(ac); const bi=SORT_CATS.indexOf(bc);
+      return (ai===-1?99:ai)-(bi===-1?99:bi);
+    });
+    showToast('✓ Sorted by category!');
+  } else if(val==='reverse'){
+    real=real.reverse();
+    showToast('✓ Reversed!');
+  } else if(val==='random'){
+    for(let i=real.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[real[i],real[j]]=[real[j],real[i]];}
+    showToast('✓ Randomized!');
+  } else if(val==='interleave'){
+    // Strict: 1st of each cat, then 2nd of each cat, etc.
+    const buckets={};
+    SORT_CATS.forEach(c=>buckets[c]=[]);
+    const uncategorized=[];
+    real.forEach(p=>{
+      const cat=(p.categories&&p.categories[0])||null;
+      if(cat&&buckets[cat])buckets[cat].push(p);
+      else uncategorized.push(p);
+    });
+    const interleaved=[];
+    let hasMore=true;let i=0;
+    while(hasMore){
+      hasMore=false;
+      SORT_CATS.forEach(c=>{if(buckets[c][i]){interleaved.push(buckets[c][i]);hasMore=true;}});
+      i++;
+    }
+    real=[...interleaved,...uncategorized];
+    showToast('✓ Interleaved (strict)!');
+  } else if(val==='interleave-random'){
+    // Random within each category, then interleave
+    const buckets={};
+    SORT_CATS.forEach(c=>buckets[c]=[]);
+    const uncategorized=[];
+    real.forEach(p=>{
+      const cat=(p.categories&&p.categories[0])||null;
+      if(cat&&buckets[cat])buckets[cat].push(p);
+      else uncategorized.push(p);
+    });
+    // Shuffle each bucket
+    SORT_CATS.forEach(c=>{
+      const b=buckets[c];
+      for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}
+    });
+    const interleaved=[];
+    let hasMore=true;let i=0;
+    while(hasMore){
+      hasMore=false;
+      SORT_CATS.forEach(c=>{if(buckets[c][i]){interleaved.push(buckets[c][i]);hasMore=true;}});
+      i++;
+    }
+    real=[...interleaved,...uncategorized];
+    showToast('✓ Interleaved (random)!');
+  }
+
+  photos=[...real,...yts];
+  savePhotos();renderPhotoGrid();
 });
 
 // TAG MODAL
