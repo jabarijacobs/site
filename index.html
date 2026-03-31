@@ -135,7 +135,7 @@ footer{border-top:1px solid var(--border);padding:40px 48px;display:flex;justify
 @media(max-width:900px){
   .gallery{columns:2;column-gap:3px}
   .gallery-item{margin-bottom:3px}
-  .gallery-wrap{padding:3px;padding-top:calc(70px + 49px + 3px)}
+  .gallery-wrap{padding:3px;padding-top:calc(70px + 100px + 3px)}
   .filter-wrap{padding:10px 20px;top:70px}
   nav{padding:0 20px;height:70px}
   .nav-logo-text{font-size:1.6rem}
@@ -391,18 +391,20 @@ function setFilter(cat){
 // JS Masonry layout — left to right
 function layoutMasonry(){
   const gallery=document.getElementById('gallery');
+  const wrap=gallery.parentElement;
   const items=[...gallery.querySelectorAll('.gallery-item')];
   if(!items.length)return;
   const gap=settings.galleryGap!=null?settings.galleryGap:4;
   const cols=window.innerWidth>900?(settings.galleryCols||4):2;
-  const wrapW=gallery.parentElement.clientWidth-(gap*2);
+  const isMobile=window.innerWidth<=900;
+  const wrapPad=isMobile?3:gap;
+  const wrapW=wrap.clientWidth-(wrapPad*2);
   const colW=(wrapW-(gap*(cols-1)))/cols;
   const colHeights=new Array(cols).fill(0);
   items.forEach(item=>{
-    // Find shortest column
     const minH=Math.min(...colHeights);
     const col=colHeights.indexOf(minH);
-    const x=col*(colW+gap);
+    const x=wrapPad+col*(colW+gap);
     const y=minH;
     item.style.width=colW+'px';
     item.style.left=x+'px';
