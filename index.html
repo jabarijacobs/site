@@ -398,7 +398,7 @@ function layoutMasonry(){
   const cols=window.innerWidth>900?(settings.galleryCols||4):2;
   const isMobile=window.innerWidth<=900;
   const wrapPad=isMobile?3:gap;
-  const navFilterH=isMobile?170:0;
+  const navFilterH=isMobile?80:0;
   const wrapW=wrap.clientWidth-(wrapPad*2);
   const colW=(wrapW-(gap*(cols-1)))/cols;
   const colHeights=new Array(cols).fill(0);
