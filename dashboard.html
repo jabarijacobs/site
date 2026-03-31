@@ -631,14 +631,17 @@ function renderPhotoGrid(){
         <div class="card-fn">${p.title||p.filename}</div>
         <div style="display:flex;flex-wrap:wrap;gap:3px">${p.categories&&p.categories.length?p.categories.map(c=>`<span class="tag">${c}</span>`).join(''):'<span class="no-tag">Untagged</span>'}</div>
       </div>`;
+    let isDragging=false;
     // Click to select/deselect
     card.addEventListener('click',e=>{
+      if(isDragging){isDragging=false;return;}
       if(e.target.classList.contains('ov-edit')||e.target.classList.contains('ov-del'))return;
       if(manageSelected.has(p.id))manageSelected.delete(p.id);else manageSelected.add(p.id);
       renderPhotoGrid();updateManageBulkBar();
     });
     // Drag to reorder — supports multi-select drag
     card.addEventListener('dragstart',e=>{
+      isDragging=true;
       dragSrcId=p.id;
       // If dragging an unselected card, clear selection and drag just this one
       if(!manageSelected.has(p.id)){
@@ -646,7 +649,6 @@ function renderPhotoGrid(){
         manageSelected.add(p.id);
         updateManageBulkBar();
       }
-      // Show count badge on drag
       const ids=[...manageSelected];
       e.dataTransfer.setData('text/plain', ids.join(','));
       setTimeout(()=>{
@@ -679,8 +681,8 @@ function renderPhotoGrid(){
       const remaining=photos.filter(x=>!selectedIds.includes(x.id));
       // Find new insert position in remaining array
       const newTargetIdx=remaining.findIndex(x=>x.id===p.id);
-      // Insert after target
-      remaining.splice(newTargetIdx+1,0,...selectedPhotos);
+      // Insert before target
+      remaining.splice(newTargetIdx,0,...selectedPhotos);
       photos=remaining;
       manageSelected.clear();
       savePhotos();renderPhotoGrid();updateManageBulkBar();
