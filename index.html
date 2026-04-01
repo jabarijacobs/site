@@ -519,7 +519,7 @@ function showView(view){
 
 document.getElementById('navHome').addEventListener('click',e=>{e.preventDefault();showView('home');});
 document.getElementById('navAbout').addEventListener('click',e=>{e.preventDefault();showView('about');});
-document.getElementById('homeLink').addEventListener('click',e=>{e.preventDefault();currentFilter='all';showView('home');renderGallery();window.scrollTo({top:0,behavior:'instant'});});
+document.getElementById('homeLink').addEventListener('click',e=>{e.preventDefault();currentFilter='all';document.querySelectorAll('.filter-pill').forEach(p=>p.classList.toggle('active',p.dataset.cat==='all'));showView('home');renderGallery();window.scrollTo({top:0,behavior:'instant'});});
 document.getElementById('footerAbout').addEventListener('click',e=>{e.preventDefault();showView('about');});
 document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobileMenu').classList.add('open'));
 document.getElementById('mobileClose').addEventListener('click',closeMobile);
