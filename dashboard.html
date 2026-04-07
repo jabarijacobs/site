@@ -144,6 +144,7 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
   <div class="sidebar-footer">
     <button class="publish-btn" id="publishBtn">🚀 Publish to Live Site</button>
     <div id="publishStatus">Ready to publish</div>
+  <div id="ghStatus" style="font-size:0.6rem;text-align:center;color:var(--muted);margin-top:4px">Not connected</div>
     <a class="view-btn" href="https://site-9y7.pages.dev" target="_blank">🌐 View Live Site</a>
     <button class="export-btn" id="exportBtn">⬇ Export Data Only</button>
   </div>
@@ -253,15 +254,6 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
         <option value="__untagged">⚠ Untagged</option>
       </select>
       <button class="btn btn-ghost" id="sortBtn" style="font-size:0.65rem;padding:7px 12px">Sort A–Z</button>
-      <select class="filter-sel" id="sortSelect" style="font-size:0.65rem">
-        <option value="">⇅ Sort / Arrange</option>
-        <option value="az">Sort A–Z</option>
-        <option value="cat">Sort by Category</option>
-        <option value="reverse">Reverse Order</option>
-        <option value="random">Full Random</option>
-        <option value="interleave">Interleave (Strict)</option>
-        <option value="interleave-random">Interleave (Random)</option>
-      </select>
       <button class="btn btn-ghost" id="manageSelAllBtn" style="font-size:0.65rem;padding:7px 12px">Select All</button>
     </div>
 
@@ -305,6 +297,21 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
   <div class="page" id="page-settings">
     <div class="page-title">Site Settings</div>
     <div class="page-sub">Customize your portfolio. Hit Save Settings when done.</div>
+
+    <div class="sec" style="border-color:var(--accent)">
+      <h3>🔑 GitHub Connection</h3>
+      <p style="font-size:0.74rem;color:var(--muted);margin-bottom:14px;line-height:1.6">Connect to GitHub so you can publish from anywhere without downloading files. Your token is stored only in this browser.</p>
+      <div class="field">
+        <label>GitHub Personal Access Token</label>
+        <div style="display:flex;gap:8px">
+          <input id="ghTokenInput" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="flex:1;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:monospace;font-size:0.78rem;outline:none"/>
+          <button class="btn btn-primary" id="ghTokenSave" style="white-space:nowrap">Save & Connect</button>
+          <button class="btn btn-ghost" id="ghTokenClear" style="white-space:nowrap;color:var(--red);border-color:var(--red)">Clear</button>
+        </div>
+        <p style="font-size:0.62rem;color:var(--muted);margin-top:6px">Generate at github.com → Settings → Developer Settings → Personal Access Tokens → Tokens (classic). Check the <strong>repo</strong> scope.</p>
+      </div>
+      <div id="ghConnectionStatus" style="font-size:0.72rem;margin-top:8px"></div>
+    </div>
 
     <div class="sec">
       <h3>Identity</h3>
@@ -440,6 +447,8 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
 
 <script>
 const BUILD_HOOK='https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/cf348d16-d276-48a7-a908-00100546b1f2';
+const GITHUB_REPO='jabarijacobs/site';
+const GITHUB_FILE='portfolio-data.json';
 const ALL_CATS=['advertising','editorial','music','food','motion','design'];
 
 let photos=[],settings={
@@ -450,11 +459,110 @@ let photos=[],settings={
   clients:[],filters:[...ALL_CATS]
 };
 let editingId=null;
+let githubToken=localStorage.getItem('jj_gh_token')||'';
+let fileSha='';
 
-try{const d=localStorage.getItem('jj_photos');if(d)photos=JSON.parse(d);}catch(e){}
-try{const s=localStorage.getItem('jj_settings');if(s)settings={...settings,...JSON.parse(s)};}catch(e){}
+// GitHub API helpers
+async function ghGet(path){
+  const r=await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`,{
+    headers:{Authorization:`token ${githubToken}`,'Accept':'application/vnd.github.v3+json'}
+  });
+  return r.json();
+}
+async function ghPut(path,content,sha,message){
+  const r=await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`,{
+    method:'PUT',
+    headers:{Authorization:`token ${githubToken}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify({message,content:btoa(unescape(encodeURIComponent(content))),sha})
+  });
+  return r.json();
+}
 
-function savePhotos(){localStorage.setItem('jj_photos',JSON.stringify(photos));}
+// Load data from GitHub
+async function loadFromGitHub(){
+  if(!githubToken){loadFromLocal();return;}
+  try{
+    showToast('Loading from GitHub...','var(--accent)');
+    const file=await ghGet(GITHUB_FILE);
+    if(file.content){
+      fileSha=file.sha;
+      const data=JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,'')))));
+      photos=data.photos||[];
+      if(data.settings)settings={...settings,...data.settings};
+      // Also save to localStorage as backup
+      localStorage.setItem('jj_photos',JSON.stringify(photos));
+      localStorage.setItem('jj_settings',JSON.stringify(settings));
+      showToast('✓ Loaded from GitHub!');
+      renderOverview();renderPhotoGrid();
+      document.getElementById('ghStatus').textContent='✓ Connected to GitHub';
+      document.getElementById('ghStatus').style.color='var(--green)';
+    }
+  }catch(e){
+    showToast('GitHub load failed, using local data','var(--yellow)');
+    loadFromLocal();
+  }
+}
+
+function loadFromLocal(){
+  try{const d=localStorage.getItem('jj_photos');if(d)photos=JSON.parse(d);}catch(e){}
+  try{const s=localStorage.getItem('jj_settings');if(s)settings={...settings,...JSON.parse(s)};}catch(e){}
+}
+
+function savePhotos(){
+  localStorage.setItem('jj_photos',JSON.stringify(photos));
+}
+
+// Publish directly to GitHub
+async function publishToGitHub(){
+  const btn=document.getElementById('publishBtn'),status=document.getElementById('publishStatus');
+  if(!githubToken){
+    showToast('Enter your GitHub token first!','var(--red)');
+    showPage('settings');
+    document.getElementById('ghTokenInput').focus();
+    return;
+  }
+  btn.disabled=true;btn.textContent='⏳ Publishing...';
+  status.style.color='var(--accent)';status.textContent='Committing to GitHub...';
+  
+  const data={
+    photos:photos.map(p=>({
+      id:p.id,filename:p.filename||'',title:p.title||'',
+      src:p.isYt?'':`photos/${p.filename}`,
+      youtubeId:p.youtubeId||null,isYt:!!p.isYt,
+      categories:p.categories||[],dateAdded:p.dateAdded
+    })),settings
+  };
+  const content=JSON.stringify(data,null,2);
+  
+  try{
+    // Get latest SHA if we don't have it
+    if(!fileSha){
+      const file=await ghGet(GITHUB_FILE);
+      fileSha=file.sha||'';
+    }
+    const result=await ghPut(GITHUB_FILE,content,fileSha,'Dashboard update');
+    if(result.content){
+      fileSha=result.content.sha;
+      status.style.color='var(--green)';
+      status.textContent='✓ Live in ~60 seconds';
+      btn.textContent='✓ Published!';
+      btn.style.background='var(--green)';
+      showToast('🚀 Published! Cloudflare deploying now...');
+      setTimeout(()=>{btn.textContent='🚀 Publish to Live Site';btn.style.background='';btn.disabled=false;},3000);
+    } else {
+      throw new Error(result.message||'Unknown error');
+    }
+  }catch(e){
+    status.style.color='var(--red)';
+    status.textContent='Failed: '+e.message;
+    btn.textContent='🚀 Publish to Live Site';
+    btn.style.background='';
+    btn.disabled=false;
+    showToast('Publish failed: '+e.message,'var(--red)');
+  }
+}
+
+document.getElementById('publishBtn').addEventListener('click',publishToGitHub);
 function showToast(msg,bg='var(--green)'){
   const t=document.getElementById('toast');t.textContent=msg;t.style.background=bg;
   t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);
@@ -599,7 +707,6 @@ function addPhoto(keepOpen){
 document.getElementById('newFilename').addEventListener('keydown',e=>{if(e.key==='Enter')addPhoto(true);});
 
 // PHOTO GRID with drag-to-reorder
-let dragSrcId=null;
 function renderPhotoGrid(){
   const grid=document.getElementById('photoGrid'),empty=document.getElementById('photoEmpty');
   const q=document.getElementById('searchBox').value.toLowerCase();
@@ -614,6 +721,7 @@ function renderPhotoGrid(){
   grid.style.display=filtered.length?'grid':'none';
   empty.style.display=filtered.length?'none':'block';
   grid.innerHTML='';
+  let dragSrcId=null;
   filtered.forEach(p=>{
     const globalIdx=real.indexOf(p)+1;
     const isSel=manageSelected.has(p.id);
@@ -631,17 +739,14 @@ function renderPhotoGrid(){
         <div class="card-fn">${p.title||p.filename}</div>
         <div style="display:flex;flex-wrap:wrap;gap:3px">${p.categories&&p.categories.length?p.categories.map(c=>`<span class="tag">${c}</span>`).join(''):'<span class="no-tag">Untagged</span>'}</div>
       </div>`;
-    let isDragging=false;
     // Click to select/deselect
     card.addEventListener('click',e=>{
-      if(isDragging){isDragging=false;return;}
       if(e.target.classList.contains('ov-edit')||e.target.classList.contains('ov-del'))return;
       if(manageSelected.has(p.id))manageSelected.delete(p.id);else manageSelected.add(p.id);
       renderPhotoGrid();updateManageBulkBar();
     });
     // Drag to reorder — supports multi-select drag
     card.addEventListener('dragstart',e=>{
-      isDragging=true;
       dragSrcId=p.id;
       // If dragging an unselected card, clear selection and drag just this one
       if(!manageSelected.has(p.id)){
@@ -649,6 +754,7 @@ function renderPhotoGrid(){
         manageSelected.add(p.id);
         updateManageBulkBar();
       }
+      // Show count badge on drag
       const ids=[...manageSelected];
       e.dataTransfer.setData('text/plain', ids.join(','));
       setTimeout(()=>{
@@ -681,8 +787,8 @@ function renderPhotoGrid(){
       const remaining=photos.filter(x=>!selectedIds.includes(x.id));
       // Find new insert position in remaining array
       const newTargetIdx=remaining.findIndex(x=>x.id===p.id);
-      // Insert before target
-      remaining.splice(newTargetIdx,0,...selectedPhotos);
+      // Insert after target
+      remaining.splice(newTargetIdx+1,0,...selectedPhotos);
       photos=remaining;
       manageSelected.clear();
       savePhotos();renderPhotoGrid();updateManageBulkBar();
@@ -731,79 +837,6 @@ document.getElementById('sortBtn').addEventListener('click',()=>{
   const yts=photos.filter(p=>p.isYt);
   const real=photos.filter(p=>!p.isYt).sort((a,b)=>a.filename.localeCompare(b.filename));
   photos=[...real,...yts];savePhotos();renderPhotoGrid();showToast('✓ Sorted A–Z!');
-});
-document.getElementById('sortSelect').addEventListener('change',function(){
-  const val=this.value;
-  if(!val)return;
-  this.value='';
-  const yts=photos.filter(p=>p.isYt);
-  let real=photos.filter(p=>!p.isYt);
-  const SORT_CATS=['advertising','editorial','music','food','motion','design'];
-
-  if(val==='az'){
-    real=real.sort((a,b)=>a.filename.localeCompare(b.filename));
-    showToast('✓ Sorted A–Z!');
-  } else if(val==='cat'){
-    real=real.sort((a,b)=>{
-      const ac=(a.categories&&a.categories[0])||'zzz';
-      const bc=(b.categories&&b.categories[0])||'zzz';
-      const ai=SORT_CATS.indexOf(ac); const bi=SORT_CATS.indexOf(bc);
-      return (ai===-1?99:ai)-(bi===-1?99:bi);
-    });
-    showToast('✓ Sorted by category!');
-  } else if(val==='reverse'){
-    real=real.reverse();
-    showToast('✓ Reversed!');
-  } else if(val==='random'){
-    for(let i=real.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[real[i],real[j]]=[real[j],real[i]];}
-    showToast('✓ Randomized!');
-  } else if(val==='interleave'){
-    // Strict: 1st of each cat, then 2nd of each cat, etc.
-    const buckets={};
-    SORT_CATS.forEach(c=>buckets[c]=[]);
-    const uncategorized=[];
-    real.forEach(p=>{
-      const cat=(p.categories&&p.categories[0])||null;
-      if(cat&&buckets[cat])buckets[cat].push(p);
-      else uncategorized.push(p);
-    });
-    const interleaved=[];
-    let hasMore=true;let i=0;
-    while(hasMore){
-      hasMore=false;
-      SORT_CATS.forEach(c=>{if(buckets[c][i]){interleaved.push(buckets[c][i]);hasMore=true;}});
-      i++;
-    }
-    real=[...interleaved,...uncategorized];
-    showToast('✓ Interleaved (strict)!');
-  } else if(val==='interleave-random'){
-    // Random within each category, then interleave
-    const buckets={};
-    SORT_CATS.forEach(c=>buckets[c]=[]);
-    const uncategorized=[];
-    real.forEach(p=>{
-      const cat=(p.categories&&p.categories[0])||null;
-      if(cat&&buckets[cat])buckets[cat].push(p);
-      else uncategorized.push(p);
-    });
-    // Shuffle each bucket
-    SORT_CATS.forEach(c=>{
-      const b=buckets[c];
-      for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}
-    });
-    const interleaved=[];
-    let hasMore=true;let i=0;
-    while(hasMore){
-      hasMore=false;
-      SORT_CATS.forEach(c=>{if(buckets[c][i]){interleaved.push(buckets[c][i]);hasMore=true;}});
-      i++;
-    }
-    real=[...interleaved,...uncategorized];
-    showToast('✓ Interleaved (random)!');
-  }
-
-  photos=[...real,...yts];
-  savePhotos();renderPhotoGrid();
 });
 
 // TAG MODAL
@@ -943,24 +976,7 @@ document.getElementById('saveSettings').addEventListener('click',()=>{
   showToast('✓ Settings saved!');
 });
 
-// PUBLISH
-function publishToCloudflare(){
-  const btn=document.getElementById('publishBtn'),status=document.getElementById('publishStatus');
-  btn.disabled=true;btn.textContent='⏳ Publishing...';
-  status.style.color='var(--accent)';status.textContent='Exporting & triggering...';
-  localStorage.setItem('jj_settings',JSON.stringify(settings));
-  doExport();
-  try{
-    const form=document.createElement('form');form.method='POST';form.action=BUILD_HOOK;form.target='cf-f';
-    const iframe=document.createElement('iframe');iframe.name='cf-f';iframe.style.display='none';
-    document.body.appendChild(form);document.body.appendChild(iframe);form.submit();
-    setTimeout(()=>{try{document.body.removeChild(form);document.body.removeChild(iframe);}catch(e){}},3000);
-    setTimeout(()=>{status.style.color='var(--green)';status.textContent='✓ Live in ~60 seconds';btn.textContent='✓ Published!';btn.style.background='var(--green)';showToast('🚀 Published! Check site-9y7.pages.dev in ~60s');setTimeout(()=>{btn.textContent='🚀 Publish to Live Site';btn.style.background='';btn.disabled=false;},3000);},1200);
-  }catch(e){status.textContent='Exported — push via GitHub Desktop';btn.textContent='🚀 Publish to Live Site';btn.disabled=false;}
-}
-document.getElementById('publishBtn').addEventListener('click',publishToCloudflare);
-
-// EXPORT — filenames only, no base64!
+// EXPORT — fallback download
 function doExport(){
   const data={
     photos:photos.map(p=>({
@@ -976,9 +992,37 @@ function doExport(){
 }
 document.getElementById('exportBtn').addEventListener('click',doExport);
 
+// GitHub token handlers
+document.getElementById('ghTokenSave').addEventListener('click',async()=>{
+  const token=document.getElementById('ghTokenInput').value.trim();
+  if(!token){showToast('Enter a token first!','var(--red)');return;}
+  githubToken=token;
+  localStorage.setItem('jj_gh_token',token);
+  document.getElementById('ghConnectionStatus').innerHTML='<span style="color:var(--accent)">Testing connection...</span>';
+  await loadFromGitHub();
+  document.getElementById('ghConnectionStatus').innerHTML='<span style="color:var(--green)">✓ Connected and data loaded!</span>';
+  showToast('✓ GitHub connected!');
+});
+document.getElementById('ghTokenClear').addEventListener('click',()=>{
+  githubToken='';
+  localStorage.removeItem('jj_gh_token');
+  document.getElementById('ghTokenInput').value='';
+  document.getElementById('ghConnectionStatus').innerHTML='<span style="color:var(--muted)">Token cleared.</span>';
+  document.getElementById('ghStatus').textContent='Not connected';
+  document.getElementById('ghStatus').style.color='var(--muted)';
+  showToast('Token cleared');
+});
+
 // INIT
 renderOverview();
 buildCatGrid('newCatGrid');
+// Load token input if saved
+if(githubToken)document.getElementById('ghTokenInput').value=githubToken;
+// Auto-load from GitHub on startup
+loadFromGitHub().then(()=>{
+  renderOverview();
+  buildCatGrid('newCatGrid');
+});
 </script>
 </body>
 </html>
