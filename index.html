@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Jabari Jacobs</title>
 <link rel="icon" type="image/png" href="favicon.png"/>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RT6KEFVXT7"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','G-RT6KEFVXT7');
+</script>
 <link id="googleFont" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Karla:wght@300;400;500&family=Playfair+Display:wght@300;400&family=DM+Sans:wght@300;400;500&family=Libre+Baskerville:wght@400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -395,6 +403,8 @@ function setFilter(cat){
   document.querySelectorAll('.filter-pill').forEach(p=>p.classList.toggle('active',p.dataset.cat===cat));
   renderGallery();
   window.scrollTo({top:0,behavior:'smooth'});
+  // Track filter clicks in Google Analytics
+  if(typeof gtag!=='undefined')gtag('event','filter_click',{event_category:'Gallery',event_label:cat});
 }
 
 // JS Masonry layout — left to right
