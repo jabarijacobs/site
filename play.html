@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JABARI.EXE — Photo Memory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gb-body: #8b956d;
+    --gb-screen-border: #1a1a2e;
+    --gb-screen-bg: #9bac70;
+    --gb-screen-fg: #0f380f;
+    --gb-dark: #2d2d2d;
+    --gb-mid: #5a5a5a;
+    --gb-light: #c8c8c8;
+    --gb-red: #c0392b;
+    --gb-blue: #2980b9;
+    --gb-dpad: #1c1c1c;
+    --card-back: #0f380f;
+    --card-matched: #306230;
+    --pixel: 2px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #1a1a1a;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Press Start 2P', monospace;
+    padding: 20px;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,.02) 2px, rgba(255,255,255,.02) 4px),
+      repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,.01) 2px, rgba(255,255,255,.01) 4px);
+  }
+
+  /* ── GAME BOY SHELL ── */
+  .gameboy {
+    width: 340px;
+    background: var(--gb-body);
+    border-radius: 12px 12px 60px 12px;
+    padding: 18px 18px 30px;
+    box-shadow:
+      4px 4px 0 #6a7352,
+      8px 8px 0 #4a5238,
+      inset 2px 2px 0 #a8b57d,
+      inset -2px -2px 0 #6a7352,
+      0 20px 60px rgba(0,0,0,.8);
+    position: relative;
+    image-rendering: pixelated;
+  }
+
+  /* top label */
+  .gb-brand {
+    font-size: 6px;
+    color: #4a5238;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-left: 4px;
+    opacity: .7;
+  }
+
+  /* ── SCREEN HOUSING ── */
+  .screen-housing {
+    background: var(--gb-screen-border);
+    border-radius: 8px 8px 4px 4px;
+    padding: 14px;
+    margin-bottom: 16px;
+    box-shadow:
+      inset 0 2px 8px rgba(0,0,0,.6),
+      inset 0 -1px 2px rgba(255,255,255,.05);
+    position: relative;
+  }
+
+  .screen-housing::before {
+    content: '';
+    position: absolute;
+    top: 6px; left: 50%;
+    transform: translateX(-50%);
+    width: 20px; height: 3px;
+    background: #2980b9;
+    border-radius: 2px;
+    box-shadow: 0 0 6px #2980b9;
+  }
+
+  /* power LED */
+  .power-led {
+    position: absolute;
+    top: 8px; right: 14px;
+    width: 5px; height: 5px;
+    background: #2ecc71;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #2ecc71;
+    animation: ledPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes ledPulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: .4; }
+  }
+
+  /* ── SCREEN ── */
+  .screen {
+    background: var(--gb-screen-bg);
+    border-radius: 4px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+      inset 0 0 0 2px #7a8f5a,
+      inset 0 0 20px rgba(0,0,0,.3);
+  }
+
+  /* scanlines overlay */
+  .screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,.08) 3px,
+      rgba(0,0,0,.08) 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  /* ── VIEWS ── */
+  .view { width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 12px; }
+  .view.active { display: flex; }
+
+  /* TITLE SCREEN */
+  #view-title {
+    background: var(--gb-screen-bg);
+    gap: 10px;
+  }
+
+  .title-pixel-art {
+    width: 80px; height: 80px;
+    margin-bottom: 4px;
+  }
+
+  .title-text {
+    font-size: 9px;
+    color: var(--gb-screen-fg);
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  .title-sub {
+    font-size: 5px;
+    color: var(--gb-screen-fg);
+    text-align: center;
+    opacity: .7;
+    line-height: 2;
+  }
+
+  .blink {
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* LOADING */
+  #view-loading {
+    gap: 8px;
+  }
+
+  .loading-bar-wrap {
+    width: 80%;
+    height: 10px;
+    border: 2px solid var(--gb-screen-fg);
+    background: transparent;
+  }
+
+  .loading-bar-fill {
+    height: 100%;
+    background: var(--gb-screen-fg);
+    width: 0%;
+    transition: width .1s steps(4);
+  }
+
+  .loading-text {
+    font-size: 6px;
+    color: var(--gb-screen-fg);
+    text-align: center;
+    line-height: 2;
+  }
+
+  /* GAME */
+  #view-game {
+    padding: 8px;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .hud {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 5px;
+    color: var(--gb-screen-fg);
+    padding: 0 2px;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    width: 100%;
+  }
+
+  .card {
+    aspect-ratio: 1;
+    cursor: pointer;
+    position: relative;
+    border: 2px solid var(--gb-screen-fg);
+    border-radius: 2px;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transition: transform .3s ease;
+  }
+
+  .card.flipped { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .card-back-face {
+    background: var(--card-back);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    color: #306230;
+  }
+
+  .card-back-face::after {
+    content: '?';
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: #306230;
+  }
+
+  .card-front-face {
+    transform: rotateY(180deg);
+    background: #000;
+  }
+
+  .card-front-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    image-rendering: auto;
+    filter: saturate(.85) contrast(1.1);
+  }
+
+  .card.matched {
+    border-color: #306230;
+    opacity: .7;
+  }
+
+  .card.matched .card-front-face img {
+    filter: saturate(.3) brightness(.7);
+  }
+
+  .card.matched::after {
+    content: '✓';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #9bac70;
+    z-index: 10;
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+    font-family: monospace;
+  }
+
+  .card.shake {
+    animation: shake .3s ease;
+  }
+
+  @keyframes shake {
+    0%,100% { transform: rotateY(180deg) translateX(0); }
+    25% { transform: rotateY(180deg) translateX(-4px); }
+    75% { transform: rotateY(180deg) translateX(4px); }
+  }
+
+  /* WIN SCREEN */
+  #view-win {
+    gap: 8px;
+    text-align: center;
+  }
+
+  .win-text {
+    font-size: 9px;
+    color: var(--gb-screen-fg);
+    line-height: 2;
+  }
+
+  .win-sub {
+    font-size: 5px;
+    color: var(--gb-screen-fg);
+    line-height: 2.2;
+    opacity: .8;
+  }
+
+  .win-score {
+    font-size: 7px;
+    color: var(--gb-screen-fg);
+    line-height: 2;
+  }
+
+  /* ── CONTROLS ── */
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 4px;
+  }
+
+  .dpad {
+    width: 72px;
+    height: 72px;
+    position: relative;
+  }
+
+  .dpad-h, .dpad-v {
+    position: absolute;
+    background: var(--gb-dpad);
+    border-radius: 2px;
+  }
+
+  .dpad-h {
+    width: 100%; height: 33%;
+    top: 33%; left: 0;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.1), inset 0 -1px 0 rgba(0,0,0,.3);
+  }
+
+  .dpad-v {
+    width: 33%; height: 100%;
+    top: 0; left: 33%;
+    box-shadow: inset 1px 0 0 rgba(255,255,255,.1), inset -1px 0 0 rgba(0,0,0,.3);
+  }
+
+  .dpad-center {
+    position: absolute;
+    width: 33%; height: 33%;
+    top: 33%; left: 33%;
+    background: var(--gb-dpad);
+    z-index: 2;
+  }
+
+  .ab-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    transform: rotate(-20deg);
+  }
+
+  .btn-circle {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 0 rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.2);
+    transition: transform .1s, box-shadow .1s;
+    outline: none;
+    position: relative;
+    top: 0;
+    letter-spacing: 0;
+  }
+
+  .btn-circle:active, .btn-circle.pressed {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 rgba(0,0,0,.4);
+  }
+
+  .btn-a { background: var(--gb-red); }
+  .btn-b { background: var(--gb-mid); width: 26px; height: 26px; font-size: 6px; }
+
+  .start-select {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  .btn-small {
+    background: var(--gb-mid);
+    border: none;
+    height: 6px;
+    width: 36px;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow: 0 2px 0 rgba(0,0,0,.4);
+    position: relative;
+    transform: rotate(-5deg);
+    outline: none;
+  }
+
+  .btn-small::after {
+    content: attr(data-label);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 4px;
+    color: #4a5238;
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%) rotate(5deg);
+    white-space: nowrap;
+  }
+
+  .speaker {
+    position: absolute;
+    bottom: 24px;
+    right: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    transform: rotate(-20deg);
+  }
+
+  .speaker-line {
+    width: 24px;
+    height: 2px;
+    background: rgba(0,0,0,.25);
+    border-radius: 1px;
+  }
+
+  /* error view */
+  #view-error {
+    gap: 8px;
+    text-align: center;
+  }
+
+  .error-text {
+    font-size: 6px;
+    color: var(--gb-screen-fg);
+    line-height: 2.2;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="gameboy">
+  <div class="gb-brand">JABARI.EXE · PHOTO GAME</div>
+
+  <div class="screen-housing">
+    <div class="power-led"></div>
+    <div class="screen">
+
+      <!-- TITLE -->
+      <div class="view active" id="view-title">
+        <svg class="title-pixel-art" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated">
+          <rect width="16" height="16" fill="#9bac70"/>
+          <!-- camera body -->
+          <rect x="2" y="5" width="12" height="8" fill="#0f380f"/>
+          <rect x="4" y="3" width="4" height="3" fill="#0f380f"/>
+          <!-- lens -->
+          <circle cx="8" cy="9" r="3" fill="#306230"/>
+          <circle cx="8" cy="9" r="2" fill="#0f380f"/>
+          <circle cx="8" cy="9" r="1" fill="#9bac70"/>
+          <!-- flash -->
+          <rect x="11" y="6" width="2" height="1" fill="#306230"/>
+        </svg>
+        <div class="title-text">PHOTO<br>MEMORY</div>
+        <div class="title-sub">BY JABARI JACOBS<br><br><span class="blink">PRESS START</span></div>
+      </div>
+
+      <!-- LOADING -->
+      <div class="view" id="view-loading">
+        <div class="loading-text" id="loading-msg">LOADING PHOTOS...</div>
+        <div class="loading-bar-wrap"><div class="loading-bar-fill" id="loading-bar"></div></div>
+        <div class="loading-text" id="loading-count" style="opacity:.6;font-size:5px"></div>
+      </div>
+
+      <!-- GAME -->
+      <div class="view" id="view-game">
+        <div class="hud">
+          <span>MOVES: <span id="hud-moves">0</span></span>
+          <span>PAIRS: <span id="hud-pairs">0</span>/8</span>
+        </div>
+        <div class="card-grid" id="card-grid"></div>
+      </div>
+
+      <!-- WIN -->
+      <div class="view" id="view-win">
+        <div class="win-text">YOU WIN!</div>
+        <div class="win-score">MOVES: <span id="win-moves">0</span><br>RATING: <span id="win-rating">★★★</span></div>
+        <div class="win-sub">PHOTOS BY<br>JABARI JACOBS<br><br><span class="blink">PRESS A TO RETRY</span></div>
+      </div>
+
+      <!-- ERROR -->
+      <div class="view" id="view-error">
+        <div class="error-text">ERROR!<br><br>COULD NOT<br>LOAD PHOTOS<br><br><span class="blink" style="font-size:5px">PRESS A TO RETRY</span></div>
+      </div>
+
+    </div><!-- /screen -->
+  </div><!-- /screen-housing -->
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <div class="dpad">
+      <div class="dpad-h"></div>
+      <div class="dpad-v"></div>
+      <div class="dpad-center"></div>
+    </div>
+    <div class="ab-buttons">
+      <button class="btn-circle btn-b" id="btn-b">B</button>
+      <button class="btn-circle btn-a" id="btn-a">A</button>
+    </div>
+  </div>
+
+  <div class="start-select">
+    <button class="btn-small" id="btn-select" data-label="SELECT"></button>
+    <button class="btn-small" id="btn-start" data-label="START"></button>
+  </div>
+
+  <div class="speaker">
+    <div class="speaker-line"></div>
+    <div class="speaker-line"></div>
+    <div class="speaker-line"></div>
+    <div class="speaker-line"></div>
+    <div class="speaker-line"></div>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+let currentView = 'title';
+let photos = [];
+let cards = [];
+let flipped = [];
+let matched = 0;
+let moves = 0;
+let locked = false;
+
+// ── VIEWS ──
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  currentView = name;
+}
+
+// ── FETCH PHOTOS ──
+async function loadPhotos() {
+  showView('loading');
+  setLoadingMsg('LOADING PHOTOS...', 0);
+
+  try {
+    // Fetch portfolio-data.json from same origin (works when hosted on jabarijacobs.com)
+    setLoadingMsg('READING DATA...', 20);
+    const res = await fetch('/portfolio-data.json');
+    if (!res.ok) throw new Error('fetch failed');
+    const data = await res.json();
+
+    setLoadingMsg('SELECTING SHOTS...', 50);
+
+    // Extract image paths — support both {src} and {image} field conventions
+    let allPhotos = [];
+    if (Array.isArray(data)) {
+      allPhotos = data.map(p => p.src || p.image || p.url || p.path).filter(Boolean);
+    } else if (data.photos) {
+      allPhotos = data.photos.map(p => p.src || p.image || p.url || p.path).filter(Boolean);
+    } else if (data.items) {
+      allPhotos = data.items.map(p => p.src || p.image || p.url || p.path).filter(Boolean);
+    }
+
+    // Filter to image files only (not videos)
+    allPhotos = allPhotos.filter(p => /\.(jpg|jpeg|png|webp|gif)$/i.test(p));
+
+    if (allPhotos.length < 8) throw new Error('not enough photos');
+
+    // Shuffle and pick 8
+    const shuffled = allPhotos.sort(() => Math.random() - .5);
+    photos = shuffled.slice(0, 8);
+
+    // Preload images
+    setLoadingMsg('DEVELOPING FILM...', 70);
+    await Promise.all(photos.map((src, i) => new Promise(resolve => {
+      const img = new Image();
+      img.onload = img.onerror = resolve;
+      img.src = src;
+      setLoadingMsg('DEVELOPING FILM...', 70 + Math.floor((i / photos.length) * 25));
+    })));
+
+    setLoadingMsg('READY!', 100);
+    await wait(400);
+    startGame();
+
+  } catch (err) {
+    console.error('Photo load error:', err);
+    showView('error');
+  }
+}
+
+function setLoadingMsg(msg, pct) {
+  document.getElementById('loading-msg').textContent = msg;
+  document.getElementById('loading-bar').style.width = pct + '%';
+}
+
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ── GAME ──
+function startGame() {
+  moves = 0;
+  matched = 0;
+  flipped = [];
+  locked = false;
+  updateHUD();
+
+  // Build 16 cards: 8 pairs
+  const pairs = [...photos, ...photos];
+  pairs.sort(() => Math.random() - .5);
+
+  const grid = document.getElementById('card-grid');
+  grid.innerHTML = '';
+  cards = [];
+
+  pairs.forEach((src, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.src = src;
+    card.dataset.index = i;
+
+    card.innerHTML = `
+      <div class="card-face card-back-face"></div>
+      <div class="card-face card-front-face">
+        <img src="${src}" alt="photo" loading="lazy">
+      </div>
+    `;
+
+    card.addEventListener('click', () => onCardClick(card));
+    grid.appendChild(card);
+    cards.push(card);
+  });
+
+  showView('game');
+}
+
+function onCardClick(card) {
+  if (locked) return;
+  if (card.classList.contains('flipped')) return;
+  if (card.classList.contains('matched')) return;
+  if (flipped.length >= 2) return;
+
+  card.classList.add('flipped');
+  flipped.push(card);
+
+  if (flipped.length === 2) {
+    moves++;
+    updateHUD();
+    checkMatch();
+  }
+}
+
+async function checkMatch() {
+  const [a, b] = flipped;
+  const isMatch = a.dataset.src === b.dataset.src;
+
+  if (isMatch) {
+    await wait(600);
+    a.classList.add('matched');
+    b.classList.add('matched');
+    matched++;
+    updateHUD();
+    flipped = [];
+    if (matched === 8) {
+      await wait(500);
+      showWin();
+    }
+  } else {
+    locked = true;
+    a.classList.add('shake');
+    b.classList.add('shake');
+    await wait(800);
+    a.classList.remove('flipped', 'shake');
+    b.classList.remove('flipped', 'shake');
+    flipped = [];
+    locked = false;
+  }
+}
+
+function updateHUD() {
+  document.getElementById('hud-moves').textContent = moves;
+  document.getElementById('hud-pairs').textContent = matched;
+}
+
+function showWin() {
+  document.getElementById('win-moves').textContent = moves;
+  const rating = moves <= 12 ? '★★★' : moves <= 18 ? '★★☆' : '★☆☆';
+  document.getElementById('win-rating').textContent = rating;
+  showView('win');
+}
+
+// ── BUTTONS ──
+document.getElementById('btn-start').addEventListener('click', () => {
+  if (currentView === 'title') loadPhotos();
+  else if (currentView === 'game') { if (confirm('Restart?')) loadPhotos(); }
+});
+
+document.getElementById('btn-a').addEventListener('click', () => {
+  if (currentView === 'title') loadPhotos();
+  else if (currentView === 'win') loadPhotos();
+  else if (currentView === 'error') loadPhotos();
+});
+
+document.getElementById('btn-b').addEventListener('click', () => {
+  if (currentView === 'win' || currentView === 'error') showView('title');
+});
+
+// Keyboard support
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    document.getElementById('btn-a').click();
+    e.preventDefault();
+  }
+  if (e.key === 'Escape') document.getElementById('btn-b').click();
+  if (e.key === 's') document.getElementById('btn-start').click();
+});
+
+</script>
+</body>
+</html>
