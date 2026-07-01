@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>JJ Portfolio — Dashboard</title>
+<title>JJ Portfolio Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -30,23 +31,17 @@ main{padding:32px;overflow-y:auto}
 .page-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;letter-spacing:0.05em;margin-bottom:4px}
 .page-sub{font-size:0.74rem;color:var(--muted);margin-bottom:24px;line-height:1.6}
 code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82rem;color:var(--accent2)}
-
-/* HOW IT WORKS */
 .how-box{background:var(--surface);border:1px solid var(--accent);border-radius:8px;padding:20px 24px;margin-bottom:24px}
 .how-box h3{font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
 .how-box ol{padding-left:18px;display:flex;flex-direction:column;gap:8px}
 .how-box li{font-size:0.82rem;line-height:1.55}
 .how-box li strong{color:var(--accent2)}
-
-/* STATS */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
 .stat-label{font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
 .stat-val{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--accent)}
 .sec{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:16px}
 .sec h3{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
-
-/* ADD FORM */
 .add-form{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:22px;margin-bottom:20px}
 .add-form h3{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
 .field{margin-bottom:14px}
@@ -62,22 +57,16 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
 .btn{padding:9px 18px;border-radius:4px;border:none;font-family:'Karla',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s}
 .btn-primary{background:var(--accent);color:#0f0f0f}.btn-primary:hover{background:var(--accent2)}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}.btn-ghost:hover{border-color:var(--text);color:var(--text)}
-
-/* TOOLBAR */
 .toolbar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .search-box{flex:1;min-width:160px;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.8rem;outline:none}
 .search-box:focus{border-color:var(--accent)}
 .filter-sel{padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.74rem;outline:none;cursor:pointer}
-
-/* PHOTO GRID */
 .photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px}
 .photo-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative;cursor:grab}
 .photo-card.selected-card{border:2px solid var(--accent);box-shadow:0 0 0 2px rgba(200,184,154,0.3)}
 .photo-card.dragging{opacity:0.35;border:2px dashed var(--accent)}
 .photo-card.drag-over{border:2px solid var(--accent);transform:scale(1.02)}
 .photo-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--surface2)}
-.order-num{position:absolute;top:5px;left:5px;background:rgba(0,0,0,0.7);color:#fff;font-size:0.62rem;font-weight:700;padding:2px 7px;border-radius:4px;z-index:2}
-.yt-badge{position:absolute;top:5px;right:5px;background:rgba(200,0,0,0.9);color:#fff;font-size:0.52rem;font-weight:700;padding:2px 5px;border-radius:4px;z-index:2}
 .photo-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;gap:5px;transition:background 0.2s;opacity:0}
 .photo-card:hover .photo-overlay{background:rgba(0,0,0,0.72);opacity:1}
 .ov-btn{padding:5px 8px;border-radius:4px;border:none;font-size:0.58rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer}
@@ -86,16 +75,6 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
 .card-fn{font-size:0.6rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
 .tag{font-size:0.54rem;letter-spacing:0.06em;text-transform:uppercase;background:rgba(200,184,154,0.12);color:var(--accent);padding:2px 5px;border-radius:4px}
 .no-tag{font-size:0.58rem;color:var(--red)}
-
-/* YOUTUBE */
-.yt-section{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:20px}
-.yt-section h3{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
-.yt-row{display:flex;gap:10px}
-.yt-input{flex:1;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.82rem;outline:none}
-.yt-input:focus{border-color:var(--accent)}
-.yt-add-btn{padding:9px 16px;background:var(--accent);color:#0f0f0f;border:none;border-radius:4px;font-family:'Karla',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
-
-/* SETTINGS */
 .prev-box{max-height:48px;width:auto;border-radius:4px;margin-bottom:8px;object-fit:contain;display:block}
 .logo-size-row{display:flex;align-items:center;gap:10px;margin-top:8px}
 .logo-size-row label{font-size:0.66rem;color:var(--muted);white-space:nowrap}
@@ -112,8 +91,6 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
 .add-row{display:flex;gap:7px}
 .add-input{flex:1;padding:8px 11px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.79rem;outline:none}
 .add-input:focus{border-color:var(--accent)}
-
-/* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:100;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;width:460px;max-width:92vw;max-height:88vh;overflow-y:auto}
@@ -124,11 +101,26 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
 .cat-pill:hover{border-color:var(--accent);color:var(--accent)}
 .cat-pill.selected{background:var(--accent);border-color:var(--accent);color:#0f0f0f}
 .modal-actions{display:flex;gap:8px;margin-top:4px}
-
-/* TOAST */
 .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);color:#fff;padding:12px 24px;border-radius:8px;font-size:0.8rem;font-weight:600;opacity:0;transition:all 0.3s;pointer-events:none;z-index:500;white-space:nowrap;box-shadow:0 8px 28px rgba(0,0,0,0.4)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .empty-ph{text-align:center;padding:40px 20px;color:var(--muted);font-size:0.8rem;line-height:1.8}
+/* DIRECT UPLOAD */
+.upload-drop-zone{border:2px dashed var(--accent);border-radius:8px;padding:32px 24px;text-align:center;cursor:pointer;transition:all 0.2s;background:rgba(200,184,154,0.03);margin-bottom:16px}
+.upload-drop-zone:hover,.upload-drop-zone.drag-active{background:rgba(200,184,154,0.08);border-color:var(--accent2)}
+.upload-drop-zone .upload-icon{font-size:2rem;margin-bottom:8px}
+.upload-drop-zone p{font-size:0.78rem;color:var(--muted);line-height:1.6}
+.upload-drop-zone strong{color:var(--accent)}
+.upload-queue{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.upload-item{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:12px}
+.upload-item-info{flex:1;min-width:0}
+.upload-item-name{font-size:0.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.upload-item-size{font-size:0.62rem;color:var(--muted)}
+.upload-progress-bar{height:3px;background:var(--border);border-radius:2px;margin-top:6px;overflow:hidden}
+.upload-progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.3s}
+.upload-item-status{font-size:0.68rem;font-weight:600;white-space:nowrap;flex-shrink:0}
+.status-waiting{color:var(--muted)}.status-uploading{color:var(--accent)}.status-done{color:var(--green)}.status-error{color:var(--red)}
+.upload-cats-row{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px 14px;margin-bottom:12px}
+.upload-cats-row label{font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -136,36 +128,25 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
 <aside>
   <div class="brand"><h1>Jabari Jacobs</h1><p>Portfolio Dashboard</p></div>
   <nav>
-    <div class="nav-item active" data-page="overview">⊞ Overview</div>
-    <div class="nav-item" data-page="photos">▦ Manage Photos</div>
-    <div class="nav-item" data-page="youtube">▶ YouTube Videos</div>
-    <div class="nav-item" data-page="analytics">📊 Analytics</div>
-    <div class="nav-item" data-page="settings">⚙ Site Settings</div>
+    <div class="nav-item active" data-page="overview">&#x229E; Overview</div>
+    <div class="nav-item" data-page="photos">&#x25A6; Manage Photos</div>
+    <div class="nav-item" data-page="youtube">&#x25B6; YouTube Videos</div>
+    <div class="nav-item" data-page="analytics">&#x1F4CA; Analytics</div>
+    <div class="nav-item" data-page="settings">&#x2699; Site Settings</div>
   </nav>
   <div class="sidebar-footer">
-    <button class="publish-btn" id="publishBtn">🚀 Publish to Live Site</button>
+    <button class="publish-btn" id="publishBtn">&#x1F680; Publish to Live Site</button>
     <div id="publishStatus">Ready to publish</div>
-  <div id="ghStatus" style="font-size:0.6rem;text-align:center;color:var(--muted);margin-top:4px">Not connected</div>
-    <a class="view-btn" href="https://site-9y7.pages.dev" target="_blank">🌐 View Live Site</a>
-    <button class="export-btn" id="exportBtn">⬇ Export Data Only</button>
+    <div id="ghStatus" style="font-size:0.6rem;text-align:center;color:var(--muted);margin-top:4px">Not connected</div>
+    <a class="view-btn" href="https://site-9y7.pages.dev" target="_blank">&#x1F310; View Live Site</a>
+    <button class="export-btn" id="exportBtn">&#x2B07; Export Data Only</button>
   </div>
 </aside>
-
 <main>
   <!-- OVERVIEW -->
   <div class="page active" id="page-overview">
     <div class="page-title">Overview</div>
     <div class="page-sub">Your portfolio at a glance</div>
-    <div class="how-box">
-      <h3>📁 New Workflow — No More Freezing</h3>
-      <ol>
-        <li><strong>Put photos</strong> in your <code>site/photos/</code> folder on your Mac</li>
-        <li><strong>Manage Photos</strong> → type each filename → pick categories → save</li>
-        <li><strong>Publish</strong> → downloads <code>portfolio-data.json</code> automatically</li>
-        <li><strong>Move the JSON</strong> to your site folder → GitHub Desktop → Commit → Push</li>
-        <li>Cloudflare rebuilds and photos appear live in ~60 seconds ✓</li>
-      </ol>
-    </div>
     <div class="stats">
       <div class="stat-card"><div class="stat-label">Total Photos</div><div class="stat-val" id="statTotal">0</div></div>
       <div class="stat-card"><div class="stat-label">Untagged</div><div class="stat-val" id="statUntagged" style="color:var(--red)">0</div></div>
@@ -180,8 +161,8 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
       <h3>Quick Actions</h3>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn btn-primary" onclick="showPage('photos')">Manage Photos</button>
-        <button class="btn btn-ghost" onclick="publishToCloudflare()">🚀 Publish</button>
-        <a class="btn btn-ghost" href="https://site-9y7.pages.dev" target="_blank" style="text-decoration:none">🌐 Live Site</a>
+        <button class="btn btn-ghost" onclick="publishToGitHub()">&#x1F680; Publish</button>
+        <a class="btn btn-ghost" href="https://site-9y7.pages.dev" target="_blank" style="text-decoration:none">&#x1F310; Live Site</a>
       </div>
     </div>
   </div>
@@ -189,46 +170,63 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
   <!-- MANAGE PHOTOS -->
   <div class="page" id="page-photos">
     <div class="page-title">Manage Photos</div>
-    <div class="page-sub">Type each photo's filename exactly as it appears in your <code>photos/</code> folder. Drag cards to reorder.</div>
+    <div class="page-sub">Upload photos directly from your device. No local folder needed.</div>
 
-    <!-- BULK IMPORT -->
-    <div class="add-form" id="bulkImportSection">
-      <h3>📂 Import from photos/ folder</h3>
-      <p style="font-size:0.76rem;color:var(--muted);margin-bottom:16px;line-height:1.6">Select your photos from your <code>photos/</code> folder — the dashboard reads filenames only, no data is uploaded. Fast and no freezing.</p>
-      <input type="file" id="bulkFilePicker" multiple accept="image/*,video/*" style="display:none"/>
-      <button class="btn btn-primary" id="bulkPickBtn" style="margin-bottom:14px">📂 Select Photos from Folder</button>
-
-      <div id="bulkStaged" style="display:none">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
-          <span id="bulkCount" style="font-size:0.78rem;color:var(--accent)"></span>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn btn-ghost" id="bulkSelAll" style="font-size:0.65rem;padding:6px 12px">Select All</button>
-            <button class="btn btn-ghost" id="bulkDeselAll" style="font-size:0.65rem;padding:6px 12px">Deselect All</button>
-          </div>
-        </div>
-
-        <!-- Bulk tag bar -->
-        <div id="bulkTagBar" style="background:var(--surface2);border:1px solid var(--accent);border-radius:8px;padding:12px 16px;margin-bottom:14px;display:none">
-          <div style="font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px">Tag <span id="bulkSelCount">0</span> selected photos:</div>
-          <div class="cat-grid" id="bulkCatGrid"></div>
-          <div style="display:flex;gap:8px;margin-top:10px">
-            <button class="btn btn-primary" id="bulkApplyBtn" style="font-size:0.68rem;padding:7px 14px">Apply Tags</button>
-            <button class="btn btn-ghost" id="bulkClearTagsBtn" style="font-size:0.68rem;padding:7px 14px">Clear Tags</button>
-          </div>
-        </div>
-
-        <div class="photo-grid" id="bulkGrid"></div>
-
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-primary" id="bulkAddAllBtn">✓ Add All to Portfolio</button>
-          <button class="btn btn-ghost" id="bulkClearBtn">Clear</button>
-        </div>
+    <!-- DIRECT UPLOAD TO GITHUB -->
+    <div class="add-form" style="border-color:var(--accent)">
+      <h3>&#x2B06; Upload Photos Directly to GitHub</h3>
+      <p style="font-size:0.76rem;color:var(--muted);margin-bottom:16px;line-height:1.6">Pick your compressed photos and they upload straight to GitHub. Tag them, then hit <strong>Publish to Live Site</strong>.</p>
+      <div class="upload-drop-zone" id="uploadDropZone">
+        <div class="upload-icon">&#x1F5BC;</div>
+        <p><strong>Click to choose photos</strong> or drag and drop here<br/>JPG, PNG, WebP &mdash; compress with ImageOptim first for best results</p>
+      </div>
+      <input type="file" id="directFilePicker" multiple accept="image/*" style="display:none"/>
+      <div id="uploadCatsRow" class="upload-cats-row" style="display:none">
+        <label>Tag all uploads with categories (optional &mdash; you can edit individually after)</label>
+        <div class="cat-grid" id="uploadCatGrid"></div>
+      </div>
+      <div class="upload-queue" id="uploadQueue"></div>
+      <div id="uploadActions" style="display:none;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-primary" id="startUploadBtn">&#x2B06; Upload All to GitHub</button>
+        <button class="btn btn-ghost" id="clearUploadBtn">Clear</button>
       </div>
     </div>
 
-    <!-- MANUAL ADD (collapsed by default) -->
+    <!-- LOCAL FOLDER IMPORT (collapsed) -->
     <details style="margin-bottom:20px">
-      <summary style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;padding:10px 0">+ Add a single photo manually</summary>
+      <summary style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;padding:10px 0">&#x1F4C2; Import from local photos/ folder instead</summary>
+      <div style="margin-top:12px;padding:18px;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+        <p style="font-size:0.76rem;color:var(--muted);margin-bottom:16px;line-height:1.6">Select photos from your local <code>photos/</code> folder &mdash; reads filenames only, no data uploaded.</p>
+        <input type="file" id="bulkFilePicker" multiple accept="image/*,video/*" style="display:none"/>
+        <button class="btn btn-primary" id="bulkPickBtn" style="margin-bottom:14px">&#x1F4C2; Select Photos from Folder</button>
+        <div id="bulkStaged" style="display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+            <span id="bulkCount" style="font-size:0.78rem;color:var(--accent)"></span>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn btn-ghost" id="bulkSelAll" style="font-size:0.65rem;padding:6px 12px">Select All</button>
+              <button class="btn btn-ghost" id="bulkDeselAll" style="font-size:0.65rem;padding:6px 12px">Deselect All</button>
+            </div>
+          </div>
+          <div id="bulkTagBar" style="background:var(--surface2);border:1px solid var(--accent);border-radius:8px;padding:12px 16px;margin-bottom:14px;display:none">
+            <div style="font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px">Tag <span id="bulkSelCount">0</span> selected:</div>
+            <div class="cat-grid" id="bulkCatGrid"></div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button class="btn btn-primary" id="bulkApplyBtn" style="font-size:0.68rem;padding:7px 14px">Apply Tags</button>
+              <button class="btn btn-ghost" id="bulkClearTagsBtn" style="font-size:0.68rem;padding:7px 14px">Clear Tags</button>
+            </div>
+          </div>
+          <div class="photo-grid" id="bulkGrid"></div>
+          <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+            <button class="btn btn-primary" id="bulkAddAllBtn">&#x2713; Add All to Portfolio</button>
+            <button class="btn btn-ghost" id="bulkClearBtn">Clear</button>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- MANUAL ADD (collapsed) -->
+    <details style="margin-bottom:20px">
+      <summary style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;padding:10px 0">+ Add a single photo manually by filename</summary>
       <div style="margin-top:12px;padding:18px;background:var(--surface);border:1px solid var(--border);border-radius:8px">
         <div class="field-row">
           <div class="field"><label>Filename</label><input id="newFilename" placeholder="photo.jpg"/></div>
@@ -243,7 +241,7 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
     </details>
 
     <div class="toolbar">
-      <input class="search-box" id="searchBox" placeholder="Search…"/>
+      <input class="search-box" id="searchBox" placeholder="Search..."/>
       <select class="filter-sel" id="filterSel">
         <option value="all">All</option>
         <option value="advertising">Advertising</option>
@@ -252,13 +250,11 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
         <option value="food">Food</option>
         <option value="motion">Motion</option>
         <option value="design">Design</option>
-        <option value="__untagged">⚠ Untagged</option>
+        <option value="__untagged">&#x26A0; Untagged</option>
       </select>
-      <button class="btn btn-ghost" id="sortBtn" style="font-size:0.65rem;padding:7px 12px">Sort A–Z</button>
+      <button class="btn btn-ghost" id="sortBtn" style="font-size:0.65rem;padding:7px 12px">Sort A-Z</button>
       <button class="btn btn-ghost" id="manageSelAllBtn" style="font-size:0.65rem;padding:7px 12px">Select All</button>
     </div>
-
-    <!-- Manage bulk tag bar -->
     <div id="manageBulkBar" style="display:none;background:var(--surface2);border:1px solid var(--accent);border-radius:8px;padding:12px 16px;margin-bottom:14px">
       <div style="font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px">Tag <span id="manageBulkCount">0</span> selected:</div>
       <div class="cat-grid" id="manageBulkCatGrid"></div>
@@ -269,13 +265,13 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
       </div>
     </div>
     <div class="photo-grid" id="photoGrid"></div>
-    <div class="empty-ph" id="photoEmpty">No photos yet.<br/>Add filenames above — make sure actual files are in your <strong>photos/</strong> folder.</div>
+    <div class="empty-ph" id="photoEmpty">No photos yet.<br/>Upload photos above to get started.</div>
   </div>
 
   <!-- YOUTUBE -->
   <div class="page" id="page-youtube">
     <div class="page-title">YouTube Videos</div>
-    <div class="page-sub">Videos show as thumbnails in your grid and play in a lightbox when clicked. No file upload needed.</div>
+    <div class="page-sub">Videos show as thumbnails in your grid and play in a lightbox when clicked.</div>
     <div class="add-form">
       <h3>Add YouTube Video</h3>
       <div class="field"><label>YouTube URL</label><input id="ytUrl" placeholder="https://youtube.com/watch?v=..."/></div>
@@ -297,7 +293,7 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
   <!-- ANALYTICS -->
   <div class="page" id="page-analytics">
     <div class="page-title">Analytics</div>
-    <div class="page-sub">Live data from your site. Powered by Google Analytics + Looker Studio. Data starts populating 24-48 hours after launch.</div>
+    <div class="page-sub">Live data from your site. Powered by Google Analytics + Looker Studio.</div>
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;width:100%;height:80vh">
       <iframe src="https://lookerstudio.google.com/embed/reporting/288cb7dd-db87-47ed-875c-38262185543a/page/kIV1C" style="width:100%;height:100%;border:none" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
     </div>
@@ -307,22 +303,20 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
   <div class="page" id="page-settings">
     <div class="page-title">Site Settings</div>
     <div class="page-sub">Customize your portfolio. Hit Save Settings when done.</div>
-
     <div class="sec" style="border-color:var(--accent)">
-      <h3>🔑 GitHub Connection</h3>
-      <p style="font-size:0.74rem;color:var(--muted);margin-bottom:14px;line-height:1.6">Connect to GitHub so you can publish from anywhere without downloading files. Your token is stored only in this browser.</p>
+      <h3>&#x1F511; GitHub Connection</h3>
+      <p style="font-size:0.74rem;color:var(--muted);margin-bottom:14px;line-height:1.6">Connect to GitHub to publish and upload photos from anywhere. Your token is stored only in this browser.</p>
       <div class="field">
         <label>GitHub Personal Access Token</label>
         <div style="display:flex;gap:8px">
           <input id="ghTokenInput" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="flex:1;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:monospace;font-size:0.78rem;outline:none"/>
-          <button class="btn btn-primary" id="ghTokenSave" style="white-space:nowrap">Save & Connect</button>
+          <button class="btn btn-primary" id="ghTokenSave" style="white-space:nowrap">Save &amp; Connect</button>
           <button class="btn btn-ghost" id="ghTokenClear" style="white-space:nowrap;color:var(--red);border-color:var(--red)">Clear</button>
         </div>
-        <p style="font-size:0.62rem;color:var(--muted);margin-top:6px">Generate at github.com → Settings → Developer Settings → Personal Access Tokens → Tokens (classic). Check the <strong>repo</strong> scope.</p>
+        <p style="font-size:0.62rem;color:var(--muted);margin-top:6px">github.com &rarr; Settings &rarr; Developer Settings &rarr; Personal Access Tokens &rarr; Tokens (classic). Check the <strong>repo</strong> scope.</p>
       </div>
       <div id="ghConnectionStatus" style="font-size:0.72rem;margin-top:8px"></div>
     </div>
-
     <div class="sec">
       <h3>Identity</h3>
       <div class="field-row">
@@ -336,16 +330,13 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
       </div>
       <div class="field"><label>Bio</label><textarea id="sAbout" rows="4" style="resize:vertical"></textarea></div>
     </div>
-
     <div class="sec">
       <h3>Gallery Layout</h3>
       <div class="field">
         <label>Columns (desktop)</label>
         <select id="galleryCols" style="width:100%;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.82rem;outline:none;cursor:pointer">
-          <option value="2">2 columns</option>
-          <option value="3">3 columns</option>
-          <option value="4" selected>4 columns (default)</option>
-          <option value="5">5 columns</option>
+          <option value="2">2 columns</option><option value="3">3 columns</option>
+          <option value="4" selected>4 columns (default)</option><option value="5">5 columns</option>
         </select>
       </div>
       <div class="field">
@@ -354,13 +345,10 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
           <input type="range" id="galleryGap" min="0" max="24" value="4" step="2" style="flex:1;accent-color:var(--accent)"/>
           <span id="galleryGapVal" style="font-size:0.72rem;color:var(--accent);min-width:34px">4px</span>
         </div>
-        <p style="font-size:0.63rem;color:var(--muted);margin-top:6px">0 = no gap, 24 = lots of space</p>
       </div>
     </div>
-
     <div class="sec">
       <h3>Logo Size</h3>
-      <p style="font-size:0.64rem;color:var(--muted);margin-bottom:14px">Upload separate logos for light and dark mode.</p>
       <div class="field-row">
         <div class="field">
           <label>Light Mode Logo</label>
@@ -387,7 +375,6 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
         <span class="logo-size-val" id="logoSizeVal">48px</span>
       </div>
     </div>
-
     <div class="sec">
       <h3>About Photo</h3>
       <img id="aboutPhotoPrev" src="" class="prev-box" style="display:none;max-height:80px"/>
@@ -397,7 +384,6 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
         <button class="btn btn-ghost" id="clrAboutPhoto" style="font-size:0.63rem;padding:6px 10px;color:var(--red);border-color:var(--red)">Remove</button>
       </div>
     </div>
-
     <div class="sec">
       <h3>Typography</h3>
       <label style="font-size:0.67rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px">Display Font</label>
@@ -413,25 +399,22 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
         <div class="font-opt" data-font="Montserrat" data-type="body"><span style="font-family:'Montserrat',sans-serif">Aa</span><small>Montserrat</small></div>
       </div>
     </div>
-
     <div class="sec">
       <h3>Filters / Categories</h3>
       <div class="filter-tags" id="filterTagsContainer"></div>
       <div class="add-row">
-        <input class="add-input" id="newFilterInput" placeholder="Add filter…"/>
+        <input class="add-input" id="newFilterInput" placeholder="Add filter..."/>
         <button class="btn btn-ghost" id="addFilterBtn" style="font-size:0.66rem;padding:7px 12px">+ Add</button>
       </div>
     </div>
-
     <div class="sec">
       <h3>Client List</h3>
       <div class="client-tags" id="clientTagsContainer"></div>
       <div class="add-row">
-        <input class="add-input" id="newClientInput" placeholder="e.g. Netflix, Nike…"/>
+        <input class="add-input" id="newClientInput" placeholder="e.g. Netflix, Nike..."/>
         <button class="btn btn-ghost" id="addClientBtn" style="font-size:0.66rem;padding:7px 12px">+ Add</button>
       </div>
     </div>
-
     <button class="btn btn-primary" id="saveSettings" style="margin-bottom:40px">Save Settings</button>
   </div>
 </main>
@@ -452,43 +435,50 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
     </div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-const BUILD_HOOK='https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/cf348d16-d276-48a7-a908-00100546b1f2';
 const GITHUB_REPO='jabarijacobs/site';
 const GITHUB_FILE='portfolio-data.json';
 const ALL_CATS=['advertising','editorial','music','food','motion','design'];
-
-let photos=[],settings={
-  name:'Jabari Jacobs',tagline:'Photographer & Director',
-  email:'jabari@jabarijacobs.com',about:'',location:'Los Angeles, CA',
-  insta:'@jabarijacobs',logoLightSrc:'',logoDarkSrc:'',aboutPhotoSrc:'',
-  logoSize:48,galleryGap:4,galleryCols:4,fontBody:'Karla',fontDisplay:'Cormorant Garamond',
-  clients:[],filters:[...ALL_CATS]
-};
-let editingId=null;
+let photos=[],settings={name:'Jabari Jacobs',tagline:'Photographer & Director',email:'jabari@jabarijacobs.com',about:'',location:'Los Angeles, CA',insta:'@jabarijacobs',logoLightSrc:'',logoDarkSrc:'',aboutPhotoSrc:'',logoSize:48,galleryGap:4,galleryCols:4,fontBody:'Karla',fontDisplay:'Cormorant Garamond',clients:[],filters:[...ALL_CATS]};
+let editingId=null,fileSha='';
 let githubToken=localStorage.getItem('jj_gh_token')||'';
-let fileSha='';
 
-// GitHub API helpers
 async function ghGet(path){
-  const r=await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`,{
-    headers:{Authorization:`token ${githubToken}`,'Accept':'application/vnd.github.v3+json'}
-  });
+  const r=await fetch('https://api.github.com/repos/'+GITHUB_REPO+'/contents/'+path,{headers:{Authorization:'token '+githubToken,Accept:'application/vnd.github.v3+json'}});
   return r.json();
 }
-async function ghPut(path,content,sha,message){
-  const r=await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`,{
-    method:'PUT',
-    headers:{Authorization:`token ${githubToken}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-    body:JSON.stringify({message,content:btoa(unescape(encodeURIComponent(content))),sha})
-  });
+async function ghPut(path,base64content,sha,message){
+  const body={message,content:base64content};
+  if(sha)body.sha=sha;
+  const r=await fetch('https://api.github.com/repos/'+GITHUB_REPO+'/contents/'+path,{method:'PUT',headers:{Authorization:'token '+githubToken,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
   return r.json();
 }
 
-// Load data from GitHub
+// Upload image file directly to GitHub photos/ folder
+async function uploadFileToGitHub(file,onProgress){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=async(e)=>{
+      try{
+        const base64=e.target.result.split(',')[1];
+        const path='photos/'+file.name;
+        onProgress&&onProgress(30);
+        let existingSha='';
+        try{const ex=await ghGet(path);if(ex.sha)existingSha=ex.sha;}catch(e){}
+        onProgress&&onProgress(60);
+        const result=await ghPut(path,base64,existingSha,'Upload '+file.name);
+        onProgress&&onProgress(100);
+        if(result.content)resolve(result);
+        else reject(new Error(result.message||'Upload failed'));
+      }catch(err){reject(err);}
+    };
+    reader.onerror=()=>reject(new Error('Failed to read file'));
+    reader.readAsDataURL(file);
+  });
+}
+
 async function loadFromGitHub(){
   if(!githubToken){loadFromLocal();return;}
   try{
@@ -499,137 +489,165 @@ async function loadFromGitHub(){
       const data=JSON.parse(decodeURIComponent(escape(atob(file.content.replace(/\n/g,'')))));
       photos=data.photos||[];
       if(data.settings)settings={...settings,...data.settings};
-      // Also save to localStorage as backup
       localStorage.setItem('jj_photos',JSON.stringify(photos));
       localStorage.setItem('jj_settings',JSON.stringify(settings));
-      showToast('✓ Loaded from GitHub!');
+      showToast('Loaded from GitHub!');
       renderOverview();renderPhotoGrid();
-      document.getElementById('ghStatus').textContent='✓ Connected to GitHub';
+      document.getElementById('ghStatus').textContent='Connected to GitHub';
       document.getElementById('ghStatus').style.color='var(--green)';
     }
-  }catch(e){
-    showToast('GitHub load failed, using local data','var(--yellow)');
-    loadFromLocal();
-  }
+  }catch(e){showToast('GitHub load failed, using local data','var(--yellow)');loadFromLocal();}
 }
-
 function loadFromLocal(){
   try{const d=localStorage.getItem('jj_photos');if(d)photos=JSON.parse(d);}catch(e){}
   try{const s=localStorage.getItem('jj_settings');if(s)settings={...settings,...JSON.parse(s)};}catch(e){}
 }
+function savePhotos(){localStorage.setItem('jj_photos',JSON.stringify(photos));}
 
-function savePhotos(){
-  localStorage.setItem('jj_photos',JSON.stringify(photos));
-}
-
-// Publish directly to GitHub
 async function publishToGitHub(){
   const btn=document.getElementById('publishBtn'),status=document.getElementById('publishStatus');
-  if(!githubToken){
-    showToast('Enter your GitHub token first!','var(--red)');
-    showPage('settings');
-    document.getElementById('ghTokenInput').focus();
-    return;
-  }
-  btn.disabled=true;btn.textContent='⏳ Publishing...';
+  if(!githubToken){showToast('Enter GitHub token first!','var(--red)');showPage('settings');return;}
+  btn.disabled=true;btn.textContent='Publishing...';
   status.style.color='var(--accent)';status.textContent='Committing to GitHub...';
-  
-  const data={
-    photos:photos.map(p=>({
-      id:p.id,filename:p.filename||'',title:p.title||'',
-      src:p.isYt?'':`photos/${p.filename}`,
-      youtubeId:p.youtubeId||null,isYt:!!p.isYt,
-      categories:p.categories||[],dateAdded:p.dateAdded
-    })),settings
-  };
+  const data={photos:photos.map(p=>({id:p.id,filename:p.filename||'',title:p.title||'',src:p.isYt?'':'photos/'+p.filename,youtubeId:p.youtubeId||null,isYt:!!p.isYt,categories:p.categories||[],dateAdded:p.dateAdded})),settings};
   const content=JSON.stringify(data,null,2);
-  
   try{
-    // Get latest SHA if we don't have it
-    if(!fileSha){
-      const file=await ghGet(GITHUB_FILE);
-      fileSha=file.sha||'';
-    }
-    const result=await ghPut(GITHUB_FILE,content,fileSha,'Dashboard update');
+    if(!fileSha){const f=await ghGet(GITHUB_FILE);fileSha=f.sha||'';}
+    const result=await ghPut(GITHUB_FILE,btoa(unescape(encodeURIComponent(content))),fileSha,'Dashboard update');
     if(result.content){
       fileSha=result.content.sha;
-      status.style.color='var(--green)';
-      status.textContent='✓ Live in ~60 seconds';
-      btn.textContent='✓ Published!';
-      btn.style.background='var(--green)';
-      showToast('🚀 Published! Cloudflare deploying now...');
-      setTimeout(()=>{btn.textContent='🚀 Publish to Live Site';btn.style.background='';btn.disabled=false;},3000);
-    } else {
-      throw new Error(result.message||'Unknown error');
-    }
+      status.style.color='var(--green)';status.textContent='Live in ~60 seconds';
+      btn.textContent='Published!';btn.style.background='var(--green)';
+      showToast('Published! Cloudflare deploying now...');
+      setTimeout(()=>{btn.textContent='Publish to Live Site';btn.style.background='';btn.disabled=false;},3000);
+    }else throw new Error(result.message||'Unknown error');
   }catch(e){
-    status.style.color='var(--red)';
-    status.textContent='Failed: '+e.message;
-    btn.textContent='🚀 Publish to Live Site';
-    btn.style.background='';
-    btn.disabled=false;
+    status.style.color='var(--red)';status.textContent='Failed: '+e.message;
+    btn.textContent='Publish to Live Site';btn.style.background='';btn.disabled=false;
     showToast('Publish failed: '+e.message,'var(--red)');
   }
 }
-
 document.getElementById('publishBtn').addEventListener('click',publishToGitHub);
-function showToast(msg,bg='var(--green)'){
-  const t=document.getElementById('toast');t.textContent=msg;t.style.background=bg;
+
+function showToast(msg,bg){
+  const t=document.getElementById('toast');t.textContent=msg;t.style.background=bg||'var(--green)';
   t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);
 }
-function extractYtId(url){
-  const m=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
-  return m?m[1]:null;
-}
+function extractYtId(url){const m=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);return m?m[1]:null;}
 
-// NAV
 document.querySelectorAll('.nav-item').forEach(el=>el.addEventListener('click',()=>showPage(el.dataset.page)));
 function showPage(id){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===id));
   document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+id));
   if(id==='overview')renderOverview();
-  if(id==='photos'){renderPhotoGrid();buildCatGrid('newCatGrid');}
+  if(id==='photos'){renderPhotoGrid();buildCatGrid('newCatGrid');buildCatGrid('uploadCatGrid');}
   if(id==='youtube'){buildCatGrid('ytCatGrid');renderYtList();}
   if(id==='settings')loadSettings();
 }
-
 function buildCatGrid(cid){
   const c=document.getElementById(cid);if(!c)return;c.innerHTML='';
   (settings.filters||ALL_CATS).forEach(cat=>{
     const lbl=document.createElement('label');lbl.className='cat-cb';
-    lbl.innerHTML=`<input type="checkbox" value="${cat}"/> ${cat.charAt(0).toUpperCase()+cat.slice(1)}`;
+    lbl.innerHTML='<input type="checkbox" value="'+cat+'"/> '+cat.charAt(0).toUpperCase()+cat.slice(1);
     lbl.querySelector('input').addEventListener('change',()=>lbl.classList.toggle('checked',lbl.querySelector('input').checked));
     c.appendChild(lbl);
   });
 }
-function getChecked(cid){return[...document.querySelectorAll(`#${cid} input:checked`)].map(i=>i.value);}
-function clearCats(cid){document.querySelectorAll(`#${cid} input`).forEach(i=>{i.checked=false;i.closest('label').classList.remove('checked');});}
+function getChecked(cid){return[...document.querySelectorAll('#'+cid+' input:checked')].map(i=>i.value);}
+function clearCats(cid){document.querySelectorAll('#'+cid+' input').forEach(i=>{i.checked=false;i.closest('label').classList.remove('checked');});}
 
-// BULK FILE PICKER — reads filenames only, no data
-let bulkStaged=[];
-let bulkSelected=new Set();
+// === DIRECT UPLOAD ===
+let uploadQueue=[];
+const dropZone=document.getElementById('uploadDropZone');
+const directPicker=document.getElementById('directFilePicker');
+dropZone.addEventListener('click',()=>directPicker.click());
+dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('drag-active');});
+dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('drag-active'));
+dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('drag-active');stageUploadFiles([...e.dataTransfer.files].filter(f=>f.type.startsWith('image/')));});
+directPicker.addEventListener('change',function(){stageUploadFiles([...this.files]);this.value='';});
 
-document.getElementById('bulkPickBtn').addEventListener('click',()=>document.getElementById('bulkFilePicker').click());
-document.getElementById('bulkFilePicker').addEventListener('change',function(){
-  const files=[...this.files];
+function stageUploadFiles(files){
   if(!files.length)return;
-  // Filter out already-added files
+  if(!githubToken){showToast('Connect GitHub first in Site Settings!','var(--red)');showPage('settings');return;}
   const existing=new Set(photos.filter(p=>!p.isYt).map(p=>p.filename));
   const newFiles=files.filter(f=>!existing.has(f.name));
   const dupes=files.length-newFiles.length;
-  bulkStaged=newFiles.map(f=>({
-    id:'bs_'+Math.random().toString(36).slice(2),
-    filename:f.name,title:'',categories:[],selected:false
-  }));
-  bulkSelected=new Set();
-  if(dupes>0)showToast(`${dupes} file${dupes>1?'s':''} already in portfolio — skipped`,'var(--yellow)');
-  document.getElementById('bulkStaged').style.display=bulkStaged.length?'block':'none';
-  document.getElementById('bulkCount').textContent=`${bulkStaged.length} new photo${bulkStaged.length!==1?'s':''} ready to tag`;
-  buildCatGrid('bulkCatGrid');
-  renderBulkGrid();
-  this.value='';
+  if(dupes>0)showToast(dupes+' file'+(dupes>1?'s':'')+' already in portfolio - skipped','var(--yellow)');
+  if(!newFiles.length)return;
+  uploadQueue=[...uploadQueue,...newFiles.map(f=>({file:f,status:'waiting',progress:0}))];
+  renderUploadQueue();
+  document.getElementById('uploadCatsRow').style.display='block';
+  buildCatGrid('uploadCatGrid');
+  document.getElementById('uploadActions').style.display='flex';
+}
+
+function renderUploadQueue(){
+  const container=document.getElementById('uploadQueue');container.innerHTML='';
+  uploadQueue.forEach(item=>{
+    const el=document.createElement('div');el.className='upload-item';
+    const sizeKb=Math.round(item.file.size/1024);
+    const sizeStr=sizeKb>1024?(sizeKb/1024).toFixed(1)+'MB':sizeKb+'KB';
+    const statusMap={waiting:['status-waiting','Waiting'],uploading:['status-uploading','Uploading...'],done:['status-done','Done'],error:['status-error','Failed']};
+    const [cls,txt]=statusMap[item.status]||['status-waiting','Waiting'];
+    el.innerHTML='<div class="upload-item-info"><div class="upload-item-name">'+item.file.name+'</div><div class="upload-item-size">'+sizeStr+'</div><div class="upload-progress-bar"><div class="upload-progress-fill" style="width:'+item.progress+'%"></div></div></div><div class="upload-item-status '+cls+'">'+txt+'</div>';
+    container.appendChild(el);
+  });
+}
+
+document.getElementById('startUploadBtn').addEventListener('click',async()=>{
+  if(!githubToken){showToast('Connect GitHub first!','var(--red)');return;}
+  if(!uploadQueue.length)return;
+  const cats=getChecked('uploadCatGrid');
+  const btn=document.getElementById('startUploadBtn');
+  btn.disabled=true;btn.textContent='Uploading...';
+  let successCount=0;
+  for(let i=0;i<uploadQueue.length;i++){
+    const item=uploadQueue[i];
+    if(item.status==='done')continue;
+    item.status='uploading';item.progress=10;renderUploadQueue();
+    try{
+      await uploadFileToGitHub(item.file,pct=>{item.progress=pct;renderUploadQueue();});
+      item.status='done';item.progress=100;
+      photos.push({id:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2),filename:item.file.name,title:'',categories:cats,src:'photos/'+item.file.name,dateAdded:new Date().toISOString()});
+      savePhotos();successCount++;
+    }catch(err){item.status='error';item.progress=0;console.error('Upload failed:',item.file.name,err);}
+    renderUploadQueue();
+    if(i<uploadQueue.length-1)await new Promise(r=>setTimeout(r,600));
+  }
+  btn.disabled=false;btn.textContent='Upload All to GitHub';
+  renderPhotoGrid();renderOverview();
+  if(successCount>0){
+    showToast(successCount+' photo'+(successCount>1?'s':'')+' uploaded! Hit Publish to go live.');
+    setTimeout(()=>{
+      uploadQueue=uploadQueue.filter(x=>x.status!=='done');
+      renderUploadQueue();
+      if(!uploadQueue.length){document.getElementById('uploadCatsRow').style.display='none';document.getElementById('uploadActions').style.display='none';clearCats('uploadCatGrid');}
+    },2500);
+  }else{showToast('Upload failed - check your GitHub token','var(--red)');}
 });
 
+document.getElementById('clearUploadBtn').addEventListener('click',()=>{
+  uploadQueue=[];renderUploadQueue();
+  document.getElementById('uploadCatsRow').style.display='none';
+  document.getElementById('uploadActions').style.display='none';
+  clearCats('uploadCatGrid');
+});
+
+// === BULK LOCAL IMPORT ===
+let bulkStaged=[],bulkSelected=new Set();
+document.getElementById('bulkPickBtn').addEventListener('click',()=>document.getElementById('bulkFilePicker').click());
+document.getElementById('bulkFilePicker').addEventListener('change',function(){
+  const files=[...this.files];if(!files.length)return;
+  const existing=new Set(photos.filter(p=>!p.isYt).map(p=>p.filename));
+  const newFiles=files.filter(f=>!existing.has(f.name));
+  const dupes=files.length-newFiles.length;
+  bulkStaged=newFiles.map(f=>({id:'bs_'+Math.random().toString(36).slice(2),filename:f.name,title:'',categories:[]}));
+  bulkSelected=new Set();
+  if(dupes>0)showToast(dupes+' file'+(dupes>1?'s':'')+' already in portfolio - skipped','var(--yellow)');
+  document.getElementById('bulkStaged').style.display=bulkStaged.length?'block':'none';
+  document.getElementById('bulkCount').textContent=bulkStaged.length+' new photo'+(bulkStaged.length!==1?'s':'')+' ready to tag';
+  buildCatGrid('bulkCatGrid');renderBulkGrid();this.value='';
+});
 function renderBulkGrid(){
   const grid=document.getElementById('bulkGrid');grid.innerHTML='';
   const bar=document.getElementById('bulkTagBar');
@@ -637,86 +655,48 @@ function renderBulkGrid(){
   document.getElementById('bulkSelCount').textContent=bulkSelected.size;
   bulkStaged.forEach(p=>{
     const isSel=bulkSelected.has(p.id);
-    const card=document.createElement('div');
-    card.className='photo-card'+(isSel?' drag-over':'');
-    card.style.cursor='pointer';
-    card.innerHTML=`
-      <div style="position:absolute;top:5px;left:5px;width:22px;height:22px;border-radius:50%;background:${isSel?'var(--accent)':'rgba(0,0,0,0.5)'};border:2px solid ${isSel?'var(--accent)':'rgba(255,255,255,0.4)'};display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:${isSel?'#0f0f0f':'#fff'};z-index:2">${isSel?'✓':''}</div>
-      <div style="width:100%;aspect-ratio:1;background:var(--surface2);display:flex;align-items:center;justify-content:center;padding:8px">
-        <div style="font-size:0.6rem;color:var(--muted);text-align:center;word-break:break-all;line-height:1.4">${p.filename}</div>
-      </div>
-      <div class="card-footer">
-        <div class="card-fn">${p.filename}</div>
-        <div style="display:flex;flex-wrap:wrap;gap:3px">${p.categories.length?p.categories.map(c=>`<span class="tag">${c}</span>`).join(''):'<span class="no-tag">Untagged</span>'}</div>
-      </div>`;
-    card.addEventListener('click',()=>{
-      if(bulkSelected.has(p.id))bulkSelected.delete(p.id);else bulkSelected.add(p.id);
-      renderBulkGrid();
-    });
+    const card=document.createElement('div');card.className='photo-card'+(isSel?' drag-over':'');card.style.cursor='pointer';
+    card.innerHTML='<div style="position:absolute;top:5px;left:5px;width:22px;height:22px;border-radius:50%;background:'+(isSel?'var(--accent)':'rgba(0,0,0,0.5)')+';border:2px solid '+(isSel?'var(--accent)':'rgba(255,255,255,0.4)')+';display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:'+(isSel?'#0f0f0f':'#fff')+';z-index:2">'+(isSel?'&check;':'')+'</div><div style="width:100%;aspect-ratio:1;background:var(--surface2);display:flex;align-items:center;justify-content:center;padding:8px"><div style="font-size:0.6rem;color:var(--muted);text-align:center;word-break:break-all;line-height:1.4">'+p.filename+'</div></div><div class="card-footer"><div class="card-fn">'+p.filename+'</div><div style="display:flex;flex-wrap:wrap;gap:3px">'+(p.categories.length?p.categories.map(c=>'<span class="tag">'+c+'</span>').join(''):'<span class="no-tag">Untagged</span>')+'</div></div>';
+    card.addEventListener('click',()=>{if(bulkSelected.has(p.id))bulkSelected.delete(p.id);else bulkSelected.add(p.id);renderBulkGrid();});
     grid.appendChild(card);
   });
 }
-
 document.getElementById('bulkSelAll').addEventListener('click',()=>{bulkStaged.forEach(p=>bulkSelected.add(p.id));renderBulkGrid();});
 document.getElementById('bulkDeselAll').addEventListener('click',()=>{bulkSelected.clear();renderBulkGrid();});
-
 document.getElementById('bulkApplyBtn').addEventListener('click',()=>{
-  const cats=getChecked('bulkCatGrid');
-  if(!cats.length){showToast('Pick at least one category!','var(--yellow)');return;}
-  bulkSelected.forEach(id=>{
-    const p=bulkStaged.find(x=>x.id===id);
-    if(p)cats.forEach(c=>{if(!p.categories.includes(c))p.categories.push(c);});
-  });
-  bulkSelected.clear();
-  clearCats('bulkCatGrid');
-  renderBulkGrid();
-  showToast(`✓ Tags applied!`);
+  const cats=getChecked('bulkCatGrid');if(!cats.length){showToast('Pick a category first!','var(--yellow)');return;}
+  bulkSelected.forEach(id=>{const p=bulkStaged.find(x=>x.id===id);if(p)cats.forEach(c=>{if(!p.categories.includes(c))p.categories.push(c);});});
+  bulkSelected.clear();clearCats('bulkCatGrid');renderBulkGrid();showToast('Tags applied!');
 });
-
-document.getElementById('bulkClearTagsBtn').addEventListener('click',()=>{
-  bulkSelected.forEach(id=>{const p=bulkStaged.find(x=>x.id===id);if(p)p.categories=[];});
-  renderBulkGrid();showToast('Tags cleared from selected');
-});
-
+document.getElementById('bulkClearTagsBtn').addEventListener('click',()=>{bulkSelected.forEach(id=>{const p=bulkStaged.find(x=>x.id===id);if(p)p.categories=[];});renderBulkGrid();});
 document.getElementById('bulkAddAllBtn').addEventListener('click',()=>{
   if(!bulkStaged.length)return;
-  const toAdd=bulkStaged.map(p=>({
-    id:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2),
-    filename:p.filename,title:p.title,categories:p.categories,
-    src:'photos/'+p.filename,dateAdded:new Date().toISOString()
-  }));
-  photos=[...photos,...toAdd];
-  savePhotos();renderPhotoGrid();renderOverview();
+  const toAdd=bulkStaged.map(p=>({id:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2),filename:p.filename,title:p.title,categories:p.categories,src:'photos/'+p.filename,dateAdded:new Date().toISOString()}));
+  photos=[...photos,...toAdd];savePhotos();renderPhotoGrid();renderOverview();
   bulkStaged=[];bulkSelected.clear();
-  document.getElementById('bulkStaged').style.display='none';
-  document.getElementById('bulkGrid').innerHTML='';
-  showToast(`✓ ${toAdd.length} photo${toAdd.length!==1?'s':''} added! Hit Publish to go live.`);
+  document.getElementById('bulkStaged').style.display='none';document.getElementById('bulkGrid').innerHTML='';
+  showToast(toAdd.length+' photo'+(toAdd.length!==1?'s':'')+' added! Hit Publish to go live.');
 });
+document.getElementById('bulkClearBtn').addEventListener('click',()=>{bulkStaged=[];bulkSelected.clear();document.getElementById('bulkStaged').style.display='none';document.getElementById('bulkGrid').innerHTML='';});
 
-document.getElementById('bulkClearBtn').addEventListener('click',()=>{
-  bulkStaged=[];bulkSelected.clear();
-  document.getElementById('bulkStaged').style.display='none';
-  document.getElementById('bulkGrid').innerHTML='';
-});
+// === MANUAL ADD ===
 document.getElementById('addPhotoBtn').addEventListener('click',()=>addPhoto(false));
 document.getElementById('addNextBtn').addEventListener('click',()=>addPhoto(true));
 function addPhoto(keepOpen){
   const fn=document.getElementById('newFilename').value.trim();
   if(!fn){showToast('Enter a filename!','var(--red)');return;}
   if(photos.find(p=>p.filename===fn&&!p.isYt)){showToast('Already in portfolio!','var(--yellow)');return;}
-  const cats=getChecked('newCatGrid');
-  const title=document.getElementById('newTitle').value.trim();
+  const cats=getChecked('newCatGrid'),title=document.getElementById('newTitle').value.trim();
   photos.push({id:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2),filename:fn,title,categories:cats,src:'photos/'+fn,dateAdded:new Date().toISOString()});
-  savePhotos();renderPhotoGrid();renderOverview();
-  showToast(`✓ "${fn}" added!`);
-  document.getElementById('newFilename').value='';
-  document.getElementById('newTitle').value='';
-  if(!keepOpen)clearCats('newCatGrid');
-  else document.getElementById('newFilename').focus();
+  savePhotos();renderPhotoGrid();renderOverview();showToast('"'+fn+'" added!');
+  document.getElementById('newFilename').value='';document.getElementById('newTitle').value='';
+  if(!keepOpen)clearCats('newCatGrid');else document.getElementById('newFilename').focus();
 }
 document.getElementById('newFilename').addEventListener('keydown',e=>{if(e.key==='Enter')addPhoto(true);});
 
-// PHOTO GRID with drag-to-reorder
+// === PHOTO GRID ===
+let manageSelected=new Set();
+let dragSrcId=null;
 function renderPhotoGrid(){
   const grid=document.getElementById('photoGrid'),empty=document.getElementById('photoEmpty');
   const q=document.getElementById('searchBox').value.toLowerCase();
@@ -728,189 +708,57 @@ function renderPhotoGrid(){
     if(q&&!p.filename.toLowerCase().includes(q)&&!(p.categories||[]).join(' ').includes(q))return false;
     return true;
   });
-  grid.style.display=filtered.length?'grid':'none';
-  empty.style.display=filtered.length?'none':'block';
-  grid.innerHTML='';
-  let dragSrcId=null;
+  grid.style.display=filtered.length?'grid':'none';empty.style.display=filtered.length?'none':'block';grid.innerHTML='';
   filtered.forEach(p=>{
-    const globalIdx=real.indexOf(p)+1;
-    const isSel=manageSelected.has(p.id);
-    const card=document.createElement('div');
-    card.className='photo-card'+(isSel?' selected-card':'');
-    card.draggable=true;card.dataset.id=p.id;
-    card.innerHTML=`
-      <div style="position:absolute;top:5px;left:5px;width:22px;height:22px;border-radius:50%;background:${isSel?'var(--accent)':'rgba(0,0,0,0.55)'};border:2px solid ${isSel?'var(--accent)':'rgba(255,255,255,0.4)'};display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:${isSel?'#0f0f0f':'#fff'};z-index:3">${isSel?'✓':globalIdx}</div>
-      <img src="photos/${p.filename}" loading="lazy"/>
-      <div class="photo-overlay">
-        <button class="ov-btn ov-edit">Edit</button>
-        <button class="ov-btn ov-del">Remove</button>
-      </div>
-      <div class="card-footer">
-        <div class="card-fn">${p.title||p.filename}</div>
-        <div style="display:flex;flex-wrap:wrap;gap:3px">${p.categories&&p.categories.length?p.categories.map(c=>`<span class="tag">${c}</span>`).join(''):'<span class="no-tag">Untagged</span>'}</div>
-      </div>`;
-    // Click to select/deselect
-    card.addEventListener('click',e=>{
-      if(e.target.classList.contains('ov-edit')||e.target.classList.contains('ov-del'))return;
-      if(manageSelected.has(p.id))manageSelected.delete(p.id);else manageSelected.add(p.id);
-      renderPhotoGrid();updateManageBulkBar();
-    });
-    // Drag to reorder — supports multi-select drag
-    card.addEventListener('dragstart',e=>{
-      dragSrcId=p.id;
-      // If dragging an unselected card, clear selection and drag just this one
-      if(!manageSelected.has(p.id)){
-        manageSelected.clear();
-        manageSelected.add(p.id);
-        updateManageBulkBar();
-      }
-      // Show count badge on drag
-      const ids=[...manageSelected];
-      e.dataTransfer.setData('text/plain', ids.join(','));
-      setTimeout(()=>{
-        grid.querySelectorAll('.photo-card').forEach(c=>{
-          if(manageSelected.has(c.dataset.id))c.classList.add('dragging');
-        });
-      },0);
-    });
-    card.addEventListener('dragend',()=>{
-      grid.querySelectorAll('.photo-card').forEach(c=>{
-        c.classList.remove('dragging');
-        c.classList.remove('drag-over');
-      });
-    });
-    card.addEventListener('dragover',e=>{
-      e.preventDefault();
-      if(!manageSelected.has(p.id))card.classList.add('drag-over');
-    });
+    const globalIdx=real.indexOf(p)+1,isSel=manageSelected.has(p.id);
+    const card=document.createElement('div');card.className='photo-card'+(isSel?' selected-card':'');card.draggable=true;card.dataset.id=p.id;
+    card.innerHTML='<div style="position:absolute;top:5px;left:5px;width:22px;height:22px;border-radius:50%;background:'+(isSel?'var(--accent)':'rgba(0,0,0,0.55)')+';border:2px solid '+(isSel?'var(--accent)':'rgba(255,255,255,0.4)')+';display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:'+(isSel?'#0f0f0f':'#fff')+';z-index:3">'+(isSel?'&check;':globalIdx)+'</div><img src="photos/'+p.filename+'" loading="lazy"/><div class="photo-overlay"><button class="ov-btn ov-edit">Edit</button><button class="ov-btn ov-del">Remove</button></div><div class="card-footer"><div class="card-fn">'+(p.title||p.filename)+'</div><div style="display:flex;flex-wrap:wrap;gap:3px">'+(p.categories&&p.categories.length?p.categories.map(c=>'<span class="tag">'+c+'</span>').join(''):'<span class="no-tag">Untagged</span>')+'</div></div>';
+    card.addEventListener('click',e=>{if(e.target.classList.contains('ov-edit')||e.target.classList.contains('ov-del'))return;if(manageSelected.has(p.id))manageSelected.delete(p.id);else manageSelected.add(p.id);renderPhotoGrid();updateManageBulkBar();});
+    card.addEventListener('dragstart',e=>{dragSrcId=p.id;if(!manageSelected.has(p.id)){manageSelected.clear();manageSelected.add(p.id);updateManageBulkBar();}e.dataTransfer.setData('text/plain',[...manageSelected].join(','));setTimeout(()=>{grid.querySelectorAll('.photo-card').forEach(c=>{if(manageSelected.has(c.dataset.id))c.classList.add('dragging');});},0);});
+    card.addEventListener('dragend',()=>{grid.querySelectorAll('.photo-card').forEach(c=>{c.classList.remove('dragging');c.classList.remove('drag-over');});});
+    card.addEventListener('dragover',e=>{e.preventDefault();if(!manageSelected.has(p.id))card.classList.add('drag-over');});
     card.addEventListener('dragleave',()=>card.classList.remove('drag-over'));
     card.addEventListener('drop',e=>{
-      e.preventDefault();
-      card.classList.remove('drag-over');
-      if(manageSelected.has(p.id))return; // dropping on a selected card, ignore
-      const targetIdx=photos.findIndex(x=>x.id===p.id);
-      if(targetIdx<0)return;
-      // Pull selected photos out in their current order
-      const selectedIds=[...manageSelected];
-      const selectedPhotos=photos.filter(x=>selectedIds.includes(x.id));
-      // Remove them from array
-      const remaining=photos.filter(x=>!selectedIds.includes(x.id));
-      // Find new insert position in remaining array
-      const newTargetIdx=remaining.findIndex(x=>x.id===p.id);
-      // Insert after target
-      remaining.splice(newTargetIdx+1,0,...selectedPhotos);
-      photos=remaining;
-      manageSelected.clear();
-      savePhotos();renderPhotoGrid();updateManageBulkBar();
-      showToast(`✓ ${selectedPhotos.length>1?selectedPhotos.length+' photos moved':'Order updated!'}`);
+      e.preventDefault();card.classList.remove('drag-over');if(manageSelected.has(p.id))return;
+      const selIds=[...manageSelected],selPhotos=photos.filter(x=>selIds.includes(x.id)),remaining=photos.filter(x=>!selIds.includes(x.id)),newIdx=remaining.findIndex(x=>x.id===p.id);
+      remaining.splice(newIdx+1,0,...selPhotos);photos=remaining;manageSelected.clear();
+      savePhotos();renderPhotoGrid();updateManageBulkBar();showToast(selPhotos.length>1?selPhotos.length+' photos moved':'Order updated!');
     });
     card.querySelector('.ov-edit').addEventListener('click',()=>openTagModal(p.id));
-    card.querySelector('.ov-del').addEventListener('click',()=>{if(confirm(`Remove "${p.filename}"?`)){photos=photos.filter(x=>x.id!==p.id);savePhotos();renderPhotoGrid();renderOverview();showToast('✓ Removed.');}});
+    card.querySelector('.ov-del').addEventListener('click',()=>{if(confirm('Remove "'+p.filename+'"?')){photos=photos.filter(x=>x.id!==p.id);savePhotos();renderPhotoGrid();renderOverview();showToast('Removed.');}});
     grid.appendChild(card);
   });
 }
-let manageSelected=new Set();
-
-document.getElementById('manageSelAllBtn').addEventListener('click',()=>{
-  const real=photos.filter(p=>!p.isYt);
-  if(manageSelected.size===real.length)manageSelected.clear();
-  else real.forEach(p=>manageSelected.add(p.id));
-  renderPhotoGrid();updateManageBulkBar();
-});
-document.getElementById('manageBulkApplyBtn').addEventListener('click',()=>{
-  const cats=getChecked('manageBulkCatGrid');
-  if(!cats.length){showToast('Pick a category first!','var(--yellow)');return;}
-  manageSelected.forEach(id=>{
-    const p=photos.find(x=>x.id===id);
-    if(p)cats.forEach(c=>{if(!p.categories.includes(c))p.categories.push(c);});
-  });
-  savePhotos();manageSelected.clear();clearCats('manageBulkCatGrid');
-  renderPhotoGrid();updateManageBulkBar();renderOverview();
-  showToast(`✓ Tags applied!`);
-});
-document.getElementById('manageBulkClearBtn').addEventListener('click',()=>{
-  manageSelected.forEach(id=>{const p=photos.find(x=>x.id===id);if(p)p.categories=[];});
-  savePhotos();renderPhotoGrid();updateManageBulkBar();renderOverview();
-  showToast('✓ Tags cleared from selected');
-});
-document.getElementById('manageBulkDeselBtn').addEventListener('click',()=>{
-  manageSelected.clear();renderPhotoGrid();updateManageBulkBar();
-});
-function updateManageBulkBar(){
-  const bar=document.getElementById('manageBulkBar');
-  bar.style.display=manageSelected.size>0?'block':'none';
-  document.getElementById('manageBulkCount').textContent=manageSelected.size;
-  if(manageSelected.size>0)buildCatGrid('manageBulkCatGrid');
-}
+document.getElementById('manageSelAllBtn').addEventListener('click',()=>{const real=photos.filter(p=>!p.isYt);if(manageSelected.size===real.length)manageSelected.clear();else real.forEach(p=>manageSelected.add(p.id));renderPhotoGrid();updateManageBulkBar();});
+document.getElementById('manageBulkApplyBtn').addEventListener('click',()=>{const cats=getChecked('manageBulkCatGrid');if(!cats.length){showToast('Pick a category first!','var(--yellow)');return;}manageSelected.forEach(id=>{const p=photos.find(x=>x.id===id);if(p)cats.forEach(c=>{if(!p.categories.includes(c))p.categories.push(c);});});savePhotos();manageSelected.clear();clearCats('manageBulkCatGrid');renderPhotoGrid();updateManageBulkBar();renderOverview();showToast('Tags applied!');});
+document.getElementById('manageBulkClearBtn').addEventListener('click',()=>{manageSelected.forEach(id=>{const p=photos.find(x=>x.id===id);if(p)p.categories=[];});savePhotos();renderPhotoGrid();updateManageBulkBar();renderOverview();showToast('Tags cleared from selected');});
+document.getElementById('manageBulkDeselBtn').addEventListener('click',()=>{manageSelected.clear();renderPhotoGrid();updateManageBulkBar();});
+function updateManageBulkBar(){const bar=document.getElementById('manageBulkBar');bar.style.display=manageSelected.size>0?'block':'none';document.getElementById('manageBulkCount').textContent=manageSelected.size;if(manageSelected.size>0)buildCatGrid('manageBulkCatGrid');}
 document.getElementById('filterSel').addEventListener('change',renderPhotoGrid);
-document.getElementById('sortBtn').addEventListener('click',()=>{
-  const yts=photos.filter(p=>p.isYt);
-  const real=photos.filter(p=>!p.isYt).sort((a,b)=>a.filename.localeCompare(b.filename));
-  photos=[...real,...yts];savePhotos();renderPhotoGrid();showToast('✓ Sorted A–Z!');
-});
+document.getElementById('sortBtn').addEventListener('click',()=>{const yts=photos.filter(p=>p.isYt),real=photos.filter(p=>!p.isYt).sort((a,b)=>a.filename.localeCompare(b.filename));photos=[...real,...yts];savePhotos();renderPhotoGrid();showToast('Sorted A-Z!');});
+document.getElementById('searchBox').addEventListener('input',renderPhotoGrid);
 
-// TAG MODAL
+// === TAG MODAL ===
 function openTagModal(id){
   editingId=id;const p=photos.find(x=>x.id===id);if(!p)return;
   document.getElementById('modalFilename').textContent=p.filename;
   document.getElementById('modalTitleInput').value=p.title||'';
-  const mi=document.getElementById('modalImg');
-  mi.src=p.isYt?`https://img.youtube.com/vi/${p.youtubeId}/hqdefault.jpg`:`photos/${p.filename}`;
-  mi.style.display='block';
+  const mi=document.getElementById('modalImg');mi.src=p.isYt?'https://img.youtube.com/vi/'+p.youtubeId+'/hqdefault.jpg':'photos/'+p.filename;mi.style.display='block';
   const cd=document.getElementById('modalCats');cd.innerHTML='';
-  (settings.filters||ALL_CATS).forEach(cat=>{
-    const pill=document.createElement('button');
-    pill.className='cat-pill'+(p.categories&&p.categories.includes(cat)?' selected':'');
-    pill.textContent=cat.charAt(0).toUpperCase()+cat.slice(1);
-    pill.addEventListener('click',()=>pill.classList.toggle('selected'));cd.appendChild(pill);
-  });
+  (settings.filters||ALL_CATS).forEach(cat=>{const pill=document.createElement('button');pill.className='cat-pill'+(p.categories&&p.categories.includes(cat)?' selected':'');pill.textContent=cat.charAt(0).toUpperCase()+cat.slice(1);pill.addEventListener('click',()=>pill.classList.toggle('selected'));cd.appendChild(pill);});
   document.getElementById('tagModal').classList.add('open');
 }
-document.getElementById('modalSave').addEventListener('click',()=>{
-  const p=photos.find(x=>x.id===editingId);if(!p)return;
-  p.categories=[...document.querySelectorAll('#modalCats .cat-pill.selected')].map(p=>p.textContent.toLowerCase());
-  p.title=document.getElementById('modalTitleInput').value.trim();
-  savePhotos();renderPhotoGrid();renderOverview();renderYtList();
-  document.getElementById('tagModal').classList.remove('open');showToast('✓ Tags saved!');
-});
+document.getElementById('modalSave').addEventListener('click',()=>{const p=photos.find(x=>x.id===editingId);if(!p)return;p.categories=[...document.querySelectorAll('#modalCats .cat-pill.selected')].map(p=>p.textContent.toLowerCase());p.title=document.getElementById('modalTitleInput').value.trim();savePhotos();renderPhotoGrid();renderOverview();renderYtList();document.getElementById('tagModal').classList.remove('open');showToast('Tags saved!');});
 document.getElementById('modalCancel').addEventListener('click',()=>document.getElementById('tagModal').classList.remove('open'));
 document.getElementById('tagModal').addEventListener('click',e=>{if(e.target===e.currentTarget)document.getElementById('tagModal').classList.remove('open');});
 
-// YOUTUBE
-document.getElementById('ytUrl').addEventListener('input',function(){
-  const id=extractYtId(this.value.trim()),prev=document.getElementById('ytPreview');
-  if(id){prev.style.display='block';document.getElementById('ytThumb').src=`https://img.youtube.com/vi/${id}/hqdefault.jpg`;document.getElementById('ytIdTxt').textContent='ID: '+id;}
-  else prev.style.display='none';
-});
-document.getElementById('ytAddBtn').addEventListener('click',()=>{
-  const url=document.getElementById('ytUrl').value.trim(),ytId=extractYtId(url);
-  if(!ytId){showToast('Invalid YouTube URL','var(--red)');return;}
-  const title=document.getElementById('ytTitle').value.trim()||'YouTube Video';
-  const cats=getChecked('ytCatGrid');
-  photos.push({id:'yt_'+Date.now(),filename:'yt_'+ytId,title,youtubeId:ytId,categories:cats,isYt:true,src:'',dateAdded:new Date().toISOString()});
-  savePhotos();renderOverview();renderYtList();
-  document.getElementById('ytUrl').value='';document.getElementById('ytTitle').value='';
-  clearCats('ytCatGrid');document.getElementById('ytPreview').style.display='none';
-  showToast('✓ YouTube video added!');
-});
-function renderYtList(){
-  const list=document.getElementById('ytList'),empty=document.getElementById('ytEmpty');
-  const yts=photos.filter(p=>p.isYt);
-  list.innerHTML='';empty.style.display=yts.length?'none':'block';
-  yts.forEach(p=>{
-    const row=document.createElement('div');
-    row.style.cssText='display:flex;align-items:center;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:8px';
-    row.innerHTML=`<img src="https://img.youtube.com/vi/${p.youtubeId}/hqdefault.jpg" style="width:64px;height:40px;object-fit:cover;border-radius:4px"/>
-      <div style="flex:1;min-width:0"><div style="font-size:0.8rem;margin-bottom:3px">${p.title}</div>
-      <div style="display:flex;gap:4px;flex-wrap:wrap">${(p.categories||[]).map(c=>`<span class="tag">${c}</span>`).join('')||'<span class="no-tag">Untagged</span>'}</div></div>
-      <button class="ov-btn ov-edit" onclick="openTagModal('${p.id}')">Edit</button>
-      <button class="ov-btn ov-del" onclick="removeItem('${p.id}')">Remove</button>`;
-    list.appendChild(row);
-  });
-}
-window.removeItem=function(id){if(confirm('Remove?')){photos=photos.filter(x=>x.id!==id);savePhotos();renderYtList();renderOverview();showToast('✓ Removed.');}};
+// === YOUTUBE ===
+document.getElementById('ytUrl').addEventListener('input',function(){const id=extractYtId(this.value.trim()),prev=document.getElementById('ytPreview');if(id){prev.style.display='block';document.getElementById('ytThumb').src='https://img.youtube.com/vi/'+id+'/hqdefault.jpg';document.getElementById('ytIdTxt').textContent='ID: '+id;}else prev.style.display='none';});
+document.getElementById('ytAddBtn').addEventListener('click',()=>{const url=document.getElementById('ytUrl').value.trim(),ytId=extractYtId(url);if(!ytId){showToast('Invalid YouTube URL','var(--red)');return;}const title=document.getElementById('ytTitle').value.trim()||'YouTube Video',cats=getChecked('ytCatGrid');photos.push({id:'yt_'+Date.now(),filename:'yt_'+ytId,title,youtubeId:ytId,categories:cats,isYt:true,src:'',dateAdded:new Date().toISOString()});savePhotos();renderOverview();renderYtList();document.getElementById('ytUrl').value='';document.getElementById('ytTitle').value='';clearCats('ytCatGrid');document.getElementById('ytPreview').style.display='none';showToast('YouTube video added!');});
+function renderYtList(){const list=document.getElementById('ytList'),empty=document.getElementById('ytEmpty'),yts=photos.filter(p=>p.isYt);list.innerHTML='';empty.style.display=yts.length?'none':'block';yts.forEach(p=>{const row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:8px';row.innerHTML='<img src="https://img.youtube.com/vi/'+p.youtubeId+'/hqdefault.jpg" style="width:64px;height:40px;object-fit:cover;border-radius:4px"/><div style="flex:1;min-width:0"><div style="font-size:0.8rem;margin-bottom:3px">'+p.title+'</div><div style="display:flex;gap:4px;flex-wrap:wrap">'+((p.categories||[]).map(c=>'<span class="tag">'+c+'</span>').join('')||'<span class="no-tag">Untagged</span>')+'</div></div><button class="ov-btn ov-edit" onclick="openTagModal(\''+p.id+'\')">Edit</button><button class="ov-btn ov-del" onclick="removeItem(\''+p.id+'\')">Remove</button>';list.appendChild(row);});}
+window.removeItem=function(id){if(confirm('Remove?')){photos=photos.filter(x=>x.id!==id);savePhotos();renderYtList();renderOverview();showToast('Removed.');}};
 
-// OVERVIEW
+// === OVERVIEW ===
 function renderOverview(){
   const real=photos.filter(p=>!p.isYt);
   document.getElementById('statTotal').textContent=real.length;
@@ -918,121 +766,59 @@ function renderOverview(){
   document.getElementById('statYt').textContent=photos.filter(p=>p.isYt).length;
   document.getElementById('statCats').textContent=(settings.filters||ALL_CATS).length;
   const bd=document.getElementById('catBreakdown');bd.innerHTML='';
-  (settings.filters||ALL_CATS).forEach(cat=>{
-    const count=photos.filter(p=>p.categories&&p.categories.includes(cat)).length;
-    const el=document.createElement('div');
-    el.style.cssText='background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 12px';
-    el.innerHTML=`<div style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">${cat}</div><div style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--accent)">${count}</div>`;
-    bd.appendChild(el);
-  });
+  (settings.filters||ALL_CATS).forEach(cat=>{const count=photos.filter(p=>p.categories&&p.categories.includes(cat)).length;const el=document.createElement('div');el.style.cssText='background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 12px';el.innerHTML='<div style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">'+cat+'</div><div style="font-family:\'Cormorant Garamond\',serif;font-size:1.5rem;color:var(--accent)">'+count+'</div>';bd.appendChild(el);});
 }
 
-// SETTINGS
+// === SETTINGS ===
 function loadSettings(){
   const s=settings;
-  document.getElementById('sName').value=s.name||'';
-  document.getElementById('sTagline').value=s.tagline||'';
-  document.getElementById('sEmail').value=s.email||'';
-  document.getElementById('sAbout').value=s.about||'';
-  document.getElementById('sLocation').value=s.location||'';
-  document.getElementById('sInsta').value=s.insta||'';
-  document.getElementById('logoSize').value=s.logoSize||48;
-  document.getElementById('logoSizeVal').textContent=(s.logoSize||48)+'px';
-  document.getElementById('galleryCols').value=s.galleryCols||4;
-  document.getElementById('galleryGap').value=s.galleryGap||4;
-  document.getElementById('galleryGapVal').textContent=(s.galleryGap||4)+'px';
-  const llp=document.getElementById('logoLightPrev');
-  if(s.logoLightSrc){llp.src=s.logoLightSrc;llp.style.display='block';}else llp.style.display='none';
-  const ldp=document.getElementById('logoDarkPrev');
-  if(s.logoDarkSrc){ldp.src=s.logoDarkSrc;ldp.style.display='block';}else ldp.style.display='none';
-  const ap=document.getElementById('aboutPhotoPrev');
-  if(s.aboutPhotoSrc){ap.src=s.aboutPhotoSrc;ap.style.display='block';}else ap.style.display='none';
+  document.getElementById('sName').value=s.name||'';document.getElementById('sTagline').value=s.tagline||'';document.getElementById('sEmail').value=s.email||'';document.getElementById('sAbout').value=s.about||'';document.getElementById('sLocation').value=s.location||'';document.getElementById('sInsta').value=s.insta||'';
+  document.getElementById('logoSize').value=s.logoSize||48;document.getElementById('logoSizeVal').textContent=(s.logoSize||48)+'px';
+  document.getElementById('galleryCols').value=s.galleryCols||4;document.getElementById('galleryGap').value=s.galleryGap||4;document.getElementById('galleryGapVal').textContent=(s.galleryGap||4)+'px';
+  const llp=document.getElementById('logoLightPrev');if(s.logoLightSrc){llp.src=s.logoLightSrc;llp.style.display='block';}else llp.style.display='none';
+  const ldp=document.getElementById('logoDarkPrev');if(s.logoDarkSrc){ldp.src=s.logoDarkSrc;ldp.style.display='block';}else ldp.style.display='none';
+  const ap=document.getElementById('aboutPhotoPrev');if(s.aboutPhotoSrc){ap.src=s.aboutPhotoSrc;ap.style.display='block';}else ap.style.display='none';
   document.querySelectorAll('#displayFontGrid .font-opt').forEach(el=>el.classList.toggle('selected',el.dataset.font===s.fontDisplay));
   document.querySelectorAll('#bodyFontGrid .font-opt').forEach(el=>el.classList.toggle('selected',el.dataset.font===s.fontBody));
   renderFilterTags();renderClientTags();
+  if(githubToken)document.getElementById('ghTokenInput').value=githubToken;
 }
-document.getElementById('galleryGap').addEventListener('input',function(){
-  document.getElementById('galleryGapVal').textContent=this.value+'px';
-  settings.galleryGap=parseInt(this.value);
-});
+document.getElementById('galleryGap').addEventListener('input',function(){document.getElementById('galleryGapVal').textContent=this.value+'px';settings.galleryGap=parseInt(this.value);});
 document.getElementById('logoSize').addEventListener('input',function(){document.getElementById('logoSizeVal').textContent=this.value+'px';settings.logoSize=parseInt(this.value);});
-document.getElementById('logoLightFile').addEventListener('change',function(){const f=this.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{settings.logoLightSrc=ev.target.result;const p=document.getElementById('logoLightPrev');p.src=ev.target.result;p.style.display='block';showToast('✓ Light logo uploaded!');};r.readAsDataURL(f);});
-document.getElementById('clrLogoLight').addEventListener('click',()=>{settings.logoLightSrc='';document.getElementById('logoLightPrev').style.display='none';showToast('✓ Removed.');});
-document.getElementById('logoDarkFile').addEventListener('change',function(){const f=this.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{settings.logoDarkSrc=ev.target.result;const p=document.getElementById('logoDarkPrev');p.src=ev.target.result;p.style.display='block';showToast('✓ Dark logo uploaded!');};r.readAsDataURL(f);});
-document.getElementById('clrLogoDark').addEventListener('click',()=>{settings.logoDarkSrc='';document.getElementById('logoDarkPrev').style.display='none';showToast('✓ Removed.');});
-document.getElementById('aboutPhotoFile').addEventListener('change',function(){const f=this.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{settings.aboutPhotoSrc=ev.target.result;const p=document.getElementById('aboutPhotoPrev');p.src=ev.target.result;p.style.display='block';showToast('✓ About photo uploaded!');};r.readAsDataURL(f);});
-document.getElementById('clrAboutPhoto').addEventListener('click',()=>{settings.aboutPhotoSrc='';document.getElementById('aboutPhotoPrev').style.display='none';showToast('✓ Removed.');});
-document.querySelectorAll('.font-opt').forEach(el=>{el.addEventListener('click',()=>{const type=el.dataset.type,font=el.dataset.font;document.querySelectorAll(`[data-type="${type}"]`).forEach(e=>e.classList.remove('selected'));el.classList.add('selected');if(type==='display')settings.fontDisplay=font;else settings.fontBody=font;showToast(`✓ Font: ${font}`);});});
-function renderFilterTags(){const c=document.getElementById('filterTagsContainer');c.innerHTML='';(settings.filters||ALL_CATS).forEach(f=>{const tag=document.createElement('div');tag.className='filter-tag';tag.innerHTML=`${f} <button>×</button>`;tag.querySelector('button').addEventListener('click',()=>{settings.filters=settings.filters.filter(x=>x!==f);renderFilterTags();showToast(`✓ Removed "${f}"`);});c.appendChild(tag);});}
-document.getElementById('addFilterBtn').addEventListener('click',()=>{const val=document.getElementById('newFilterInput').value.trim().toLowerCase();if(!val)return;if(!settings.filters)settings.filters=[...ALL_CATS];if(!settings.filters.includes(val)){settings.filters.push(val);renderFilterTags();document.getElementById('newFilterInput').value='';showToast(`✓ Added "${val}"`);}else showToast('Already exists!','var(--yellow)');});
+document.getElementById('logoLightFile').addEventListener('change',function(){const f=this.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{settings.logoLightSrc=ev.target.result;const p=document.getElementById('logoLightPrev');p.src=ev.target.result;p.style.display='block';showToast('Light logo uploaded!');};r.readAsDataURL(f);});
+document.getElementById('clrLogoLight').addEventListener('click',()=>{settings.logoLightSrc='';document.getElementById('logoLightPrev').style.display='none';showToast('Removed.');});
+document.getElementById('logoDarkFile').addEventListener('change',function(){const f=this.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{settings.logoDarkSrc=ev.target.result;const p=document.getElementById('logoDarkPrev');p.src=ev.target.result;p.style.display='block';showToast('Dark logo uploaded!');};r.readAsDataURL(f);});
+document.getElementById('clrLogoDark').addEventListener('click',()=>{settings.logoDarkSrc='';document.getElementById('logoDarkPrev').style.display='none';showToast('Removed.');});
+document.getElementById('aboutPhotoFile').addEventListener('change',function(){const f=this.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{settings.aboutPhotoSrc=ev.target.result;const p=document.getElementById('aboutPhotoPrev');p.src=ev.target.result;p.style.display='block';showToast('About photo uploaded!');};r.readAsDataURL(f);});
+document.getElementById('clrAboutPhoto').addEventListener('click',()=>{settings.aboutPhotoSrc='';document.getElementById('aboutPhotoPrev').style.display='none';showToast('Removed.');});
+document.querySelectorAll('.font-opt').forEach(el=>{el.addEventListener('click',()=>{const type=el.dataset.type,font=el.dataset.font;document.querySelectorAll('[data-type="'+type+'"]').forEach(e=>e.classList.remove('selected'));el.classList.add('selected');if(type==='display')settings.fontDisplay=font;else settings.fontBody=font;showToast('Font: '+font);});});
+function renderFilterTags(){const c=document.getElementById('filterTagsContainer');c.innerHTML='';(settings.filters||ALL_CATS).forEach(f=>{const tag=document.createElement('div');tag.className='filter-tag';tag.innerHTML=f+' <button>x</button>';tag.querySelector('button').addEventListener('click',()=>{settings.filters=settings.filters.filter(x=>x!==f);renderFilterTags();showToast('Removed "'+f+'"');});c.appendChild(tag);});}
+document.getElementById('addFilterBtn').addEventListener('click',()=>{const val=document.getElementById('newFilterInput').value.trim().toLowerCase();if(!val)return;if(!settings.filters)settings.filters=[...ALL_CATS];if(!settings.filters.includes(val)){settings.filters.push(val);renderFilterTags();document.getElementById('newFilterInput').value='';showToast('Added "'+val+'"');}else showToast('Already exists!','var(--yellow)');});
 document.getElementById('newFilterInput').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('addFilterBtn').click();});
-function renderClientTags(){const c=document.getElementById('clientTagsContainer');c.innerHTML='';(settings.clients||[]).forEach(cl=>{const tag=document.createElement('div');tag.className='client-tag';tag.innerHTML=`${cl} <button>×</button>`;tag.querySelector('button').addEventListener('click',()=>{settings.clients=settings.clients.filter(x=>x!==cl);renderClientTags();showToast(`✓ Removed "${cl}"`);});c.appendChild(tag);});}
-document.getElementById('addClientBtn').addEventListener('click',()=>{const val=document.getElementById('newClientInput').value.trim();if(!val)return;if(!settings.clients)settings.clients=[];if(!settings.clients.includes(val)){settings.clients.push(val);renderClientTags();document.getElementById('newClientInput').value='';showToast(`✓ Added "${val}"`);}else showToast('Already in list!','var(--yellow)');});
+function renderClientTags(){const c=document.getElementById('clientTagsContainer');c.innerHTML='';(settings.clients||[]).forEach(cl=>{const tag=document.createElement('div');tag.className='client-tag';tag.innerHTML=cl+' <button>x</button>';tag.querySelector('button').addEventListener('click',()=>{settings.clients=settings.clients.filter(x=>x!==cl);renderClientTags();showToast('Removed "'+cl+'"');});c.appendChild(tag);});}
+document.getElementById('addClientBtn').addEventListener('click',()=>{const val=document.getElementById('newClientInput').value.trim();if(!val)return;if(!settings.clients)settings.clients=[];if(!settings.clients.includes(val)){settings.clients.push(val);renderClientTags();document.getElementById('newClientInput').value='';showToast('Added "'+val+'"');}else showToast('Already in list!','var(--yellow)');});
 document.getElementById('newClientInput').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('addClientBtn').click();});
 document.getElementById('saveSettings').addEventListener('click',()=>{
-  settings.name=document.getElementById('sName').value;
-  settings.tagline=document.getElementById('sTagline').value;
-  settings.email=document.getElementById('sEmail').value;
-  settings.about=document.getElementById('sAbout').value;
-  settings.location=document.getElementById('sLocation').value;
-  settings.insta=document.getElementById('sInsta').value;
-  settings.logoSize=parseInt(document.getElementById('logoSize').value)||48;
-  settings.galleryGap=parseInt(document.getElementById('galleryGap').value)||4;
-  settings.galleryCols=parseInt(document.getElementById('galleryCols').value)||4;
+  settings.name=document.getElementById('sName').value;settings.tagline=document.getElementById('sTagline').value;settings.email=document.getElementById('sEmail').value;settings.about=document.getElementById('sAbout').value;settings.location=document.getElementById('sLocation').value;settings.insta=document.getElementById('sInsta').value;
+  settings.logoSize=parseInt(document.getElementById('logoSize').value)||48;settings.galleryGap=parseInt(document.getElementById('galleryGap').value)||4;settings.galleryCols=parseInt(document.getElementById('galleryCols').value)||4;
   localStorage.setItem('jj_settings',JSON.stringify(settings));
-  const btn=document.getElementById('saveSettings');
-  btn.textContent='✓ Saved!';btn.style.background='var(--green)';
-  setTimeout(()=>{btn.textContent='Save Settings';btn.style.background='';},2500);
-  showToast('✓ Settings saved!');
+  const btn=document.getElementById('saveSettings');btn.textContent='Saved!';btn.style.background='var(--green)';setTimeout(()=>{btn.textContent='Save Settings';btn.style.background='';},2500);showToast('Settings saved!');
 });
 
-// EXPORT — fallback download
-function doExport(){
-  const data={
-    photos:photos.map(p=>({
-      id:p.id,filename:p.filename||'',title:p.title||'',
-      src:p.isYt?'':`photos/${p.filename}`,
-      youtubeId:p.youtubeId||null,isYt:!!p.isYt,
-      categories:p.categories||[],dateAdded:p.dateAdded
-    })),settings
-  };
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='portfolio-data.json';a.click();
-  showToast('✓ portfolio-data.json downloaded!');
-}
+// === EXPORT ===
+function doExport(){const data={photos:photos.map(p=>({id:p.id,filename:p.filename||'',title:p.title||'',src:p.isYt?'':'photos/'+p.filename,youtubeId:p.youtubeId||null,isYt:!!p.isYt,categories:p.categories||[],dateAdded:p.dateAdded})),settings};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='portfolio-data.json';a.click();showToast('portfolio-data.json downloaded!');}
 document.getElementById('exportBtn').addEventListener('click',doExport);
 
-// GitHub token handlers
-document.getElementById('ghTokenSave').addEventListener('click',async()=>{
-  const token=document.getElementById('ghTokenInput').value.trim();
-  if(!token){showToast('Enter a token first!','var(--red)');return;}
-  githubToken=token;
-  localStorage.setItem('jj_gh_token',token);
-  document.getElementById('ghConnectionStatus').innerHTML='<span style="color:var(--accent)">Testing connection...</span>';
-  await loadFromGitHub();
-  document.getElementById('ghConnectionStatus').innerHTML='<span style="color:var(--green)">✓ Connected and data loaded!</span>';
-  showToast('✓ GitHub connected!');
-});
-document.getElementById('ghTokenClear').addEventListener('click',()=>{
-  githubToken='';
-  localStorage.removeItem('jj_gh_token');
-  document.getElementById('ghTokenInput').value='';
-  document.getElementById('ghConnectionStatus').innerHTML='<span style="color:var(--muted)">Token cleared.</span>';
-  document.getElementById('ghStatus').textContent='Not connected';
-  document.getElementById('ghStatus').style.color='var(--muted)';
-  showToast('Token cleared');
-});
+// === GITHUB TOKEN ===
+document.getElementById('ghTokenSave').addEventListener('click',async()=>{const token=document.getElementById('ghTokenInput').value.trim();if(!token){showToast('Enter a token first!','var(--red)');return;}githubToken=token;localStorage.setItem('jj_gh_token',token);document.getElementById('ghConnectionStatus').innerHTML='<span style="color:var(--accent)">Testing connection...</span>';await loadFromGitHub();document.getElementById('ghConnectionStatus').innerHTML='<span style="color:var(--green)">Connected and data loaded!</span>';showToast('GitHub connected!');});
+document.getElementById('ghTokenClear').addEventListener('click',()=>{githubToken='';localStorage.removeItem('jj_gh_token');document.getElementById('ghTokenInput').value='';document.getElementById('ghConnectionStatus').innerHTML='<span style="color:var(--muted)">Token cleared.</span>';document.getElementById('ghStatus').textContent='Not connected';document.getElementById('ghStatus').style.color='var(--muted)';showToast('Token cleared');});
 
 // INIT
 renderOverview();
 buildCatGrid('newCatGrid');
-// Load token input if saved
+buildCatGrid('uploadCatGrid');
 if(githubToken)document.getElementById('ghTokenInput').value=githubToken;
-// Auto-load from GitHub on startup
-loadFromGitHub().then(()=>{
-  renderOverview();
-  buildCatGrid('newCatGrid');
-});
+loadFromGitHub().then(()=>{renderOverview();buildCatGrid('newCatGrid');buildCatGrid('uploadCatGrid');});
 </script>
 </body>
 </html>
