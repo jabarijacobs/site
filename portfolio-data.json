@@ -37,6 +37,32 @@
       "dateAdded": "2026-03-28T20:17:35.621Z"
     },
     {
+      "id": "p_1782922034703_apr6987zjh",
+      "filename": "Washingtonian_2026_07_July.jpg",
+      "title": "",
+      "src": "photos/Washingtonian_2026_07_July.jpg",
+      "youtubeId": null,
+      "isYt": false,
+      "categories": [
+        "editorial",
+        "food"
+      ],
+      "dateAdded": "2026-07-01T16:07:14.703Z"
+    },
+    {
+      "id": "p_1782922033012_949swov2fkv",
+      "filename": "Untitled Session2645 copy.jpg",
+      "title": "",
+      "src": "photos/Untitled Session2645 copy.jpg",
+      "youtubeId": null,
+      "isYt": false,
+      "categories": [
+        "editorial",
+        "food"
+      ],
+      "dateAdded": "2026-07-01T16:07:13.012Z"
+    },
+    {
       "id": "p_1774729055621_wp3m2qboh4b",
       "filename": "Blue4891 copy.jpg",
       "title": "",
@@ -2089,30 +2115,6 @@
         "motion"
       ],
       "dateAdded": "2026-03-29T17:11:47.392Z"
-    },
-    {
-      "id": "p_1782922033012_949swov2fkv",
-      "filename": "Untitled Session2645 copy.jpg",
-      "title": "",
-      "src": "photos/Untitled Session2645 copy.jpg",
-      "youtubeId": null,
-      "isYt": false,
-      "categories": [
-        "editorial"
-      ],
-      "dateAdded": "2026-07-01T16:07:13.012Z"
-    },
-    {
-      "id": "p_1782922034703_apr6987zjh",
-      "filename": "Washingtonian_2026_07_July.jpg",
-      "title": "",
-      "src": "photos/Washingtonian_2026_07_July.jpg",
-      "youtubeId": null,
-      "isYt": false,
-      "categories": [
-        "editorial"
-      ],
-      "dateAdded": "2026-07-01T16:07:14.703Z"
     }
   ],
   "settings": {
