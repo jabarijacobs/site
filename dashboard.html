@@ -149,19 +149,30 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
     <div class="page-sub">Your portfolio at a glance</div>
     <div class="stats">
       <div class="stat-card"><div class="stat-label">Total Photos</div><div class="stat-val" id="statTotal">0</div></div>
+      <div class="stat-card"><div class="stat-label">On Live Site</div><div class="stat-val" id="statSiteTier" style="color:var(--green)">0</div></div>
+      <div class="stat-card"><div class="stat-label">Archive Only</div><div class="stat-val" id="statArchiveTier" style="color:var(--accent)">0</div></div>
+      <div class="stat-card"><div class="stat-label">Hidden</div><div class="stat-val" id="statHiddenTier" style="color:var(--muted)">0</div></div>
       <div class="stat-card"><div class="stat-label">Untagged</div><div class="stat-val" id="statUntagged" style="color:var(--red)">0</div></div>
       <div class="stat-card"><div class="stat-label">YouTube</div><div class="stat-val" id="statYt" style="color:var(--accent)">0</div></div>
       <div class="stat-card"><div class="stat-label">Categories</div><div class="stat-val" id="statCats">0</div></div>
+      <div class="stat-card"><div class="stat-label">Storage Used</div><div class="stat-val" id="statStorage" style="color:var(--accent)">&mdash;</div></div>
     </div>
     <div class="sec">
       <h3>Category Breakdown</h3>
       <div id="catBreakdown" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px"></div>
+    </div>
+    <div class="sec" id="orphanSec" style="display:none">
+      <h3 style="color:var(--red)">&#x26A0; Orphaned Files <span style="color:var(--muted);font-weight:400">&mdash; on GitHub but not in your portfolio</span></h3>
+      <p style="font-size:0.76rem;color:var(--muted);margin-bottom:12px;line-height:1.6">These image files are still sitting in your <code>photos/</code> folder on GitHub, taking up space, even though you removed them from the site. This happens with photos removed before this fix. Safe to delete permanently.</p>
+      <div style="margin-bottom:12px"><button class="btn btn-primary" id="deleteAllOrphansBtn" style="background:var(--red)"><span id="orphanBtnLabel">Delete All Orphaned Files</span> (<span id="orphanTotalSize">0</span>)</button></div>
+      <div id="orphanList" style="display:flex;flex-direction:column;gap:6px"></div>
     </div>
     <div class="sec">
       <h3>Quick Actions</h3>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn btn-primary" onclick="showPage('photos')">Manage Photos</button>
         <button class="btn btn-ghost" onclick="publishToGitHub()">&#x1F680; Publish</button>
+        <button class="btn btn-ghost" onclick="loadPhotoSizes()">&#x1F504; Refresh Storage Info</button>
         <a class="btn btn-ghost" href="https://site-9y7.pages.dev" target="_blank" style="text-decoration:none">&#x1F310; Live Site</a>
       </div>
     </div>
@@ -251,6 +262,9 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
         <option value="motion">Motion</option>
         <option value="design">Design</option>
         <option value="__untagged">&#x26A0; Untagged</option>
+        <option value="__tier_site">&#x2605; Live Site Only</option>
+        <option value="__tier_archive">&#x1F4E6; Archive Only</option>
+        <option value="__tier_hidden">&#x1F648; Hidden</option>
       </select>
       <button class="btn btn-ghost" id="sortBtn" style="font-size:0.65rem;padding:7px 12px">Sort A-Z</button>
       <button class="btn btn-ghost" id="manageSelAllBtn" style="font-size:0.65rem;padding:7px 12px">Select All</button>
@@ -262,6 +276,11 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
         <button class="btn btn-primary" id="manageBulkApplyBtn" style="font-size:0.68rem;padding:7px 14px">Apply Tags</button>
         <button class="btn btn-ghost" id="manageBulkClearBtn" style="font-size:0.68rem;padding:7px 14px">Clear Tags</button>
         <button class="btn btn-ghost" id="manageBulkDeselBtn" style="font-size:0.68rem;padding:7px 14px">Deselect All</button>
+        <span style="width:1px;background:var(--border);align-self:stretch"></span>
+        <button class="btn btn-ghost" id="manageBulkTierSiteBtn" style="font-size:0.68rem;padding:7px 14px">&#x2192; Live Site</button>
+        <button class="btn btn-ghost" id="manageBulkTierArchiveBtn" style="font-size:0.68rem;padding:7px 14px">&#x2192; Archive Only</button>
+        <button class="btn btn-ghost" id="manageBulkTierHiddenBtn" style="font-size:0.68rem;padding:7px 14px">&#x2192; Hidden</button>
+        <button class="btn btn-ghost" id="manageBulkDeleteBtn" style="font-size:0.68rem;padding:7px 14px;background:var(--red);color:#fff">&#x1F5D1; Delete Selected</button>
       </div>
     </div>
     <div class="photo-grid" id="photoGrid"></div>
@@ -429,6 +448,12 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
     <div class="field"><label>Display Title (optional)</label><input id="modalTitleInput" style="width:100%;padding:8px 11px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.82rem;outline:none;margin-bottom:12px"/></div>
     <label style="font-size:0.67rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px">Categories</label>
     <div class="modal-cats" id="modalCats"></div>
+    <label style="font-size:0.67rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);display:block;margin:14px 0 8px">Where does this appear?</label>
+    <div class="modal-cats" id="modalTier">
+      <button class="cat-pill" data-tier="site">Live Site</button>
+      <button class="cat-pill" data-tier="archive">Archive PDF Only</button>
+      <button class="cat-pill" data-tier="hidden">Hidden (neither)</button>
+    </div>
     <div class="modal-actions">
       <button class="btn btn-primary" id="modalSave">Save</button>
       <button class="btn btn-ghost" id="modalCancel">Cancel</button>
@@ -454,6 +479,40 @@ async function ghPut(path,base64content,sha,message){
   if(sha)body.sha=sha;
   const r=await fetch('https://api.github.com/repos/'+GITHUB_REPO+'/contents/'+path,{method:'PUT',headers:{Authorization:'token '+githubToken,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
   return r.json();
+}
+async function ghDelete(path,sha,message){
+  const r=await fetch('https://api.github.com/repos/'+GITHUB_REPO+'/contents/'+path,{method:'DELETE',headers:{Authorization:'token '+githubToken,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message,sha})});
+  return r.json();
+}
+
+// === STORAGE / FILE SIZE TRACKING ===
+let photoMeta={}; // filename -> {size, sha}
+function fmtSize(bytes){
+  if(bytes==null)return '';
+  if(bytes<1024*1024)return Math.round(bytes/1024)+' KB';
+  return (bytes/1024/1024).toFixed(1)+' MB';
+}
+async function loadPhotoSizes(){
+  if(!githubToken)return;
+  try{
+    const r=await fetch('https://api.github.com/repos/'+GITHUB_REPO+'/contents/photos',{headers:{Authorization:'token '+githubToken,Accept:'application/vnd.github.v3+json'}});
+    const list=await r.json();
+    if(Array.isArray(list)){
+      photoMeta={};
+      list.forEach(f=>{if(f.type==='file')photoMeta[f.name]={size:f.size,sha:f.sha};});
+      renderOverview();renderPhotoGrid();
+    }
+  }catch(e){/* ignore, size display just stays blank */}
+}
+async function deleteFileFromGitHub(filename){
+  let meta=photoMeta[filename];
+  if(!meta){
+    try{const f=await ghGet('photos/'+filename);if(f.sha)meta={size:f.size,sha:f.sha};}catch(e){}
+  }
+  if(!meta)throw new Error('Could not find '+filename+' on GitHub');
+  const result=await ghDelete('photos/'+filename,meta.sha,'Delete '+filename);
+  if(result.commit){delete photoMeta[filename];return true;}
+  throw new Error(result.message||'Delete failed');
 }
 
 // Upload image file directly to GitHub photos/ folder
@@ -495,6 +554,7 @@ async function loadFromGitHub(){
       renderOverview();renderPhotoGrid();
       document.getElementById('ghStatus').textContent='Connected to GitHub';
       document.getElementById('ghStatus').style.color='var(--green)';
+      loadPhotoSizes();
     }
   }catch(e){showToast('GitHub load failed, using local data','var(--yellow)');loadFromLocal();}
 }
@@ -509,7 +569,7 @@ async function publishToGitHub(){
   if(!githubToken){showToast('Enter GitHub token first!','var(--red)');showPage('settings');return;}
   btn.disabled=true;btn.textContent='Publishing...';
   status.style.color='var(--accent)';status.textContent='Committing to GitHub...';
-  const data={photos:photos.map(p=>({id:p.id,filename:p.filename||'',title:p.title||'',src:p.isYt?'':'photos/'+p.filename,youtubeId:p.youtubeId||null,isYt:!!p.isYt,categories:p.categories||[],dateAdded:p.dateAdded})),settings};
+  const data={photos:photos.map(p=>({id:p.id,filename:p.filename||'',title:p.title||'',src:p.isYt?'':'photos/'+p.filename,youtubeId:p.youtubeId||null,isYt:!!p.isYt,categories:p.categories||[],tier:p.tier||'site',dateAdded:p.dateAdded})),settings};
   const content=JSON.stringify(data,null,2);
   try{
     if(!fileSha){const f=await ghGet(GITHUB_FILE);fileSha=f.sha||'';}
@@ -519,6 +579,7 @@ async function publishToGitHub(){
       status.style.color='var(--green)';status.textContent='Live in ~60 seconds';
       btn.textContent='Published!';btn.style.background='var(--green)';
       showToast('Published! Cloudflare deploying now...');
+      loadPhotoSizes();
       setTimeout(()=>{btn.textContent='Publish to Live Site';btn.style.background='';btn.disabled=false;},3000);
     }else throw new Error(result.message||'Unknown error');
   }catch(e){
@@ -703,8 +764,13 @@ function renderPhotoGrid(){
   const f=document.getElementById('filterSel').value;
   const real=photos.filter(p=>!p.isYt);
   const filtered=real.filter(p=>{
-    if(f==='__untagged')return !p.categories||!p.categories.length;
-    if(f!=='all'&&!(p.categories||[]).includes(f))return false;
+    let tierMatch=true;
+    if(f==='__untagged')tierMatch=!p.categories||!p.categories.length;
+    else if(f==='__tier_site')tierMatch=(p.tier||'site')==='site';
+    else if(f==='__tier_archive')tierMatch=p.tier==='archive';
+    else if(f==='__tier_hidden')tierMatch=p.tier==='hidden';
+    else if(f!=='all')tierMatch=(p.categories||[]).includes(f);
+    if(!tierMatch)return false;
     if(q&&!p.filename.toLowerCase().includes(q)&&!(p.categories||[]).join(' ').includes(q))return false;
     return true;
   });
@@ -712,7 +778,10 @@ function renderPhotoGrid(){
   filtered.forEach(p=>{
     const globalIdx=real.indexOf(p)+1,isSel=manageSelected.has(p.id);
     const card=document.createElement('div');card.className='photo-card'+(isSel?' selected-card':'');card.draggable=true;card.dataset.id=p.id;
-    card.innerHTML='<div style="position:absolute;top:5px;left:5px;width:22px;height:22px;border-radius:50%;background:'+(isSel?'var(--accent)':'rgba(0,0,0,0.55)')+';border:2px solid '+(isSel?'var(--accent)':'rgba(255,255,255,0.4)')+';display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:'+(isSel?'#0f0f0f':'#fff')+';z-index:3">'+(isSel?'&check;':globalIdx)+'</div><img src="photos/'+p.filename+'" loading="lazy"/><div class="photo-overlay"><button class="ov-btn ov-edit">Edit</button><button class="ov-btn ov-del">Remove</button></div><div class="card-footer"><div class="card-fn">'+(p.title||p.filename)+'</div><div style="display:flex;flex-wrap:wrap;gap:3px">'+(p.categories&&p.categories.length?p.categories.map(c=>'<span class="tag">'+c+'</span>').join(''):'<span class="no-tag">Untagged</span>')+'</div></div>';
+    const sizeLabel=photoMeta[p.filename]?fmtSize(photoMeta[p.filename].size):'';
+    const tier=p.tier||'site';
+    const tierBadge=tier==='archive'?'<div style="position:absolute;bottom:38px;left:5px;background:var(--accent);color:#0f0f0f;font-size:0.58rem;font-weight:700;padding:2px 6px;border-radius:4px;z-index:3;text-transform:uppercase;letter-spacing:0.05em">Archive Only</div>':tier==='hidden'?'<div style="position:absolute;bottom:38px;left:5px;background:var(--muted);color:#0f0f0f;font-size:0.58rem;font-weight:700;padding:2px 6px;border-radius:4px;z-index:3;text-transform:uppercase;letter-spacing:0.05em">Hidden</div>':'';
+    card.innerHTML='<div style="position:absolute;top:5px;left:5px;width:22px;height:22px;border-radius:50%;background:'+(isSel?'var(--accent)':'rgba(0,0,0,0.55)')+';border:2px solid '+(isSel?'var(--accent)':'rgba(255,255,255,0.4)')+';display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:'+(isSel?'#0f0f0f':'#fff')+';z-index:3">'+(isSel?'&check;':globalIdx)+'</div>'+(sizeLabel?'<div style="position:absolute;top:5px;right:5px;background:rgba(0,0,0,0.6);color:#fff;font-size:0.6rem;padding:2px 6px;border-radius:4px;z-index:3">'+sizeLabel+'</div>':'')+tierBadge+'<img src="photos/'+p.filename+'" loading="lazy"/><div class="photo-overlay"><button class="ov-btn ov-edit">Edit</button><button class="ov-btn ov-del">Remove</button></div><div class="card-footer"><div class="card-fn">'+(p.title||p.filename)+'</div><div style="display:flex;flex-wrap:wrap;gap:3px">'+(p.categories&&p.categories.length?p.categories.map(c=>'<span class="tag">'+c+'</span>').join(''):'<span class="no-tag">Untagged</span>')+'</div></div>';
     card.addEventListener('click',e=>{if(e.target.classList.contains('ov-edit')||e.target.classList.contains('ov-del'))return;if(manageSelected.has(p.id))manageSelected.delete(p.id);else manageSelected.add(p.id);renderPhotoGrid();updateManageBulkBar();});
     card.addEventListener('dragstart',e=>{dragSrcId=p.id;if(!manageSelected.has(p.id)){manageSelected.clear();manageSelected.add(p.id);updateManageBulkBar();}e.dataTransfer.setData('text/plain',[...manageSelected].join(','));setTimeout(()=>{grid.querySelectorAll('.photo-card').forEach(c=>{if(manageSelected.has(c.dataset.id))c.classList.add('dragging');});},0);});
     card.addEventListener('dragend',()=>{grid.querySelectorAll('.photo-card').forEach(c=>{c.classList.remove('dragging');c.classList.remove('drag-over');});});
@@ -725,7 +794,18 @@ function renderPhotoGrid(){
       savePhotos();renderPhotoGrid();updateManageBulkBar();showToast(selPhotos.length>1?selPhotos.length+' photos moved':'Order updated!');
     });
     card.querySelector('.ov-edit').addEventListener('click',()=>openTagModal(p.id));
-    card.querySelector('.ov-del').addEventListener('click',()=>{if(confirm('Remove "'+p.filename+'"?')){photos=photos.filter(x=>x.id!==p.id);savePhotos();renderPhotoGrid();renderOverview();showToast('Removed.');}});
+    card.querySelector('.ov-del').addEventListener('click',async(e)=>{
+      if(!confirm('Remove "'+p.filename+'"? This deletes the image file from GitHub too — not just the site listing.'))return;
+      const delBtn=e.target;delBtn.disabled=true;delBtn.textContent='Deleting...';
+      try{
+        if(githubToken)await deleteFileFromGitHub(p.filename);
+        photos=photos.filter(x=>x.id!==p.id);savePhotos();renderPhotoGrid();renderOverview();
+        showToast('Deleted. Click Publish to update the live site.');
+      }catch(err){
+        showToast('Could not delete file from GitHub: '+err.message,'var(--red)');
+        delBtn.disabled=false;delBtn.textContent='Remove';
+      }
+    });
     grid.appendChild(card);
   });
 }
@@ -733,6 +813,29 @@ document.getElementById('manageSelAllBtn').addEventListener('click',()=>{const r
 document.getElementById('manageBulkApplyBtn').addEventListener('click',()=>{const cats=getChecked('manageBulkCatGrid');if(!cats.length){showToast('Pick a category first!','var(--yellow)');return;}manageSelected.forEach(id=>{const p=photos.find(x=>x.id===id);if(p)cats.forEach(c=>{if(!p.categories.includes(c))p.categories.push(c);});});savePhotos();manageSelected.clear();clearCats('manageBulkCatGrid');renderPhotoGrid();updateManageBulkBar();renderOverview();showToast('Tags applied!');});
 document.getElementById('manageBulkClearBtn').addEventListener('click',()=>{manageSelected.forEach(id=>{const p=photos.find(x=>x.id===id);if(p)p.categories=[];});savePhotos();renderPhotoGrid();updateManageBulkBar();renderOverview();showToast('Tags cleared from selected');});
 document.getElementById('manageBulkDeselBtn').addEventListener('click',()=>{manageSelected.clear();renderPhotoGrid();updateManageBulkBar();});
+function bulkSetTier(tier){
+  const ids=[...manageSelected];if(!ids.length)return;
+  ids.forEach(id=>{const p=photos.find(x=>x.id===id);if(p)p.tier=tier;});
+  savePhotos();manageSelected.clear();renderPhotoGrid();updateManageBulkBar();renderOverview();
+  showToast(ids.length+' photo'+(ids.length>1?'s':'')+' set to '+(tier==='site'?'Live Site':tier==='archive'?'Archive Only':'Hidden')+'. Click Publish to update the live site.');
+}
+document.getElementById('manageBulkTierSiteBtn').addEventListener('click',()=>bulkSetTier('site'));
+document.getElementById('manageBulkTierArchiveBtn').addEventListener('click',()=>bulkSetTier('archive'));
+document.getElementById('manageBulkTierHiddenBtn').addEventListener('click',()=>bulkSetTier('hidden'));
+document.getElementById('manageBulkDeleteBtn').addEventListener('click',async()=>{
+  const ids=[...manageSelected];if(!ids.length)return;
+  const toDelete=photos.filter(p=>ids.includes(p.id));
+  if(!confirm('Permanently delete '+toDelete.length+' photo'+(toDelete.length>1?'s':'')+'? This removes the image files from GitHub too — not just the site listing.'))return;
+  const btn=document.getElementById('manageBulkDeleteBtn');btn.disabled=true;btn.textContent='Deleting...';
+  let failed=0;
+  for(const p of toDelete){
+    try{if(githubToken)await deleteFileFromGitHub(p.filename);photos=photos.filter(x=>x.id!==p.id);}
+    catch(e){failed++;}
+  }
+  savePhotos();manageSelected.clear();btn.disabled=false;btn.textContent='\uD83D\uDDD1 Delete Selected';
+  renderPhotoGrid();updateManageBulkBar();renderOverview();
+  showToast(failed?(toDelete.length-failed)+' deleted, '+failed+' failed':toDelete.length+' deleted. Click Publish to update the live site.');
+});
 function updateManageBulkBar(){const bar=document.getElementById('manageBulkBar');bar.style.display=manageSelected.size>0?'block':'none';document.getElementById('manageBulkCount').textContent=manageSelected.size;if(manageSelected.size>0)buildCatGrid('manageBulkCatGrid');}
 document.getElementById('filterSel').addEventListener('change',renderPhotoGrid);
 document.getElementById('sortBtn').addEventListener('click',()=>{const yts=photos.filter(p=>p.isYt),real=photos.filter(p=>!p.isYt).sort((a,b)=>a.filename.localeCompare(b.filename));photos=[...real,...yts];savePhotos();renderPhotoGrid();showToast('Sorted A-Z!');});
@@ -746,9 +849,14 @@ function openTagModal(id){
   const mi=document.getElementById('modalImg');mi.src=p.isYt?'https://img.youtube.com/vi/'+p.youtubeId+'/hqdefault.jpg':'photos/'+p.filename;mi.style.display='block';
   const cd=document.getElementById('modalCats');cd.innerHTML='';
   (settings.filters||ALL_CATS).forEach(cat=>{const pill=document.createElement('button');pill.className='cat-pill'+(p.categories&&p.categories.includes(cat)?' selected':'');pill.textContent=cat.charAt(0).toUpperCase()+cat.slice(1);pill.addEventListener('click',()=>pill.classList.toggle('selected'));cd.appendChild(pill);});
+  const curTier=p.tier||'site';
+  document.querySelectorAll('#modalTier .cat-pill').forEach(btn=>{
+    btn.classList.toggle('selected',btn.dataset.tier===curTier);
+    btn.onclick=()=>{document.querySelectorAll('#modalTier .cat-pill').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');};
+  });
   document.getElementById('tagModal').classList.add('open');
 }
-document.getElementById('modalSave').addEventListener('click',()=>{const p=photos.find(x=>x.id===editingId);if(!p)return;p.categories=[...document.querySelectorAll('#modalCats .cat-pill.selected')].map(p=>p.textContent.toLowerCase());p.title=document.getElementById('modalTitleInput').value.trim();savePhotos();renderPhotoGrid();renderOverview();renderYtList();document.getElementById('tagModal').classList.remove('open');showToast('Tags saved!');});
+document.getElementById('modalSave').addEventListener('click',()=>{const p=photos.find(x=>x.id===editingId);if(!p)return;p.categories=[...document.querySelectorAll('#modalCats .cat-pill.selected')].map(p=>p.textContent.toLowerCase());p.title=document.getElementById('modalTitleInput').value.trim();const tierBtn=document.querySelector('#modalTier .cat-pill.selected');p.tier=tierBtn?tierBtn.dataset.tier:'site';savePhotos();renderPhotoGrid();renderOverview();renderYtList();document.getElementById('tagModal').classList.remove('open');showToast('Saved!');});
 document.getElementById('modalCancel').addEventListener('click',()=>document.getElementById('tagModal').classList.remove('open'));
 document.getElementById('tagModal').addEventListener('click',e=>{if(e.target===e.currentTarget)document.getElementById('tagModal').classList.remove('open');});
 
@@ -762,12 +870,62 @@ window.removeItem=function(id){if(confirm('Remove?')){photos=photos.filter(x=>x.
 function renderOverview(){
   const real=photos.filter(p=>!p.isYt);
   document.getElementById('statTotal').textContent=real.length;
+  document.getElementById('statSiteTier').textContent=real.filter(p=>(p.tier||'site')==='site').length;
+  document.getElementById('statArchiveTier').textContent=real.filter(p=>p.tier==='archive').length;
+  document.getElementById('statHiddenTier').textContent=real.filter(p=>p.tier==='hidden').length;
   document.getElementById('statUntagged').textContent=photos.filter(p=>!p.categories||!p.categories.length).length;
   document.getElementById('statYt').textContent=photos.filter(p=>p.isYt).length;
   document.getElementById('statCats').textContent=(settings.filters||ALL_CATS).length;
   const bd=document.getElementById('catBreakdown');bd.innerHTML='';
   (settings.filters||ALL_CATS).forEach(cat=>{const count=photos.filter(p=>p.categories&&p.categories.includes(cat)).length;const el=document.createElement('div');el.style.cssText='background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 12px';el.innerHTML='<div style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">'+cat+'</div><div style="font-family:\'Cormorant Garamond\',serif;font-size:1.5rem;color:var(--accent)">'+count+'</div>';bd.appendChild(el);});
+
+  // Storage total (only counts files GitHub size info has loaded for)
+  const knownFiles=Object.keys(photoMeta);
+  if(knownFiles.length){
+    const usedFilenames=new Set(real.map(p=>p.filename));
+    let usedBytes=0;knownFiles.forEach(fn=>{if(usedFilenames.has(fn))usedBytes+=photoMeta[fn].size||0;});
+    document.getElementById('statStorage').textContent=fmtSize(usedBytes);
+
+    // Orphaned files: on GitHub but not referenced in portfolio-data.json
+    const orphans=knownFiles.filter(fn=>!usedFilenames.has(fn));
+    const orphanSec=document.getElementById('orphanSec');
+    if(orphans.length){
+      orphanSec.style.display='block';
+      let orphanBytes=0;
+      const list=document.getElementById('orphanList');list.innerHTML='';
+      orphans.forEach(fn=>{
+        orphanBytes+=photoMeta[fn].size||0;
+        const row=document.createElement('div');
+        row.style.cssText='display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:0.76rem';
+        row.innerHTML='<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:10px">'+fn+'</span><span style="display:flex;align-items:center;gap:10px;flex-shrink:0"><span style="color:var(--muted)">'+fmtSize(photoMeta[fn].size)+'</span><button class="btn btn-ghost" style="font-size:0.65rem;padding:5px 10px;color:var(--red)" data-fn="'+fn+'">Delete</button></span>';
+        row.querySelector('button').addEventListener('click',async()=>{
+          if(!confirm('Permanently delete "'+fn+'" from GitHub? This cannot be undone.'))return;
+          try{await deleteFileFromGitHub(fn);showToast('Deleted '+fn);renderOverview();}
+          catch(e){showToast('Failed: '+e.message,'var(--red)');}
+        });
+        list.appendChild(row);
+      });
+      document.getElementById('orphanTotalSize').textContent=fmtSize(orphanBytes);
+    }else{
+      orphanSec.style.display='none';
+    }
+  }else{
+    document.getElementById('statStorage').textContent=githubToken?'Loading...':'—';
+  }
 }
+document.getElementById('deleteAllOrphansBtn').addEventListener('click',async()=>{
+  const real=photos.filter(p=>!p.isYt);
+  const usedFilenames=new Set(real.map(p=>p.filename));
+  const orphans=Object.keys(photoMeta).filter(fn=>!usedFilenames.has(fn));
+  if(!orphans.length)return;
+  if(!confirm('Permanently delete all '+orphans.length+' orphaned files from GitHub? This cannot be undone.'))return;
+  const btn=document.getElementById('deleteAllOrphansBtn'),label=document.getElementById('orphanBtnLabel');btn.disabled=true;label.textContent='Deleting...';
+  let failed=0;
+  for(const fn of orphans){try{await deleteFileFromGitHub(fn);}catch(e){failed++;}}
+  btn.disabled=false;label.textContent='Delete All Orphaned Files';
+  showToast(failed?(orphans.length-failed)+' deleted, '+failed+' failed':'All orphaned files deleted!');
+  renderOverview();
+});
 
 // === SETTINGS ===
 function loadSettings(){
@@ -806,7 +964,7 @@ document.getElementById('saveSettings').addEventListener('click',()=>{
 });
 
 // === EXPORT ===
-function doExport(){const data={photos:photos.map(p=>({id:p.id,filename:p.filename||'',title:p.title||'',src:p.isYt?'':'photos/'+p.filename,youtubeId:p.youtubeId||null,isYt:!!p.isYt,categories:p.categories||[],dateAdded:p.dateAdded})),settings};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='portfolio-data.json';a.click();showToast('portfolio-data.json downloaded!');}
+function doExport(){const data={photos:photos.map(p=>({id:p.id,filename:p.filename||'',title:p.title||'',src:p.isYt?'':'photos/'+p.filename,youtubeId:p.youtubeId||null,isYt:!!p.isYt,categories:p.categories||[],tier:p.tier||'site',dateAdded:p.dateAdded})),settings};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='portfolio-data.json';a.click();showToast('portfolio-data.json downloaded!');}
 document.getElementById('exportBtn').addEventListener('click',doExport);
 
 // === GITHUB TOKEN ===

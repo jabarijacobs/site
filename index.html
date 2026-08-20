@@ -270,7 +270,7 @@ let photos=[],settings={
 async function loadData(){
   try{
     const r=await fetch('portfolio-data.json?v='+Date.now());
-    if(r.ok){const d=await r.json();photos=d.photos||[];if(d.settings)settings={...settings,...d.settings};return;}
+    if(r.ok){const d=await r.json();photos=(d.photos||[]).filter(p=>(p.tier||'site')==='site');if(d.settings)settings={...settings,...d.settings};return;}
   }catch(e){}
   try{
     const p=localStorage.getItem('jj_photos');if(p)photos=JSON.parse(p);
@@ -484,18 +484,24 @@ function renderGallery(){
       item.classList.add('loaded');
     } else if(isVid){
       const vid=document.createElement('video');
-      vid.src=p.src;vid.muted=true;vid.loop=true;vid.playsInline=true;
+      vid.muted=true;vid.loop=true;vid.playsInline=true;
       vid.setAttribute('muted','');vid.setAttribute('playsinline','');vid.setAttribute('loop','');
-      vid.preload='auto';vid.style.width='100%';vid.style.display='block';
-      const observer=new IntersectionObserver((entries)=>{
-        entries.forEach(entry=>{if(entry.isIntersecting){vid.play().catch(()=>{});}else{vid.pause();}});
-      },{threshold:0.25});
-      observer.observe(vid);
+      vid.preload='none';vid.style.width='100%';vid.style.display='block';
       item.appendChild(vid);
-      vid.onloadedmetadata=()=>{layoutMasonry();};
+      // Only fetch/play the video once it's actually scrolled into view
+      const observer=new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            if(!vid.src){vid.src=p.src;vid.onloadedmetadata=()=>{layoutMasonry();};}
+            vid.play().catch(()=>{});
+          }else{vid.pause();}
+        });
+      },{threshold:0.25,rootMargin:'200px'});
+      observer.observe(vid);
       item.classList.add('loaded');
     } else {
       const img=document.createElement('img');
+      img.loading='lazy';img.decoding='async';
       img.src=p.src;img.alt=p.filename||p.name||'';
       img.onload=()=>{loaded++;layoutMasonry();};
       img.onerror=()=>{loaded++;layoutMasonry();};
