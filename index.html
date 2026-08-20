@@ -379,7 +379,9 @@ function updateLogo(){
 function buildFilters(){
   const bar=document.getElementById('filterBar');
   bar.innerHTML='';
-  const activeFilters=settings.filters&&settings.filters.length?settings.filters:CATS;
+  const allFilters=settings.filters&&settings.filters.length?settings.filters:CATS;
+  // Only show category tabs that actually have at least one live photo — avoids empty, dead-end pages
+  const activeFilters=allFilters.filter(cat=>photos.some(p=>(p.categories||[]).includes(cat)));
   const allPill=document.createElement('button');
   allPill.className='filter-pill'+(currentFilter==='all'?' active':'');
   allPill.dataset.cat='all';
