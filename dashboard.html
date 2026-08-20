@@ -135,6 +135,7 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
     <div class="nav-item" data-page="settings">&#x2699; Site Settings</div>
   </nav>
   <div class="sidebar-footer">
+    <div id="unpublishedBanner" style="display:none;background:#7a3b00;color:#ffd9a0;font-size:0.68rem;font-weight:700;text-align:center;padding:8px 10px;border-radius:6px;margin-bottom:10px;line-height:1.4">&#x26A0; You have unpublished changes.<br/>They'll be lost if you close or refresh this page.</div>
     <button class="publish-btn" id="publishBtn">&#x1F680; Publish to Live Site</button>
     <div id="publishStatus">Ready to publish</div>
     <div id="ghStatus" style="font-size:0.6rem;text-align:center;color:var(--muted);margin-top:4px">Not connected</div>
@@ -562,7 +563,15 @@ function loadFromLocal(){
   try{const d=localStorage.getItem('jj_photos');if(d)photos=JSON.parse(d);}catch(e){}
   try{const s=localStorage.getItem('jj_settings');if(s)settings={...settings,...JSON.parse(s)};}catch(e){}
 }
-function savePhotos(){localStorage.setItem('jj_photos',JSON.stringify(photos));}
+let hasUnpublishedChanges=false;
+function updateUnpublishedBanner(){
+  const el=document.getElementById('unpublishedBanner');
+  if(el)el.style.display=hasUnpublishedChanges?'block':'none';
+}
+function savePhotos(){localStorage.setItem('jj_photos',JSON.stringify(photos));hasUnpublishedChanges=true;updateUnpublishedBanner();}
+window.addEventListener('beforeunload',function(e){
+  if(hasUnpublishedChanges){e.preventDefault();e.returnValue='You have unpublished changes that will be lost. Click Publish to Live Site first.';return e.returnValue;}
+});
 
 async function publishToGitHub(){
   const btn=document.getElementById('publishBtn'),status=document.getElementById('publishStatus');
@@ -579,6 +588,8 @@ async function publishToGitHub(){
       status.style.color='var(--green)';status.textContent='Live in ~60 seconds';
       btn.textContent='Published!';btn.style.background='var(--green)';
       showToast('Published! Cloudflare deploying now...');
+      hasUnpublishedChanges=false;
+      updateUnpublishedBanner();
       loadPhotoSizes();
       setTimeout(()=>{btn.textContent='Publish to Live Site';btn.style.background='';btn.disabled=false;},3000);
     }else throw new Error(result.message||'Unknown error');
