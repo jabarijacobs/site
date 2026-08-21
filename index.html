@@ -483,9 +483,15 @@ function renderGallery(){
   const cols=window.innerWidth>900?(settings.galleryCols||4):2;
   const wrapW=gallery.parentElement.clientWidth-(gap*2);
   const colW=(wrapW-(gap*(cols-1)))/cols;
-  const colHeights=new Array(cols).fill(0);
   let loaded=0;
   const total=filtered.filter(p=>!p.isVideo&&!p.youtubeId&&!/\.(mp4|mov|webm)$/i.test(p.filename||p.name||p.src||'')).length||1;
+
+  // Pass 1: build every item's DOM structure, but don't attach any
+  // lazy-load observers yet — observing now would check each item's
+  // position while everything is still unpositioned (all stacked near
+  // the top), which reports nearly everything as "near viewport" and
+  // defeats lazy loading entirely.
+  const lazyQueue=[]; // {item, start} functions to run once real positions exist
 
   filtered.forEach((p,i)=>{
     const item=document.createElement('div');
@@ -505,29 +511,32 @@ function renderGallery(){
       yt.appendChild(img);yt.appendChild(play);item.appendChild(yt);
       img.onload=()=>{scheduleLayoutMasonry();};
       item.classList.add('loaded');
-      const ytObserver=new IntersectionObserver((entries)=>{
-        entries.forEach(entry=>{
-          if(entry.isIntersecting){img.src=thumb;ytObserver.unobserve(item);}
-        });
-      },{rootMargin:'600px 0px',threshold:0.01});
-      ytObserver.observe(item);
+      lazyQueue.push({item,start:()=>{
+        const ytObserver=new IntersectionObserver((entries)=>{
+          entries.forEach(entry=>{
+            if(entry.isIntersecting){img.src=thumb;ytObserver.unobserve(item);}
+          });
+        },{rootMargin:'600px 0px',threshold:0.01});
+        ytObserver.observe(item);
+      }});
     } else if(isVid){
       const vid=document.createElement('video');
       vid.muted=true;vid.loop=true;vid.playsInline=true;
       vid.setAttribute('muted','');vid.setAttribute('playsinline','');vid.setAttribute('loop','');
       vid.preload='none';vid.style.width='100%';vid.style.display='block';
       item.appendChild(vid);
-      // Only fetch/play the video once it's actually scrolled into view
-      const observer=new IntersectionObserver((entries)=>{
-        entries.forEach(entry=>{
-          if(entry.isIntersecting){
-            if(!vid.src){vid.src=p.src;vid.onloadedmetadata=()=>{scheduleLayoutMasonry();};}
-            vid.play().catch(()=>{});
-          }else{vid.pause();}
-        });
-      },{threshold:0.25,rootMargin:'200px'});
-      observer.observe(vid);
       item.classList.add('loaded');
+      lazyQueue.push({item,start:()=>{
+        const observer=new IntersectionObserver((entries)=>{
+          entries.forEach(entry=>{
+            if(entry.isIntersecting){
+              if(!vid.src){vid.src=p.src;vid.onloadedmetadata=()=>{scheduleLayoutMasonry();};}
+              vid.play().catch(()=>{});
+            }else{vid.pause();}
+          });
+        },{threshold:0.25,rootMargin:'200px'});
+        observer.observe(vid);
+      }});
     } else {
       const img=document.createElement('img');
       img.decoding='async';
@@ -535,19 +544,17 @@ function renderGallery(){
       img.onload=()=>{loaded++;scheduleLayoutMasonry();};
       img.onerror=()=>{loaded++;scheduleLayoutMasonry();};
       item.appendChild(img);
-      // Manual lazy-load: only assign the real src once this item's own
-      // position is actually near the viewport. Unlike the browser's
-      // native loading="lazy", this isn't fooled by the masonry reflow
-      // above shifting items around before they've loaded.
-      const imgObserver=new IntersectionObserver((entries)=>{
-        entries.forEach(entry=>{
-          if(entry.isIntersecting){
-            img.src=p.src;
-            imgObserver.unobserve(item);
-          }
-        });
-      },{rootMargin:'600px 0px',threshold:0.01});
-      imgObserver.observe(item);
+      lazyQueue.push({item,start:()=>{
+        const imgObserver=new IntersectionObserver((entries)=>{
+          entries.forEach(entry=>{
+            if(entry.isIntersecting){
+              img.src=p.src;
+              imgObserver.unobserve(item);
+            }
+          });
+        },{rootMargin:'600px 0px',threshold:0.01});
+        imgObserver.observe(item);
+      }});
     }
 
     const tags=document.createElement('div');
@@ -558,8 +565,16 @@ function renderGallery(){
     gallery.appendChild(item);
   });
 
-  // Initial layout attempt
-  setTimeout(layoutMasonry, 50);
+  // Pass 2: position every item for real, synchronously, right now —
+  // not on a delayed timer. Only after this do items have accurate
+  // top/left coordinates.
+  layoutMasonry();
+
+  // Pass 3: now that positions are real, start each item's lazy-load
+  // observer. Its first intersection check will correctly reflect
+  // whether the item is actually near the viewport or genuinely far
+  // below the fold.
+  lazyQueue.forEach(({start})=>start());
 }
 
 // Re-layout on resize
