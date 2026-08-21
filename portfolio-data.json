@@ -77,7 +77,7 @@
       "categories": [
         "editorial"
       ],
-      "tier": "hidden",
+      "tier": "site",
       "dateAdded": "2026-03-28T20:17:35.621Z"
     },
     {
@@ -869,7 +869,7 @@
       "categories": [
         "editorial"
       ],
-      "tier": "site",
+      "tier": "hidden",
       "dateAdded": "2026-03-29T00:43:36.846Z"
     },
     {
@@ -1077,7 +1077,7 @@
       "categories": [
         "editorial"
       ],
-      "tier": "site",
+      "tier": "hidden",
       "dateAdded": "2026-03-28T20:17:35.621Z"
     },
     {
@@ -1168,7 +1168,7 @@
       "categories": [
         "design"
       ],
-      "tier": "site",
+      "tier": "hidden",
       "dateAdded": "2026-03-29T15:51:42.575Z"
     },
     {
@@ -1248,7 +1248,7 @@
       "categories": [
         "editorial"
       ],
-      "tier": "site",
+      "tier": "hidden",
       "dateAdded": "2026-03-28T20:17:35.621Z"
     },
     {
@@ -2078,7 +2078,7 @@
       "categories": [
         "advertising"
       ],
-      "tier": "site",
+      "tier": "hidden",
       "dateAdded": "2026-03-29T15:07:18.901Z"
     },
     {
