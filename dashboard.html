@@ -517,20 +517,21 @@ async function deleteFileFromGitHub(filename){
 }
 
 // Upload image file directly to GitHub photos/ folder
-async function uploadFileToGitHub(file,onProgress){
+async function uploadFileToGitHub(file,onProgress,folder){
+  folder=folder||'photos';
   return new Promise((resolve,reject)=>{
     const reader=new FileReader();
     reader.onload=async(e)=>{
       try{
         const base64=e.target.result.split(',')[1];
-        const path='photos/'+file.name;
+        const path=folder+'/'+file.name;
         onProgress&&onProgress(30);
         let existingSha='';
         try{const ex=await ghGet(path);if(ex.sha)existingSha=ex.sha;}catch(e){}
         onProgress&&onProgress(60);
         const result=await ghPut(path,base64,existingSha,'Upload '+file.name);
         onProgress&&onProgress(100);
-        if(result.content)resolve(result);
+        if(result.content)resolve({...result,path});
         else reject(new Error(result.message||'Upload failed'));
       }catch(err){reject(err);}
     };
@@ -954,11 +955,41 @@ function loadSettings(){
 }
 document.getElementById('galleryGap').addEventListener('input',function(){document.getElementById('galleryGapVal').textContent=this.value+'px';settings.galleryGap=parseInt(this.value);});
 document.getElementById('logoSize').addEventListener('input',function(){document.getElementById('logoSizeVal').textContent=this.value+'px';settings.logoSize=parseInt(this.value);});
-document.getElementById('logoLightFile').addEventListener('change',function(){const f=this.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{settings.logoLightSrc=ev.target.result;const p=document.getElementById('logoLightPrev');p.src=ev.target.result;p.style.display='block';showToast('Light logo uploaded!');};r.readAsDataURL(f);});
+document.getElementById('logoLightFile').addEventListener('change',async function(){
+  const f=this.files[0];if(!f)return;
+  if(!githubToken){showToast('Connect GitHub first (Site Settings)!','var(--red)');return;}
+  showToast('Uploading light logo...','var(--accent)');
+  try{
+    const result=await uploadFileToGitHub(f,null,'assets');
+    settings.logoLightSrc=result.path;
+    const p=document.getElementById('logoLightPrev');p.src=result.path;p.style.display='block';
+    showToast('Light logo uploaded! Click Save Settings, then Publish.');
+  }catch(err){showToast('Upload failed: '+err.message,'var(--red)');}
+});
 document.getElementById('clrLogoLight').addEventListener('click',()=>{settings.logoLightSrc='';document.getElementById('logoLightPrev').style.display='none';showToast('Removed.');});
-document.getElementById('logoDarkFile').addEventListener('change',function(){const f=this.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{settings.logoDarkSrc=ev.target.result;const p=document.getElementById('logoDarkPrev');p.src=ev.target.result;p.style.display='block';showToast('Dark logo uploaded!');};r.readAsDataURL(f);});
+document.getElementById('logoDarkFile').addEventListener('change',async function(){
+  const f=this.files[0];if(!f)return;
+  if(!githubToken){showToast('Connect GitHub first (Site Settings)!','var(--red)');return;}
+  showToast('Uploading dark logo...','var(--accent)');
+  try{
+    const result=await uploadFileToGitHub(f,null,'assets');
+    settings.logoDarkSrc=result.path;
+    const p=document.getElementById('logoDarkPrev');p.src=result.path;p.style.display='block';
+    showToast('Dark logo uploaded! Click Save Settings, then Publish.');
+  }catch(err){showToast('Upload failed: '+err.message,'var(--red)');}
+});
 document.getElementById('clrLogoDark').addEventListener('click',()=>{settings.logoDarkSrc='';document.getElementById('logoDarkPrev').style.display='none';showToast('Removed.');});
-document.getElementById('aboutPhotoFile').addEventListener('change',function(){const f=this.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{settings.aboutPhotoSrc=ev.target.result;const p=document.getElementById('aboutPhotoPrev');p.src=ev.target.result;p.style.display='block';showToast('About photo uploaded!');};r.readAsDataURL(f);});
+document.getElementById('aboutPhotoFile').addEventListener('change',async function(){
+  const f=this.files[0];if(!f)return;
+  if(!githubToken){showToast('Connect GitHub first (Site Settings)!','var(--red)');return;}
+  showToast('Uploading about photo...','var(--accent)');
+  try{
+    const result=await uploadFileToGitHub(f,null,'assets');
+    settings.aboutPhotoSrc=result.path;
+    const p=document.getElementById('aboutPhotoPrev');p.src=result.path;p.style.display='block';
+    showToast('About photo uploaded! Click Save Settings, then Publish.');
+  }catch(err){showToast('Upload failed: '+err.message,'var(--red)');}
+});
 document.getElementById('clrAboutPhoto').addEventListener('click',()=>{settings.aboutPhotoSrc='';document.getElementById('aboutPhotoPrev').style.display='none';showToast('Removed.');});
 document.querySelectorAll('.font-opt').forEach(el=>{el.addEventListener('click',()=>{const type=el.dataset.type,font=el.dataset.font;document.querySelectorAll('[data-type="'+type+'"]').forEach(e=>e.classList.remove('selected'));el.classList.add('selected');if(type==='display')settings.fontDisplay=font;else settings.fontBody=font;showToast('Font: '+font);});});
 function renderFilterTags(){const c=document.getElementById('filterTagsContainer');c.innerHTML='';(settings.filters||ALL_CATS).forEach(f=>{const tag=document.createElement('div');tag.className='filter-tag';tag.innerHTML=f+' <button>x</button>';tag.querySelector('button').addEventListener('click',()=>{settings.filters=settings.filters.filter(x=>x!==f);renderFilterTags();showToast('Removed "'+f+'"');});c.appendChild(tag);});}

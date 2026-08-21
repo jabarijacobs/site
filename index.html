@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Jabari Jacobs</title>
 <link rel="icon" type="image/png" href="favicon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RT6KEFVXT7"></script>
 <script>
@@ -269,7 +271,12 @@ let photos=[],settings={
 // Load data
 async function loadData(){
   try{
-    const r=await fetch('portfolio-data.json?v='+Date.now());
+    // Cache-bust on a 5-minute window instead of every millisecond — repeat
+    // page loads within that window reuse the cached response instead of
+    // re-downloading this file from scratch, while updates from Publish
+    // still show up within a few minutes rather than needing a hard refresh.
+    const cacheBucket=Math.floor(Date.now()/300000);
+    const r=await fetch('portfolio-data.json?v='+cacheBucket);
     if(r.ok){const d=await r.json();photos=(d.photos||[]).filter(p=>(p.tier||'site')==='site');if(d.settings)settings={...settings,...d.settings};return;}
   }catch(e){}
   try{
@@ -409,6 +416,16 @@ function setFilter(cat){
   if(typeof gtag!=='undefined')gtag('event','filter_click',{event_category:'Gallery',event_label:cat});
 }
 
+// Batch masonry recalculations into a single pass per frame — avoids
+// re-positioning 100+ items on every individual image load event, which
+// was causing cascading reflows that tricked lazy-loading into firing early.
+let _masonryScheduled=false;
+function scheduleLayoutMasonry(){
+  if(_masonryScheduled)return;
+  _masonryScheduled=true;
+  requestAnimationFrame(()=>{_masonryScheduled=false;layoutMasonry();});
+}
+
 // JS Masonry layout — left to right
 function layoutMasonry(){
   const gallery=document.getElementById('gallery');
@@ -433,14 +450,18 @@ function layoutMasonry(){
     item.style.left=x+'px';
     item.style.top=y+'px';
     const img=item.querySelector('img,video');
+    let itemH=colW;
     if(img){
       const h=img.naturalHeight||img.videoHeight||0;
       const w=img.naturalWidth||img.videoWidth||colW;
       const ratio=h&&w?h/w:1;
-      colHeights[col]+=colW*ratio+gap;
-    } else {
-      colHeights[col]+=colW+gap;
+      itemH=colW*ratio;
     }
+    // Give every item a real height immediately (even before its image has
+    // loaded) so off-screen items occupy proper space and the intersection
+    // observer below can correctly tell they're nowhere near the viewport.
+    item.style.height=itemH+'px';
+    colHeights[col]+=itemH+gap;
     item.classList.add('loaded');
   });
   gallery.style.height=Math.max(...colHeights)+'px';
@@ -477,13 +498,19 @@ function renderGallery(){
     if(isYt){
       const thumb=`https://img.youtube.com/vi/${p.youtubeId}/hqdefault.jpg`;
       const img=document.createElement('img');
-      img.src=thumb;img.alt=p.title||'Video';
+      img.alt=p.title||'Video';
       const play=document.createElement('div');play.className='yt-play';
       play.innerHTML=`<svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>`;
       const yt=document.createElement('div');yt.className='yt-thumb';
       yt.appendChild(img);yt.appendChild(play);item.appendChild(yt);
-      img.onload=()=>{layoutMasonry();};
+      img.onload=()=>{scheduleLayoutMasonry();};
       item.classList.add('loaded');
+      const ytObserver=new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){img.src=thumb;ytObserver.unobserve(item);}
+        });
+      },{rootMargin:'600px 0px',threshold:0.01});
+      ytObserver.observe(item);
     } else if(isVid){
       const vid=document.createElement('video');
       vid.muted=true;vid.loop=true;vid.playsInline=true;
@@ -494,7 +521,7 @@ function renderGallery(){
       const observer=new IntersectionObserver((entries)=>{
         entries.forEach(entry=>{
           if(entry.isIntersecting){
-            if(!vid.src){vid.src=p.src;vid.onloadedmetadata=()=>{layoutMasonry();};}
+            if(!vid.src){vid.src=p.src;vid.onloadedmetadata=()=>{scheduleLayoutMasonry();};}
             vid.play().catch(()=>{});
           }else{vid.pause();}
         });
@@ -503,11 +530,24 @@ function renderGallery(){
       item.classList.add('loaded');
     } else {
       const img=document.createElement('img');
-      img.loading='lazy';img.decoding='async';
-      img.src=p.src;img.alt=p.filename||p.name||'';
-      img.onload=()=>{loaded++;layoutMasonry();};
-      img.onerror=()=>{loaded++;layoutMasonry();};
+      img.decoding='async';
+      img.alt=p.filename||p.name||'';
+      img.onload=()=>{loaded++;scheduleLayoutMasonry();};
+      img.onerror=()=>{loaded++;scheduleLayoutMasonry();};
       item.appendChild(img);
+      // Manual lazy-load: only assign the real src once this item's own
+      // position is actually near the viewport. Unlike the browser's
+      // native loading="lazy", this isn't fooled by the masonry reflow
+      // above shifting items around before they've loaded.
+      const imgObserver=new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            img.src=p.src;
+            imgObserver.unobserve(item);
+          }
+        });
+      },{rootMargin:'600px 0px',threshold:0.01});
+      imgObserver.observe(item);
     }
 
     const tags=document.createElement('div');
