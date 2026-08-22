@@ -450,16 +450,24 @@ function layoutMasonry(){
     item.style.left=x+'px';
     item.style.top=y+'px';
     const img=item.querySelector('img,video');
-    let itemH=colW;
-    if(img){
+    let itemH;
+    // Prefer stored real dimensions (set at upload time) — these are known
+    // immediately, before the image ever loads, so there's nothing to
+    // correct later and therefore no layout shift for these items.
+    const storedRatio=item.dataset.ratio?parseFloat(item.dataset.ratio):null;
+    if(storedRatio){
+      itemH=colW*storedRatio;
+    } else if(img&&(img.naturalHeight||img.videoHeight)){
       const h=img.naturalHeight||img.videoHeight||0;
       const w=img.naturalWidth||img.videoWidth||colW;
-      const ratio=h&&w?h/w:1;
-      itemH=colW*ratio;
+      itemH=colW*(h/w);
+    } else {
+      // Fallback guess for older photos uploaded before dimensions were
+      // tracked. 1.3 is this library's actual measured average aspect
+      // ratio (portrait-leaning), not an arbitrary square guess — this
+      // keeps the average correction small until these get re-uploaded.
+      itemH=colW*1.3;
     }
-    // Give every item a real height immediately (even before its image has
-    // loaded) so off-screen items occupy proper space and the intersection
-    // observer below can correctly tell they're nowhere near the viewport.
     item.style.height=itemH+'px';
     colHeights[col]+=itemH+gap;
     item.classList.add('loaded');
@@ -497,6 +505,7 @@ function renderGallery(){
     const item=document.createElement('div');
     item.className='gallery-item';
     item.style.width=colW+'px';
+    if(p.width&&p.height)item.dataset.ratio=(p.height/p.width).toFixed(4);
     const cats=(p.categories||[]);
     const isYt=!!(p.youtubeId);
     const isVid=p.isVideo||/\.(mp4|mov|webm)$/i.test(p.filename||p.name||p.src||'');

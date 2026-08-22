@@ -579,7 +579,7 @@ async function publishToGitHub(){
   if(!githubToken){showToast('Enter GitHub token first!','var(--red)');showPage('settings');return;}
   btn.disabled=true;btn.textContent='Publishing...';
   status.style.color='var(--accent)';status.textContent='Committing to GitHub...';
-  const data={photos:photos.map(p=>({id:p.id,filename:p.filename||'',title:p.title||'',src:p.isYt?'':'photos/'+p.filename,youtubeId:p.youtubeId||null,isYt:!!p.isYt,categories:p.categories||[],tier:p.tier||'site',dateAdded:p.dateAdded})),settings};
+  const data={photos:photos.map(p=>({id:p.id,filename:p.filename||'',title:p.title||'',src:p.isYt?'':'photos/'+p.filename,youtubeId:p.youtubeId||null,isYt:!!p.isYt,categories:p.categories||[],tier:p.tier||'site',width:p.width||null,height:p.height||null,dateAdded:p.dateAdded})),settings};
   const content=JSON.stringify(data,null,2);
   try{
     if(!fileSha){const f=await ghGet(GITHUB_FILE);fileSha=f.sha||'';}
@@ -667,6 +667,20 @@ function renderUploadQueue(){
   });
 }
 
+// Reads a local image file's real pixel dimensions before it's uploaded,
+// so the live site can lay out the masonry grid correctly on the first
+// pass instead of guessing a shape and correcting later (which is what
+// causes visible layout shift as photos load in).
+function getImageDimensions(file){
+  return new Promise((resolve)=>{
+    const url=URL.createObjectURL(file);
+    const img=new Image();
+    img.onload=()=>{URL.revokeObjectURL(url);resolve({width:img.naturalWidth,height:img.naturalHeight});};
+    img.onerror=()=>{URL.revokeObjectURL(url);resolve(null);};
+    img.src=url;
+  });
+}
+
 document.getElementById('startUploadBtn').addEventListener('click',async()=>{
   if(!githubToken){showToast('Connect GitHub first!','var(--red)');return;}
   if(!uploadQueue.length)return;
@@ -679,9 +693,10 @@ document.getElementById('startUploadBtn').addEventListener('click',async()=>{
     if(item.status==='done')continue;
     item.status='uploading';item.progress=10;renderUploadQueue();
     try{
+      const dims=await getImageDimensions(item.file);
       await uploadFileToGitHub(item.file,pct=>{item.progress=pct;renderUploadQueue();});
       item.status='done';item.progress=100;
-      photos.push({id:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2),filename:item.file.name,title:'',categories:cats,src:'photos/'+item.file.name,dateAdded:new Date().toISOString()});
+      photos.push({id:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2),filename:item.file.name,title:'',categories:cats,src:'photos/'+item.file.name,width:dims?dims.width:null,height:dims?dims.height:null,dateAdded:new Date().toISOString()});
       savePhotos();successCount++;
     }catch(err){item.status='error';item.progress=0;console.error('Upload failed:',item.file.name,err);}
     renderUploadQueue();
@@ -1006,7 +1021,7 @@ document.getElementById('saveSettings').addEventListener('click',()=>{
 });
 
 // === EXPORT ===
-function doExport(){const data={photos:photos.map(p=>({id:p.id,filename:p.filename||'',title:p.title||'',src:p.isYt?'':'photos/'+p.filename,youtubeId:p.youtubeId||null,isYt:!!p.isYt,categories:p.categories||[],tier:p.tier||'site',dateAdded:p.dateAdded})),settings};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='portfolio-data.json';a.click();showToast('portfolio-data.json downloaded!');}
+function doExport(){const data={photos:photos.map(p=>({id:p.id,filename:p.filename||'',title:p.title||'',src:p.isYt?'':'photos/'+p.filename,youtubeId:p.youtubeId||null,isYt:!!p.isYt,categories:p.categories||[],tier:p.tier||'site',width:p.width||null,height:p.height||null,dateAdded:p.dateAdded})),settings};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='portfolio-data.json';a.click();showToast('portfolio-data.json downloaded!');}
 document.getElementById('exportBtn').addEventListener('click',doExport);
 
 // === GITHUB TOKEN ===
