@@ -574,6 +574,35 @@ window.addEventListener('beforeunload',function(e){
   if(hasUnpublishedChanges){e.preventDefault();e.returnValue='You have unpublished changes that will be lost. Click Publish to Live Site first.';return e.returnValue;}
 });
 
+// Regenerates the <script id="embeddedPhotoData"> block inside index.html
+// so the live gallery always has its current Live-Site photo set + settings
+// baked directly into the page (no separate network fetch needed to know
+// the gallery's layout before first paint — this is what keeps the page
+// from painting empty and then jumping to full height).
+// Always re-fetches the current index.html first and edits only that one
+// tag's contents, so any other manual edits to the page are preserved.
+async function publishEmbeddedGalleryData(data){
+  const sitePhotos=data.photos
+    .filter(p=>(p.tier||'site')==='site')
+    .map(p=>({id:p.id,filename:p.filename,title:p.title,src:p.src,youtubeId:p.youtubeId,isYt:p.isYt,categories:p.categories,width:p.width,height:p.height}));
+  const embedded={photos:sitePhotos,settings:data.settings};
+  // Defensive: if a title/filename ever contained a script-closing
+  // sequence, this would otherwise prematurely end the embedded tag.
+  const json=JSON.stringify(embedded).replace(/<\/script/gi,'<\\/script');
+  const file=await ghGet('index.html');
+  if(!file.content)throw new Error('Could not read index.html');
+  let html=decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
+  const startTag='<script id="embeddedPhotoData" type="application/json">';
+  const endTag='<'+'/script>';
+  const startIdx=html.indexOf(startTag);
+  if(startIdx===-1)throw new Error('embeddedPhotoData block not found in index.html');
+  const contentStart=startIdx+startTag.length;
+  const endIdx=html.indexOf(endTag,contentStart);
+  if(endIdx===-1)throw new Error('embeddedPhotoData closing tag not found');
+  html=html.slice(0,contentStart)+json+html.slice(endIdx);
+  await ghPut('index.html',btoa(unescape(encodeURIComponent(html))),file.sha,'Update embedded gallery data');
+}
+
 async function publishToGitHub(){
   const btn=document.getElementById('publishBtn'),status=document.getElementById('publishStatus');
   if(!githubToken){showToast('Enter GitHub token first!','var(--red)');showPage('settings');return;}
@@ -586,6 +615,19 @@ async function publishToGitHub(){
     const result=await ghPut(GITHUB_FILE,btoa(unescape(encodeURIComponent(content))),fileSha,'Dashboard update');
     if(result.content){
       fileSha=result.content.sha;
+      status.style.color='var(--accent)';status.textContent='Updating live page...';
+      try{
+        await publishEmbeddedGalleryData(data);
+      }catch(embedErr){
+        // The data itself is safely saved — only the live page's fast-load
+        // copy failed to refresh. Surface this clearly rather than
+        // claiming a full success, and leave the unpublished-changes
+        // warning active so it isn't forgotten.
+        status.style.color='var(--red)';status.textContent='Saved, but live page update failed: '+embedErr.message;
+        btn.textContent='Publish to Live Site';btn.style.background='';btn.disabled=false;
+        showToast('Data saved, but the live page didn\'t refresh — try Publish again','var(--red)');
+        return;
+      }
       status.style.color='var(--green)';status.textContent='Live in ~60 seconds';
       btn.textContent='Published!';btn.style.background='var(--green)';
       showToast('Published! Cloudflare deploying now...');
