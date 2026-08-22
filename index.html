@@ -3,7 +3,57 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Jabari Jacobs</title>
+<title>Jabari Jacobs | Washington DC Commercial & Editorial Photographer</title>
+<meta name="description" content="Jabari Jacobs is a commercial and editorial photographer and director based in Washington DC, Los Angeles, and New York. Staff photographer for the U.S. Senate. Clients include Netflix, Disney, Nike, Adidas, ESPN, and more."/>
+<meta name="keywords" content="Washington DC commercial photographer, Washington DC editorial photographer, Washington DC advertising photographer, Senate photographer, DC photographer, New York commercial photographer, Los Angeles photographer, music photographer, food photographer"/>
+<link rel="canonical" href="https://jabarijacobs.com/"/>
+
+<!-- Open Graph (Facebook, LinkedIn, iMessage previews) -->
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://jabarijacobs.com/"/>
+<meta property="og:title" content="Jabari Jacobs | Washington DC Commercial & Editorial Photographer"/>
+<meta property="og:description" content="Commercial and editorial photographer and director working across Washington DC, Los Angeles, and New York. Staff photographer for the U.S. Senate."/>
+<meta property="og:image" content="https://jabarijacobs.com/assets/about-photo-extracted.webp"/>
+<meta property="og:site_name" content="Jabari Jacobs Photography"/>
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Jabari Jacobs | Washington DC Commercial & Editorial Photographer"/>
+<meta name="twitter:description" content="Commercial and editorial photographer and director working across Washington DC, Los Angeles, and New York. Staff photographer for the U.S. Senate."/>
+<meta name="twitter:image" content="https://jabarijacobs.com/assets/about-photo-extracted.webp"/>
+
+<!-- Schema markup: tells Google exactly who you are and what you do -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Jabari Jacobs",
+  "jobTitle": "Commercial and Editorial Photographer & Director",
+  "url": "https://jabarijacobs.com",
+  "image": "https://jabarijacobs.com/assets/about-photo-extracted.webp",
+  "email": "info@jabarijacobs.com",
+  "description": "Commercial and editorial photographer and director working across Washington DC, Los Angeles, and New York. Staff photographer for the U.S. Senate.",
+  "knowsAbout": ["Commercial Photography", "Editorial Photography", "Advertising Photography", "Music Photography", "Food Photography", "Photo Direction"],
+  "worksFor": {
+    "@type": "Organization",
+    "name": "U.S. Senate",
+    "description": "Staff Photographer"
+  },
+  "hasOccupation": {
+    "@type": "Occupation",
+    "name": "Photographer and Director",
+    "occupationLocation": [
+      {"@type": "City", "name": "Washington DC"},
+      {"@type": "City", "name": "Los Angeles"},
+      {"@type": "City", "name": "New York"}
+    ]
+  },
+  "sameAs": [
+    "https://www.instagram.com/jabarijacobs"
+  ]
+}
+</script>
+
 <link rel="icon" type="image/png" href="favicon.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -185,6 +235,13 @@ footer{border-top:1px solid var(--border);padding:40px 48px;display:flex;justify
   <a href="#" class="mob-nav" data-view="home">Overview</a>
   <a href="#" class="mob-nav" data-view="about">About / Contact</a>
   <button class="mobile-theme" id="mobileTheme">◐ Toggle Dark / Light</button>
+</div>
+
+<!-- SEO: visible to search engines, hidden from visitors -->
+<div style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;" aria-hidden="true">
+  <h1>Jabari Jacobs — Washington DC Commercial &amp; Editorial Photographer</h1>
+  <p>Jabari Jacobs is a commercial and editorial photographer and director based in Washington DC, Los Angeles, and New York. With over ten years of experience, Jabari has served as staff photographer for the U.S. Senate and built a client roster that includes Netflix, Disney, Nike, Adidas, ESPN, Atlantic Records, Condé Nast, The Washington Post, and more. Available worldwide for advertising, editorial, music, and food photography projects.</p>
+  <p>Washington DC commercial photographer. Washington DC editorial photographer. Washington DC advertising photographer. Senate photographer Washington DC. New York commercial photographer. Los Angeles photographer and director.</p>
 </div>
 
 <!-- FILTER BAR -->
@@ -598,7 +655,8 @@ function applySettings(){
   const cs=document.getElementById('clientSection'),cl=document.getElementById('clientList');
   if(s.clients&&s.clients.length){cs.style.display='block';cl.innerHTML=[...s.clients].sort((a,b)=>a.localeCompare(b)).map(c=>`<span>${c}</span>`).join('');}
   else cs.style.display='none';
-  document.title=s.name||'Jabari Jacobs';
+  // Keep the SEO-optimized title — don't overwrite with bare name
+  // document.title is already set correctly in the <title> tag above
 }
 
 function updateFooterLogo(){
