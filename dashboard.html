@@ -468,6 +468,13 @@ const GITHUB_REPO='jabarijacobs/site';
 const GITHUB_FILE='portfolio-data.json';
 const ALL_CATS=['advertising','editorial','music','food','motion','design'];
 let photos=[],settings={name:'Jabari Jacobs',tagline:'Photographer & Director',email:'jabari@jabarijacobs.com',about:'',location:'Los Angeles, CA',insta:'@jabarijacobs',logoLightSrc:'',logoDarkSrc:'',aboutPhotoSrc:'',logoSize:48,galleryGap:4,galleryCols:4,fontBody:'Karla',fontDisplay:'Cormorant Garamond',clients:[],filters:[...ALL_CATS]};
+const dashAssetVersion=Math.floor(Date.now()/300000);
+// Cache-busting suffix for photo thumbnails in this dashboard. Without this,
+// the browser can keep showing an old cached copy of a photo file after it's
+// been replaced on GitHub (e.g. after a recompression pass), even though the
+// live site and GitHub both have the correct new version. Bucketed to 5
+// minutes so it's not refetching on every single render.
+const dashAssetVersion=Math.floor(Date.now()/300000);
 let editingId=null,fileSha='';
 let githubToken=localStorage.getItem('jj_gh_token')||'';
 
@@ -850,7 +857,7 @@ function renderPhotoGrid(){
     const sizeLabel=photoMeta[p.filename]?fmtSize(photoMeta[p.filename].size):'';
     const tier=p.tier||'site';
     const tierBadge=tier==='archive'?'<div style="position:absolute;bottom:38px;left:5px;background:var(--accent);color:#0f0f0f;font-size:0.58rem;font-weight:700;padding:2px 6px;border-radius:4px;z-index:3;text-transform:uppercase;letter-spacing:0.05em">Archive Only</div>':tier==='hidden'?'<div style="position:absolute;bottom:38px;left:5px;background:var(--muted);color:#0f0f0f;font-size:0.58rem;font-weight:700;padding:2px 6px;border-radius:4px;z-index:3;text-transform:uppercase;letter-spacing:0.05em">Hidden</div>':'';
-    card.innerHTML='<div style="position:absolute;top:5px;left:5px;width:22px;height:22px;border-radius:50%;background:'+(isSel?'var(--accent)':'rgba(0,0,0,0.55)')+';border:2px solid '+(isSel?'var(--accent)':'rgba(255,255,255,0.4)')+';display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:'+(isSel?'#0f0f0f':'#fff')+';z-index:3">'+(isSel?'&check;':globalIdx)+'</div>'+(sizeLabel?'<div style="position:absolute;top:5px;right:5px;background:rgba(0,0,0,0.6);color:#fff;font-size:0.6rem;padding:2px 6px;border-radius:4px;z-index:3">'+sizeLabel+'</div>':'')+tierBadge+'<img src="photos/'+p.filename+'" loading="lazy"/><div class="photo-overlay"><button class="ov-btn ov-edit">Edit</button><button class="ov-btn ov-del">Remove</button></div><div class="card-footer"><div class="card-fn">'+(p.title||p.filename)+'</div><div style="display:flex;flex-wrap:wrap;gap:3px">'+(p.categories&&p.categories.length?p.categories.map(c=>'<span class="tag">'+c+'</span>').join(''):'<span class="no-tag">Untagged</span>')+'</div></div>';
+    card.innerHTML='<div style="position:absolute;top:5px;left:5px;width:22px;height:22px;border-radius:50%;background:'+(isSel?'var(--accent)':'rgba(0,0,0,0.55)')+';border:2px solid '+(isSel?'var(--accent)':'rgba(255,255,255,0.4)')+';display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:'+(isSel?'#0f0f0f':'#fff')+';z-index:3">'+(isSel?'&check;':globalIdx)+'</div>'+(sizeLabel?'<div style="position:absolute;top:5px;right:5px;background:rgba(0,0,0,0.6);color:#fff;font-size:0.6rem;padding:2px 6px;border-radius:4px;z-index:3">'+sizeLabel+'</div>':'')+tierBadge+'<img src="photos/'+p.filename+'?v='+dashAssetVersion+'" loading="lazy"/><div class="photo-overlay"><button class="ov-btn ov-edit">Edit</button><button class="ov-btn ov-del">Remove</button></div><div class="card-footer"><div class="card-fn">'+(p.title||p.filename)+'</div><div style="display:flex;flex-wrap:wrap;gap:3px">'+(p.categories&&p.categories.length?p.categories.map(c=>'<span class="tag">'+c+'</span>').join(''):'<span class="no-tag">Untagged</span>')+'</div></div>';
     card.addEventListener('click',e=>{if(e.target.classList.contains('ov-edit')||e.target.classList.contains('ov-del'))return;if(manageSelected.has(p.id))manageSelected.delete(p.id);else manageSelected.add(p.id);renderPhotoGrid();updateManageBulkBar();});
     card.addEventListener('dragstart',e=>{dragSrcId=p.id;if(!manageSelected.has(p.id)){manageSelected.clear();manageSelected.add(p.id);updateManageBulkBar();}e.dataTransfer.setData('text/plain',[...manageSelected].join(','));setTimeout(()=>{grid.querySelectorAll('.photo-card').forEach(c=>{if(manageSelected.has(c.dataset.id))c.classList.add('dragging');});},0);});
     card.addEventListener('dragend',()=>{grid.querySelectorAll('.photo-card').forEach(c=>{c.classList.remove('dragging');c.classList.remove('drag-over');});});
@@ -915,7 +922,7 @@ function openTagModal(id){
   editingId=id;const p=photos.find(x=>x.id===id);if(!p)return;
   document.getElementById('modalFilename').textContent=p.filename;
   document.getElementById('modalTitleInput').value=p.title||'';
-  const mi=document.getElementById('modalImg');mi.src=p.isYt?'https://img.youtube.com/vi/'+p.youtubeId+'/hqdefault.jpg':'photos/'+p.filename;mi.style.display='block';
+  const mi=document.getElementById('modalImg');mi.src=p.isYt?'https://img.youtube.com/vi/'+p.youtubeId+'/hqdefault.jpg':'photos/'+p.filename+'?v='+dashAssetVersion;mi.style.display='block';
   const cd=document.getElementById('modalCats');cd.innerHTML='';
   (settings.filters||ALL_CATS).forEach(cat=>{const pill=document.createElement('button');pill.className='cat-pill'+(p.categories&&p.categories.includes(cat)?' selected':'');pill.textContent=cat.charAt(0).toUpperCase()+cat.slice(1);pill.addEventListener('click',()=>pill.classList.toggle('selected'));cd.appendChild(pill);});
   const curTier=p.tier||'site';
