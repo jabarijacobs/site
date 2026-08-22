@@ -550,6 +550,11 @@ function renderGallery(){
       const img=document.createElement('img');
       img.decoding='async';
       img.alt=p.filename||p.name||'';
+      // Real width/height HTML attributes (not just our own JS positioning)
+      // let the browser's native layout engine also reserve the correct
+      // space before the image loads, as a second line of defense against
+      // layout shift alongside the masonry sizing above.
+      if(p.width&&p.height){img.width=p.width;img.height=p.height;}
       img.onload=()=>{loaded++;scheduleLayoutMasonry();};
       img.onerror=()=>{loaded++;scheduleLayoutMasonry();};
       item.appendChild(img);
