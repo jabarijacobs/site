@@ -150,7 +150,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);back
 .inner-page{display:none;padding:120px 64px 80px;margin:0 auto;max-width:1400px}
 .inner-page.open{display:block}
 
-.about-grid{display:grid;grid-template-columns:170px 440px 1fr 150px;gap:56px;align-items:start}
+.about-grid{display:grid;grid-template-columns:150px 560px 1fr 140px;gap:48px;align-items:start}
 
 .about-left{font-size:0.85rem;line-height:1.8}
 .about-left .col-label{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;margin-top:32px;display:block}
@@ -282,7 +282,7 @@ const EAGER_LOAD_COUNT=8;
 let photos=[],settings={
   name:'Jabari Jacobs',tagline:'Photographer & Director',
   email:'jabari@jabarijacobs.com',about:'',contactIntro:'',
-  location:'Los Angeles, CA',insta:'@jabarijacobs',
+  location:'Los Angeles, CA',insta:'@jabarijacobs',tiktok:'@jabarijacobs',
   logoLightSrc:'',logoDarkSrc:'',aboutPhotoSrc:'',
   logoSize:32,fontBody:'Karla',fontDisplay:'Cormorant Garamond',
   accentColor:'#000000',clients:[],
@@ -560,6 +560,8 @@ if(initGalleryFromEmbedded()){
       <a id="aboutEmail2" href="">—</a>
       <span class="col-label">Instagram</span>
       <a id="aboutInsta2" href="" target="_blank">—</a>
+      <span class="col-label">TikTok</span>
+      <a id="aboutTiktok2" href="" target="_blank">—</a>
     </div>
 
     <!-- COL 2: Photo -->
@@ -645,6 +647,9 @@ function applySettings(){
   emailEl.innerHTML=emails.map(e=>`<a href="mailto:${e}" style="display:block;text-decoration:underline;text-underline-offset:3px;color:var(--text)">${e}</a>`).join('');
   document.getElementById('aboutInsta2').textContent=s.insta||'';
   document.getElementById('aboutInsta2').href=instaUrl;
+  const tiktokUrl='https://tiktok.com/@'+(s.tiktok||'').replace('@','');
+  document.getElementById('aboutTiktok2').textContent=s.tiktok||'';
+  document.getElementById('aboutTiktok2').href=tiktokUrl;
   // About photo
   const ap=document.getElementById('aboutPhoto'),aph=document.getElementById('aboutPlaceholder');
   if(s.aboutPhotoSrc){ap.src=s.aboutPhotoSrc;ap.style.display='block';aph.style.display='none';}
