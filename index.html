@@ -118,7 +118,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--nav-bg);back
 .filter-count{font-size:0.62rem;opacity:0.7;margin-left:2px}
 
 /* ── GALLERY ── */
-.gallery-wrap{padding:4px;padding-top:calc(104px + 20px)}
+.gallery-wrap{padding:4px}
 .gallery{position:relative;}
 .gallery-item{position:absolute;cursor:pointer;transition:opacity 0.3s ease;}
 .gallery-item img,.gallery-item video{display:block;width:100%;height:auto}
@@ -196,7 +196,7 @@ footer{border-top:1px solid var(--border);padding:40px 48px;display:flex;justify
 @media(max-width:900px){
   .gallery{columns:2;column-gap:3px}
   .gallery-item{margin-bottom:3px}
-  .gallery-wrap{padding:3px;padding-top:calc(140px + 12px)}
+  .gallery-wrap{padding:3px}
   nav{padding:10px 20px;min-height:70px;height:auto;flex-wrap:wrap;row-gap:8px}
   .nav-logo{order:1}
   .hamburger{order:2}
@@ -379,7 +379,8 @@ function layoutMasonry(){
   const cols=window.innerWidth>900?(settings.galleryCols||4):2;
   const isMobile=window.innerWidth<=900;
   const wrapPad=isMobile?3:gap;
-  const navFilterH=isMobile?80:0;
+  const navEl=document.querySelector('nav');
+  const navFilterH=navEl?navEl.offsetHeight+(isMobile?12:20):0;
   const wrapW=wrap.clientWidth-(wrapPad*2);
   const colW=(wrapW-(gap*(cols-1)))/cols;
   const colHeights=new Array(cols).fill(0);
