@@ -335,12 +335,6 @@ function buildFilters(){
   const allFilters=settings.filters&&settings.filters.length?settings.filters:CATS;
   // Only show category tabs that actually have at least one live photo — avoids empty, dead-end pages
   const activeFilters=allFilters.filter(cat=>photos.some(p=>(p.categories||[]).includes(cat)));
-  const allPill=document.createElement('button');
-  allPill.className='filter-pill'+(currentFilter==='all'?' active':'');
-  allPill.dataset.cat='all';
-  allPill.innerHTML='All';
-  allPill.addEventListener('click',()=>setFilter('all'));
-  bar.appendChild(allPill);
   activeFilters.forEach(cat=>{
     const pill=document.createElement('button');
     pill.className='filter-pill'+(currentFilter===cat?' active':'');
@@ -735,7 +729,7 @@ function showView(view){
   window.scrollTo({top:0,behavior:'instant'});
 }
 
-document.getElementById('navHome').addEventListener('click',e=>{e.preventDefault();showView('home');});
+document.getElementById('navHome').addEventListener('click',e=>{e.preventDefault();currentFilter='all';document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));showView('home');renderGallery();});
 document.getElementById('navAbout').addEventListener('click',e=>{e.preventDefault();showView('about');});
 document.getElementById('homeLink').addEventListener('click',e=>{e.preventDefault();currentFilter='all';document.querySelectorAll('.filter-pill').forEach(p=>p.classList.toggle('active',p.dataset.cat==='all'));showView('home');renderGallery();window.scrollTo({top:0,behavior:'instant'});});
 document.getElementById('footerAbout').addEventListener('click',e=>{e.preventDefault();showView('about');});
