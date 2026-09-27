@@ -66,7 +66,7 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
 .photo-card.selected-card{border:2px solid var(--accent);box-shadow:0 0 0 2px rgba(200,184,154,0.3)}
 .photo-card.dragging{opacity:0.35;border:2px dashed var(--accent)}
 .photo-card.drag-over{border:2px solid var(--accent);transform:scale(1.02)}
-.photo-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--surface2)}
+.photo-card img,.photo-card video{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--surface2)}
 .photo-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;gap:5px;transition:background 0.2s;opacity:0}
 .photo-card:hover .photo-overlay{background:rgba(0,0,0,0.72);opacity:1}
 .ov-btn{padding:5px 8px;border-radius:4px;border:none;font-size:0.58rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer}
@@ -190,9 +190,9 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
       <p style="font-size:0.76rem;color:var(--muted);margin-bottom:16px;line-height:1.6">Pick your compressed photos and they upload straight to GitHub. Tag them, then hit <strong>Publish to Live Site</strong>.</p>
       <div class="upload-drop-zone" id="uploadDropZone">
         <div class="upload-icon">&#x1F5BC;</div>
-        <p><strong>Click to choose photos</strong> or drag and drop here<br/>JPG, PNG, WebP &mdash; compress with ImageOptim first for best results</p>
+        <p><strong>Click to choose photos or videos</strong> or drag and drop here<br/>JPG, PNG, WebP &mdash; compress with ImageOptim first<br/>MP4 videos up to 25MB &mdash; convert .mov files with HandBrake first</p>
       </div>
-      <input type="file" id="directFilePicker" multiple accept="image/*" style="display:none"/>
+      <input type="file" id="directFilePicker" multiple accept="image/*,video/mp4,video/webm,.mp4,.m4v,.webm" style="display:none"/>
       <div id="uploadCatsRow" class="upload-cats-row" style="display:none">
         <label>Tag all uploads with categories (optional &mdash; you can edit individually after)</label>
         <div class="cat-grid" id="uploadCatGrid"></div>
@@ -445,6 +445,7 @@ code{background:var(--surface2);padding:1px 6px;border-radius:3px;font-size:0.82
   <div class="modal">
     <h2>Edit Tags</h2>
     <img id="modalImg" src="" style="display:none"/>
+    <video id="modalVid" muted playsinline preload="metadata" style="display:none;width:100%;max-height:130px;object-fit:cover;border-radius:6px;margin-bottom:12px"></video>
     <p id="modalFilename" style="font-size:0.72rem;color:var(--muted);margin-bottom:10px"></p>
     <div class="field"><label>Display Title (optional)</label><input id="modalTitleInput" style="width:100%;padding:8px 11px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Karla',sans-serif;font-size:0.82rem;outline:none;margin-bottom:12px"/></div>
     <label style="font-size:0.67rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px">Categories</label>
@@ -590,7 +591,7 @@ window.addEventListener('beforeunload',function(e){
 async function publishEmbeddedGalleryData(data){
   const sitePhotos=data.photos
     .filter(p=>(p.tier||'site')==='site')
-    .map(p=>({id:p.id,filename:p.filename,title:p.title,src:p.src,youtubeId:p.youtubeId,isYt:p.isYt,categories:p.categories,width:p.width,height:p.height}));
+    .map(p=>({id:p.id,filename:p.filename,title:p.title,src:p.src,youtubeId:p.youtubeId,isYt:p.isYt,isVideo:!!p.isVideo,categories:p.categories,width:p.width,height:p.height}));
   const embedded={photos:sitePhotos,settings:data.settings};
   // Defensive: if a title/filename ever contained a script-closing
   // sequence, this would otherwise prematurely end the embedded tag.
@@ -614,7 +615,7 @@ async function publishToGitHub(){
   if(!githubToken){showToast('Enter GitHub token first!','var(--red)');showPage('settings');return;}
   btn.disabled=true;btn.textContent='Publishing...';
   status.style.color='var(--accent)';status.textContent='Committing to GitHub...';
-  const data={photos:photos.map(p=>({id:p.id,filename:p.filename||'',title:p.title||'',src:p.isYt?'':'photos/'+p.filename,youtubeId:p.youtubeId||null,isYt:!!p.isYt,categories:p.categories||[],tier:p.tier||'site',width:p.width||null,height:p.height||null,dateAdded:p.dateAdded})),settings};
+  const data={photos:photos.map(p=>({id:p.id,filename:p.filename||'',title:p.title||'',src:p.isYt?'':'photos/'+p.filename,youtubeId:p.youtubeId||null,isYt:!!p.isYt,isVideo:!!p.isVideo,categories:p.categories||[],tier:p.tier||'site',width:p.width||null,height:p.height||null,dateAdded:p.dateAdded})),settings};
   const content=JSON.stringify(data,null,2);
   try{
     if(!fileSha){const f=await ghGet(GITHUB_FILE);fileSha=f.sha||'';}
@@ -684,10 +685,18 @@ const directPicker=document.getElementById('directFilePicker');
 dropZone.addEventListener('click',()=>directPicker.click());
 dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('drag-active');});
 dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('drag-active'));
-dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('drag-active');stageUploadFiles([...e.dataTransfer.files].filter(f=>f.type.startsWith('image/')));});
+dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('drag-active');stageUploadFiles([...e.dataTransfer.files].filter(f=>f.type.startsWith('image/')||isVideoFile(f)));});
 directPicker.addEventListener('change',function(){stageUploadFiles([...this.files]);this.value='';});
 
+function isVideoFile(f){return (f.type&&f.type.startsWith('video/'))||/\.(mp4|webm|m4v)$/i.test(f.name||'');}
+const MAX_VIDEO_BYTES=25*1024*1024;
 function stageUploadFiles(files){
+  const movs=files.filter(f=>/\.mov$/i.test(f.name));
+  if(movs.length)showToast('.mov files need to be converted to .mp4 in HandBrake first','var(--yellow)');
+  files=files.filter(f=>!/\.mov$/i.test(f.name));
+  const tooBig=files.filter(f=>isVideoFile(f)&&f.size>MAX_VIDEO_BYTES);
+  if(tooBig.length)showToast(tooBig.map(f=>f.name).join(', ')+' is over 25MB. Compress it in HandBrake and try again','var(--red)');
+  files=files.filter(f=>!(isVideoFile(f)&&f.size>MAX_VIDEO_BYTES));
   if(!files.length)return;
   if(!githubToken){showToast('Connect GitHub first in Site Settings!','var(--red)');showPage('settings');return;}
   const existing=new Set(photos.filter(p=>!p.isYt).map(p=>p.filename));
@@ -720,12 +729,59 @@ function renderUploadQueue(){
 // pass instead of guessing a shape and correcting later (which is what
 // causes visible layout shift as photos load in).
 function getImageDimensions(file){
+  if(isVideoFile(file))return getVideoDimensions(file);
   return new Promise((resolve)=>{
     const url=URL.createObjectURL(file);
     const img=new Image();
     img.onload=()=>{URL.revokeObjectURL(url);resolve({width:img.naturalWidth,height:img.naturalHeight});};
     img.onerror=()=>{URL.revokeObjectURL(url);resolve(null);};
     img.src=url;
+  });
+}
+
+function getVideoDimensions(file){
+  return new Promise((resolve)=>{
+    const url=URL.createObjectURL(file);
+    const v=document.createElement('video');
+    v.preload='metadata';v.muted=true;
+    const done=d=>{URL.revokeObjectURL(url);resolve(d);};
+    v.onloadedmetadata=()=>done(v.videoWidth&&v.videoHeight?{width:v.videoWidth,height:v.videoHeight}:null);
+    v.onerror=()=>done(null);
+    setTimeout(()=>done(null),8000);
+    v.src=url;
+  });
+}
+
+// Videos are too big for the Contents API (it quietly fails past a few MB),
+// so they go up through the Git Data API as one blob -> tree -> commit.
+async function ghApi(path,method,body){
+  const r=await fetch('https://api.github.com/repos/'+GITHUB_REPO+path,{method:method||'GET',headers:{Authorization:'token '+githubToken,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});
+  const j=await r.json();
+  if(!r.ok)throw new Error(j.message||('GitHub error '+r.status));
+  return j;
+}
+function uploadVideoToGitHub(file,onProgress,folder){
+  folder=folder||'photos';
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=async(e)=>{
+      try{
+        const base64=e.target.result.split(',')[1];
+        const path=folder+'/'+file.name;
+        onProgress&&onProgress(20);
+        const blob=await ghApi('/git/blobs','POST',{content:base64,encoding:'base64'});
+        onProgress&&onProgress(60);
+        const ref=await ghApi('/git/ref/heads/main');
+        const head=await ghApi('/git/commits/'+ref.object.sha);
+        const tree=await ghApi('/git/trees','POST',{base_tree:head.tree.sha,tree:[{path,mode:'100644',type:'blob',sha:blob.sha}]});
+        const commit=await ghApi('/git/commits','POST',{message:'Upload '+file.name,tree:tree.sha,parents:[head.sha]});
+        await ghApi('/git/refs/heads/main','PATCH',{sha:commit.sha});
+        onProgress&&onProgress(100);
+        resolve({path});
+      }catch(err){reject(err);}
+    };
+    reader.onerror=()=>reject(new Error('Failed to read file'));
+    reader.readAsDataURL(file);
   });
 }
 
@@ -742,9 +798,12 @@ document.getElementById('startUploadBtn').addEventListener('click',async()=>{
     item.status='uploading';item.progress=10;renderUploadQueue();
     try{
       const dims=await getImageDimensions(item.file);
-      await uploadFileToGitHub(item.file,pct=>{item.progress=pct;renderUploadQueue();});
+      const isVid=isVideoFile(item.file);
+      await (isVid?uploadVideoToGitHub:uploadFileToGitHub)(item.file,pct=>{item.progress=pct;renderUploadQueue();});
       item.status='done';item.progress=100;
-      photos.push({id:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2),filename:item.file.name,title:'',categories:cats,src:'photos/'+item.file.name,width:dims?dims.width:null,height:dims?dims.height:null,dateAdded:new Date().toISOString()});
+      const entry={id:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2),filename:item.file.name,title:'',categories:cats,src:'photos/'+item.file.name,width:dims?dims.width:null,height:dims?dims.height:null,dateAdded:new Date().toISOString()};
+      if(isVid)entry.isVideo=true;
+      photos.push(entry);
       savePhotos();successCount++;
     }catch(err){item.status='error';item.progress=0;console.error('Upload failed:',item.file.name,err);}
     renderUploadQueue();
@@ -753,7 +812,7 @@ document.getElementById('startUploadBtn').addEventListener('click',async()=>{
   btn.disabled=false;btn.textContent='Upload All to GitHub';
   renderPhotoGrid();renderOverview();
   if(successCount>0){
-    showToast(successCount+' photo'+(successCount>1?'s':'')+' uploaded! Hit Publish to go live.');
+    showToast(successCount+' file'+(successCount>1?'s':'')+' uploaded! Hit Publish to go live.');
     setTimeout(()=>{
       uploadQueue=uploadQueue.filter(x=>x.status!=='done');
       renderUploadQueue();
@@ -856,7 +915,7 @@ function renderPhotoGrid(){
     const sizeLabel=photoMeta[p.filename]?fmtSize(photoMeta[p.filename].size):'';
     const tier=p.tier||'site';
     const tierBadge=tier==='archive'?'<div style="position:absolute;bottom:38px;left:5px;background:var(--accent);color:#0f0f0f;font-size:0.58rem;font-weight:700;padding:2px 6px;border-radius:4px;z-index:3;text-transform:uppercase;letter-spacing:0.05em">Archive Only</div>':tier==='hidden'?'<div style="position:absolute;bottom:38px;left:5px;background:var(--muted);color:#0f0f0f;font-size:0.58rem;font-weight:700;padding:2px 6px;border-radius:4px;z-index:3;text-transform:uppercase;letter-spacing:0.05em">Hidden</div>':'';
-    card.innerHTML='<div style="position:absolute;top:5px;left:5px;width:22px;height:22px;border-radius:50%;background:'+(isSel?'var(--accent)':'rgba(0,0,0,0.55)')+';border:2px solid '+(isSel?'var(--accent)':'rgba(255,255,255,0.4)')+';display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:'+(isSel?'#0f0f0f':'#fff')+';z-index:3">'+(isSel?'&check;':globalIdx)+'</div>'+(sizeLabel?'<div style="position:absolute;top:5px;right:5px;background:rgba(0,0,0,0.6);color:#fff;font-size:0.6rem;padding:2px 6px;border-radius:4px;z-index:3">'+sizeLabel+'</div>':'')+tierBadge+'<img src="photos/'+p.filename+'?v='+dashAssetVersion+'" loading="lazy"/><div class="photo-overlay"><button class="ov-btn ov-edit">Edit</button><button class="ov-btn ov-del">Remove</button></div><div class="card-footer"><div class="card-fn">'+(p.title||p.filename)+'</div><div style="display:flex;flex-wrap:wrap;gap:3px">'+(p.categories&&p.categories.length?p.categories.map(c=>'<span class="tag">'+c+'</span>').join(''):'<span class="no-tag">Untagged</span>')+'</div></div>';
+    card.innerHTML='<div style="position:absolute;top:5px;left:5px;width:22px;height:22px;border-radius:50%;background:'+(isSel?'var(--accent)':'rgba(0,0,0,0.55)')+';border:2px solid '+(isSel?'var(--accent)':'rgba(255,255,255,0.4)')+';display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:'+(isSel?'#0f0f0f':'#fff')+';z-index:3">'+(isSel?'&check;':globalIdx)+'</div>'+(sizeLabel?'<div style="position:absolute;top:5px;right:5px;background:rgba(0,0,0,0.6);color:#fff;font-size:0.6rem;padding:2px 6px;border-radius:4px;z-index:3">'+sizeLabel+'</div>':'')+tierBadge+(p.isVideo||/\.(mp4|webm|m4v)$/i.test(p.filename||'')?'<video src="photos/'+p.filename+'?v='+dashAssetVersion+'#t=0.1" muted playsinline preload="metadata"></video><div style="position:absolute;bottom:38px;right:5px;background:rgba(0,0,0,0.6);color:#fff;font-size:0.58rem;font-weight:700;padding:2px 6px;border-radius:4px;z-index:3;letter-spacing:0.05em">VIDEO</div>':'<img src="photos/'+p.filename+'?v='+dashAssetVersion+'" loading="lazy"/>')+'<div class="photo-overlay"><button class="ov-btn ov-edit">Edit</button><button class="ov-btn ov-del">Remove</button></div><div class="card-footer"><div class="card-fn">'+(p.title||p.filename)+'</div><div style="display:flex;flex-wrap:wrap;gap:3px">'+(p.categories&&p.categories.length?p.categories.map(c=>'<span class="tag">'+c+'</span>').join(''):'<span class="no-tag">Untagged</span>')+'</div></div>';
     card.addEventListener('click',e=>{if(e.target.classList.contains('ov-edit')||e.target.classList.contains('ov-del'))return;if(manageSelected.has(p.id))manageSelected.delete(p.id);else manageSelected.add(p.id);renderPhotoGrid();updateManageBulkBar();});
     card.addEventListener('dragstart',e=>{dragSrcId=p.id;if(!manageSelected.has(p.id)){manageSelected.clear();manageSelected.add(p.id);updateManageBulkBar();}e.dataTransfer.setData('text/plain',[...manageSelected].join(','));setTimeout(()=>{grid.querySelectorAll('.photo-card').forEach(c=>{if(manageSelected.has(c.dataset.id))c.classList.add('dragging');});},0);});
     card.addEventListener('dragend',()=>{grid.querySelectorAll('.photo-card').forEach(c=>{c.classList.remove('dragging');c.classList.remove('drag-over');});});
@@ -921,7 +980,7 @@ function openTagModal(id){
   editingId=id;const p=photos.find(x=>x.id===id);if(!p)return;
   document.getElementById('modalFilename').textContent=p.filename;
   document.getElementById('modalTitleInput').value=p.title||'';
-  const mi=document.getElementById('modalImg');mi.src=p.isYt?'https://img.youtube.com/vi/'+p.youtubeId+'/hqdefault.jpg':'photos/'+p.filename+'?v='+dashAssetVersion;mi.style.display='block';
+  const mi=document.getElementById('modalImg');const mv=document.getElementById('modalVid');const vidEntry=p.isVideo||/\.(mp4|webm|m4v)$/i.test(p.filename||'');mv.style.display=vidEntry?'block':'none';if(vidEntry){mv.src='photos/'+p.filename+'?v='+dashAssetVersion+'#t=0.1';mi.style.display='none';}else{mv.removeAttribute('src');}if(!vidEntry){mi.src=p.isYt?'https://img.youtube.com/vi/'+p.youtubeId+'/hqdefault.jpg':'photos/'+p.filename+'?v='+dashAssetVersion;mi.style.display='block';}
   const cd=document.getElementById('modalCats');cd.innerHTML='';
   (settings.filters||ALL_CATS).forEach(cat=>{const pill=document.createElement('button');pill.className='cat-pill'+(p.categories&&p.categories.includes(cat)?' selected':'');pill.textContent=cat.charAt(0).toUpperCase()+cat.slice(1);pill.addEventListener('click',()=>pill.classList.toggle('selected'));cd.appendChild(pill);});
   const curTier=p.tier||'site';
@@ -1069,7 +1128,7 @@ document.getElementById('saveSettings').addEventListener('click',()=>{
 });
 
 // === EXPORT ===
-function doExport(){const data={photos:photos.map(p=>({id:p.id,filename:p.filename||'',title:p.title||'',src:p.isYt?'':'photos/'+p.filename,youtubeId:p.youtubeId||null,isYt:!!p.isYt,categories:p.categories||[],tier:p.tier||'site',width:p.width||null,height:p.height||null,dateAdded:p.dateAdded})),settings};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='portfolio-data.json';a.click();showToast('portfolio-data.json downloaded!');}
+function doExport(){const data={photos:photos.map(p=>({id:p.id,filename:p.filename||'',title:p.title||'',src:p.isYt?'':'photos/'+p.filename,youtubeId:p.youtubeId||null,isYt:!!p.isYt,isVideo:!!p.isVideo,categories:p.categories||[],tier:p.tier||'site',width:p.width||null,height:p.height||null,dateAdded:p.dateAdded})),settings};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='portfolio-data.json';a.click();showToast('portfolio-data.json downloaded!');}
 document.getElementById('exportBtn').addEventListener('click',doExport);
 
 // === GITHUB TOKEN ===
