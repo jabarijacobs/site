@@ -517,7 +517,9 @@ async function deleteFileFromGitHub(filename){
   if(!meta){
     try{const f=await ghGet('photos/'+filename);if(f.sha)meta={size:f.size,sha:f.sha};}catch(e){}
   }
-  if(!meta)throw new Error('Could not find '+filename+' on GitHub');
+  // File is already gone from GitHub (e.g. an upload that never landed):
+  // nothing to delete, so let the listing be removed anyway.
+  if(!meta)return 'missing';
   const result=await ghDelete('photos/'+filename,meta.sha,'Delete '+filename);
   if(result.commit){delete photoMeta[filename];return true;}
   throw new Error(result.message||'Delete failed');
