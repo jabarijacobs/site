@@ -7,6 +7,7 @@
       "src": "photos/MV5BMTJjMGUzMTItYzg4ZS00MTZlLWIwNzEtNTM2ZWFhMmE3MjE2XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -22,6 +23,7 @@
       "src": "photos/FF_GRN_S5A_KeyArt_HR_XTag.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -37,6 +39,7 @@
       "src": "photos/IMG_5206.jpeg.webp",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -52,6 +55,7 @@
       "src": "photos/Washingtonian_2026_07_July.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial",
         "food"
@@ -68,6 +72,7 @@
       "src": "photos/Untitled Session2645 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial",
         "food"
@@ -84,6 +89,7 @@
       "src": "photos/Blue4891 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -99,6 +105,7 @@
       "src": "photos/Blue4907 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -114,6 +121,7 @@
       "src": "photos/Deja_2025_8 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -129,6 +137,7 @@
       "src": "photos/Deja_2025_11 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -144,6 +153,7 @@
       "src": "photos/Tapz0052 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -159,6 +169,7 @@
       "src": "photos/Tapz0076 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -174,6 +185,7 @@
       "src": "photos/Tapz0042 1.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -189,6 +201,7 @@
       "src": "photos/Tapz0158 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -204,6 +217,7 @@
       "src": "photos/b1.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -219,6 +233,7 @@
       "src": "photos/Lyrik0890 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -234,6 +249,7 @@
       "src": "photos/LYRIK 2.mov",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial",
         "motion"
@@ -250,6 +266,7 @@
       "src": "photos/orange_0004_Syd - Crack Magazine - 37.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial",
         "music"
@@ -266,6 +283,7 @@
       "src": "photos/Untitled-5.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial",
         "music"
@@ -282,6 +300,7 @@
       "src": "photos/Untitled-3.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial",
         "music"
@@ -298,6 +317,7 @@
       "src": "photos/NotCo2209 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -313,6 +333,7 @@
       "src": "photos/Doja Cat - RCA Records7.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -328,6 +349,7 @@
       "src": "photos/DOJA CAT_AMALA_FINAL.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -343,6 +365,7 @@
       "src": "photos/Doja Cat - RCA Records1.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -358,6 +381,7 @@
       "src": "photos/done crop.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -367,12 +391,29 @@
       "dateAdded": "2026-03-28T20:17:35.621Z"
     },
     {
+      "id": "p_1790538207981_x9fobzivdqh",
+      "filename": "IncMag070620280159 copy.jpg",
+      "title": "",
+      "src": "photos/IncMag070620280159 copy.jpg",
+      "youtubeId": null,
+      "isYt": false,
+      "isVideo": false,
+      "categories": [
+        "editorial"
+      ],
+      "tier": "site",
+      "width": 1601,
+      "height": 2400,
+      "dateAdded": "2026-09-27T19:43:27.981Z"
+    },
+    {
       "id": "p_1774729055621_t3su219k829",
       "filename": "hot dog - focus copy.jpg",
       "title": "",
       "src": "photos/hot dog - focus copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -388,6 +429,7 @@
       "src": "photos/Herb 2 small.mov",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial",
         "motion"
@@ -404,6 +446,7 @@
       "src": "photos/Herb0407 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -419,6 +462,7 @@
       "src": "photos/Herb0401.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -434,6 +478,7 @@
       "src": "photos/DSC07923 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -449,6 +494,7 @@
       "src": "photos/DSC07968 1 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -464,6 +510,7 @@
       "src": "photos/Cereal0535.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -479,6 +526,7 @@
       "src": "photos/Cereal0548 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -494,6 +542,7 @@
       "src": "photos/FF_GRN_S6B_KeyArt_1080x1350_XTag.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -509,6 +558,7 @@
       "src": "photos/bha_s4_Vertical_DigitalFinish_4350x6300_072522 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -524,6 +574,7 @@
       "src": "photos/J055667.009_BHA_S5_24x36_EVERGREEN_DUAL_012424_sRGB.r2.jpg.webp",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -539,6 +590,7 @@
       "src": "photos/Simply Spiked1076 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "food"
@@ -555,6 +607,7 @@
       "src": "photos/Simply Spiked1199 copy fixed.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "food"
@@ -571,6 +624,7 @@
       "src": "photos/MBO_S1_27x40_No-TuneIn_ACT26357.jpeg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -586,6 +640,7 @@
       "src": "photos/advertising-disney-01.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -601,6 +656,7 @@
       "src": "photos/advertising-disney-02.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -616,6 +672,7 @@
       "src": "photos/Donuts4345.gif",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -631,6 +688,7 @@
       "src": "photos/Venance0658.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -646,6 +704,7 @@
       "src": "photos/The Upshaws - Season 2_ Part 1 - Key Art.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -661,6 +720,7 @@
       "src": "photos/upshaws orange.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -676,6 +736,7 @@
       "src": "photos/Peach Jam0871 copy 2.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -691,6 +752,7 @@
       "src": "photos/l1.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -706,6 +768,7 @@
       "src": "photos/LYRIK 3 FINAL smaller.mov",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial",
         "motion"
@@ -722,6 +785,7 @@
       "src": "photos/IMG_4864.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -737,6 +801,7 @@
       "src": "photos/IMG_4636.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -752,6 +817,7 @@
       "src": "photos/IS-AP-WW-241218-BHM_Los_Angeles_Inline_Jacobs_000503 copy (final).jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -761,12 +827,30 @@
       "dateAdded": "2026-03-28T20:17:35.621Z"
     },
     {
+      "id": "p_1790537830524_5sh9598ljoy",
+      "filename": "WIW_KWSP_DigCover_R2_1.mp4",
+      "title": "",
+      "src": "photos/WIW_KWSP_DigCover_R2_1.mp4",
+      "youtubeId": null,
+      "isYt": false,
+      "isVideo": true,
+      "categories": [
+        "editorial",
+        "motion"
+      ],
+      "tier": "site",
+      "width": 1080,
+      "height": 1350,
+      "dateAdded": "2026-09-27T19:37:10.524Z"
+    },
+    {
       "id": "p_1774745016845_yet5ylez5wk",
       "filename": "Tastemade3312 copy.jpg",
       "title": "",
       "src": "photos/Tastemade3312 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "food"
@@ -783,6 +867,7 @@
       "src": "photos/Tastemade2944.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "food"
@@ -799,6 +884,7 @@
       "src": "photos/Tastemade2420 1 copy fixed.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "food"
@@ -815,6 +901,7 @@
       "src": "photos/Tastemade2695.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "food"
@@ -831,6 +918,7 @@
       "src": "photos/Tastemade3658 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -846,6 +934,7 @@
       "src": "photos/drink.gif",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -861,6 +950,7 @@
       "src": "photos/henry IG.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -876,6 +966,7 @@
       "src": "photos/henry IG 2b.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -891,6 +982,7 @@
       "src": "photos/DSC08190.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -906,6 +998,7 @@
       "src": "photos/164053_0082_03_s-2.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -921,6 +1014,7 @@
       "src": "photos/164053_0841_s-2.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -936,6 +1030,7 @@
       "src": "photos/164053_0283_04_s-2.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -951,6 +1046,7 @@
       "src": "photos/163486_0872_02_s-2.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -966,6 +1062,7 @@
       "src": "photos/164053_0353_04_s-2.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -981,6 +1078,7 @@
       "src": "photos/Waffle0391 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -996,6 +1094,7 @@
       "src": "photos/Herb0668 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -1011,6 +1110,7 @@
       "src": "photos/Herb0834 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -1026,6 +1126,7 @@
       "src": "photos/Herb0884 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -1041,6 +1142,7 @@
       "src": "photos/ezgif.com-animated-gif-maker-3.gif",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -1056,6 +1158,7 @@
       "src": "photos/ezgif.com-animated-gif-maker-4.gif",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -1071,6 +1174,7 @@
       "src": "photos/music-lilbaby-01.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -1086,6 +1190,7 @@
       "src": "photos/music-nas-01.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -1101,6 +1206,7 @@
       "src": "photos/02_PATIO_005 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -1116,6 +1222,7 @@
       "src": "photos/02_PATIO_006 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -1131,6 +1238,7 @@
       "src": "photos/02_PATIO_007 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -1146,6 +1254,7 @@
       "src": "photos/Laya3503.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -1161,6 +1270,7 @@
       "src": "photos/lockup.WEBP",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1176,6 +1286,7 @@
       "src": "photos/Tastemade3199 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -1191,6 +1302,7 @@
       "src": "photos/Egg Rolls0613 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -1206,6 +1318,7 @@
       "src": "photos/h1.jpg.webp",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1221,6 +1334,7 @@
       "src": "photos/HABIT x THIS JANUARY2784.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1236,6 +1350,7 @@
       "src": "photos/habit1.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1251,6 +1366,7 @@
       "src": "photos/ig1.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1266,6 +1382,7 @@
       "src": "photos/flamingo.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -1281,6 +1398,7 @@
       "src": "photos/tiara - pink-4 leak censor.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -1296,6 +1414,7 @@
       "src": "photos/lizzo.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -1311,6 +1430,7 @@
       "src": "photos/deja art final 2.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "design"
       ],
@@ -1326,6 +1446,7 @@
       "src": "photos/Sarah_CharacterPoster.jpeg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1341,6 +1462,7 @@
       "src": "photos/JohnB_CharacterPoster+(1).jpeg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1356,6 +1478,7 @@
       "src": "photos/Pope_CharacterPoster.jpeg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1371,6 +1494,7 @@
       "src": "photos/colorful drink0535 copy 5.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -1386,6 +1510,7 @@
       "src": "photos/tiara.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "design"
       ],
@@ -1401,6 +1526,7 @@
       "src": "photos/willie.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -1416,6 +1542,7 @@
       "src": "photos/The Internet - Ego Death.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -1431,6 +1558,7 @@
       "src": "photos/PORTRAIT 1827 FINAL HR copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "editorial"
@@ -1447,6 +1575,7 @@
       "src": "photos/Untitled-1a.gif",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial",
         "food"
@@ -1463,6 +1592,7 @@
       "src": "photos/chicken Nuggets1584 3 final.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -1478,6 +1608,7 @@
       "src": "photos/Tanaye-1911 .jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -1493,6 +1624,7 @@
       "src": "photos/ADI_034A_LEC_HeadToToeLooks_Group_Hibbet_Look-02_1080x1080.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1508,6 +1640,7 @@
       "src": "photos/IMG_3968.JPG",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1523,6 +1656,7 @@
       "src": "photos/Poppi1076 copy done.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "food"
@@ -1539,6 +1673,7 @@
       "src": "photos/08 sunflowers a.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -1554,6 +1689,7 @@
       "src": "photos/starry.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "food"
@@ -1570,6 +1706,7 @@
       "src": "photos/starry ii.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "food"
@@ -1586,6 +1723,7 @@
       "src": "photos/deja cream1.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -1601,6 +1739,7 @@
       "src": "photos/chicken Nuggets1729 2 copy c.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -1616,6 +1755,7 @@
       "src": "photos/Tastemade3550.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -1631,6 +1771,7 @@
       "src": "photos/Forest4042 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial",
         "music"
@@ -1641,12 +1782,47 @@
       "dateAdded": "2026-03-28T20:00:35.610Z"
     },
     {
+      "id": "p_1790538251702_ukx830aon0i",
+      "filename": "20260825_IncMag_DannyMeyer0255 copy.jpg",
+      "title": "",
+      "src": "photos/20260825_IncMag_DannyMeyer0255 copy.jpg",
+      "youtubeId": null,
+      "isYt": false,
+      "isVideo": false,
+      "categories": [
+        "editorial"
+      ],
+      "tier": "site",
+      "width": 1920,
+      "height": 2400,
+      "dateAdded": "2026-09-27T19:44:11.702Z"
+    },
+    {
+      "id": "p_1790537908512_4248cvur71e",
+      "filename": "WIW_DM_DigCover_R1.mp4",
+      "title": "",
+      "src": "photos/WIW_DM_DigCover_R1.mp4",
+      "youtubeId": null,
+      "isYt": false,
+      "isVideo": true,
+      "categories": [
+        "editorial",
+        "food",
+        "motion"
+      ],
+      "tier": "site",
+      "width": 1080,
+      "height": 1350,
+      "dateAdded": "2026-09-27T19:38:28.512Z"
+    },
+    {
       "id": "p_1774796838901_ab0ilyc6xi",
       "filename": "ADI_034A_LEC_HeadToToeLooks_Mens_Hibbett_Look1_1080x1080.jpg",
       "title": "",
       "src": "photos/ADI_034A_LEC_HeadToToeLooks_Mens_Hibbett_Look1_1080x1080.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1662,6 +1838,7 @@
       "src": "photos/Screen Shot 2022-12-05 at 9.50.03 AM.png",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1677,6 +1854,7 @@
       "src": "photos/Screen Shot 2022-12-05 at 9.50.46 AM.png",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1692,6 +1870,7 @@
       "src": "photos/ADI_034A_LEC_HeadToToeLooks_LadsAndDads_Look1_1080x1080.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1707,6 +1886,7 @@
       "src": "photos/drink2.gif",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -1722,6 +1902,7 @@
       "src": "photos/Doja+Cat+RCA+8.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -1737,6 +1918,7 @@
       "src": "photos/nya 3.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "design"
       ],
@@ -1752,6 +1934,7 @@
       "src": "photos/PORTAL PERSON 2 FINAL HR.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "editorial"
@@ -1768,6 +1951,7 @@
       "src": "photos/Rev_SocialAds1Artboard 1 copy 40.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1783,6 +1967,7 @@
       "src": "photos/Rev_SocialAds1Artboard 1 copy 42.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1798,6 +1983,7 @@
       "src": "photos/Rev_SocialAds1Artboard 1 copy 41.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1813,6 +1999,7 @@
       "src": "photos/Flamingo 2.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "design"
       ],
@@ -1828,6 +2015,7 @@
       "src": "photos/ptx.jpeg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -1843,6 +2031,7 @@
       "src": "photos/grown gel 2.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "editorial"
@@ -1859,6 +2048,7 @@
       "src": "photos/grown gel1.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "editorial"
@@ -1875,6 +2065,7 @@
       "src": "photos/FF_GRN_S6_KA_HR_XTag.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1890,6 +2081,7 @@
       "src": "photos/H98A7514.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1905,6 +2097,7 @@
       "src": "photos/Untitled-1.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1920,6 +2113,7 @@
       "src": "photos/wille 2.jpeg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -1935,6 +2129,7 @@
       "src": "photos/Group_Hibbet-Snipes_Look-01_0671_R1.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1950,6 +2145,7 @@
       "src": "photos/Akin1100.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -1965,6 +2161,7 @@
       "src": "photos/Cover.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "editorial"
@@ -1981,6 +2178,7 @@
       "src": "photos/STRANGERTHINGS_S4_TUDUM_J_QUINN_Setup01_0402.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -1996,6 +2194,7 @@
       "src": "photos/STRANGERTHINGS_S4_TUDUM_JOE_K_Setup01_0384.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -2011,6 +2210,7 @@
       "src": "photos/STRANGERTHINGS_S4_TUDUM_GATEN_Setup01_0478.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -2026,6 +2226,7 @@
       "src": "photos/Orange_Towel - done copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -2041,6 +2242,7 @@
       "src": "photos/natasha-12-4.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -2056,6 +2258,7 @@
       "src": "photos/Breakfast2300 copy fixed.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -2071,6 +2274,7 @@
       "src": "photos/cott.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -2086,6 +2290,7 @@
       "src": "photos/kir.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -2101,6 +2306,7 @@
       "src": "photos/Boys Cry.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "design"
       ],
@@ -2116,6 +2322,7 @@
       "src": "photos/kd ad week.WEBP",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "editorial"
@@ -2132,6 +2339,7 @@
       "src": "photos/cake0274 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -2147,6 +2355,7 @@
       "src": "photos/AE_Bobby_Brown_Every_Little_Step_24x36_Poster_FIN_LoRes_Visual-3.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -2162,6 +2371,7 @@
       "src": "photos/chicken sandwich0599.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -2177,6 +2387,7 @@
       "src": "photos/breakfast hanging copy tall done.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -2192,6 +2403,7 @@
       "src": "photos/SS21_Nano_X1_Black_MSL_RSM_GraphicPanel_Male_Mech_x.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -2207,6 +2419,7 @@
       "src": "photos/Face v2.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "design"
       ],
@@ -2222,6 +2435,7 @@
       "src": "photos/marz.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "design"
       ],
@@ -2237,6 +2451,7 @@
       "src": "photos/ESP_S2021_KA_TonyFootball_2700x4000_V5_NTI[1].jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -2252,6 +2467,7 @@
       "src": "photos/issa apple.WEBP",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising",
         "music"
@@ -2268,6 +2484,7 @@
       "src": "photos/Cookies - redo1158 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -2283,6 +2500,7 @@
       "src": "photos/Cake ii2203 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -2298,6 +2516,7 @@
       "src": "photos/Dorian3974.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food",
         "editorial"
@@ -2314,6 +2533,7 @@
       "src": "photos/Nichelle4378 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -2329,6 +2549,7 @@
       "src": "photos/meg.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -2344,6 +2565,7 @@
       "src": "photos/popcorn hero copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -2359,6 +2581,7 @@
       "src": "photos/chocolate cake0188 3.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -2374,6 +2597,7 @@
       "src": "photos/marz - trona pinnacles-12.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -2389,6 +2613,7 @@
       "src": "photos/nurse4.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -2404,6 +2629,7 @@
       "src": "photos/nurse7.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -2419,6 +2645,7 @@
       "src": "photos/nurse8.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -2434,6 +2661,7 @@
       "src": "photos/nurse2.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -2449,6 +2677,7 @@
       "src": "photos/Twenty One Pilots - Atlantic Records2.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -2464,6 +2693,7 @@
       "src": "photos/Nya-6331.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -2479,6 +2709,7 @@
       "src": "photos/LALU_S5_27x40_sRGB_300dpi_F1_Bleed+copy-2.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -2494,6 +2725,7 @@
       "src": "photos/Twenty One Pilots - Atlantic Records1.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -2509,6 +2741,7 @@
       "src": "photos/Tanaye-1962 .jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -2524,6 +2757,7 @@
       "src": "photos/Rich7040-Edit-13.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -2539,6 +2773,7 @@
       "src": "photos/Dorian3845.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -2554,6 +2789,7 @@
       "src": "photos/JL 21258.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -2569,6 +2805,7 @@
       "src": "photos/jl1b.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -2584,6 +2821,7 @@
       "src": "photos/upshaws orange group.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -2599,6 +2837,7 @@
       "src": "photos/TheUpshaws_4x5.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -2614,6 +2853,7 @@
       "src": "photos/blue_0013_Generative Fill 10.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "music"
       ],
@@ -2629,6 +2869,7 @@
       "src": "photos/Tanaye-1645 .jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "editorial"
       ],
@@ -2644,6 +2885,7 @@
       "src": "photos/Red Cake - vday0538 copy.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "food"
       ],
@@ -2659,6 +2901,7 @@
       "src": "photos/20SomethingsAustin_4x5-2.jpg",
       "youtubeId": null,
       "isYt": false,
+      "isVideo": false,
       "categories": [
         "advertising"
       ],
@@ -2674,6 +2917,7 @@
       "src": "",
       "youtubeId": "TLiGA_wrNp0",
       "isYt": true,
+      "isVideo": false,
       "categories": [
         "music",
         "motion"
