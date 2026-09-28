@@ -472,6 +472,40 @@
       "dateAdded": "2026-03-28T20:17:35.621Z"
     },
     {
+      "id": "p_1790538251702_ukx830aon0i",
+      "filename": "20260825_IncMag_DannyMeyer0255 copy.jpg",
+      "title": "",
+      "src": "photos/20260825_IncMag_DannyMeyer0255 copy.jpg",
+      "youtubeId": null,
+      "isYt": false,
+      "isVideo": false,
+      "categories": [
+        "editorial"
+      ],
+      "tier": "site",
+      "width": 1920,
+      "height": 2400,
+      "dateAdded": "2026-09-27T19:44:11.702Z"
+    },
+    {
+      "id": "p_1790537908512_4248cvur71e",
+      "filename": "WIW_DM_DigCover_R1.mp4",
+      "title": "",
+      "src": "photos/WIW_DM_DigCover_R1.mp4",
+      "youtubeId": null,
+      "isYt": false,
+      "isVideo": true,
+      "categories": [
+        "editorial",
+        "food",
+        "motion"
+      ],
+      "tier": "site",
+      "width": 1080,
+      "height": 1350,
+      "dateAdded": "2026-09-27T19:38:28.512Z"
+    },
+    {
       "id": "p_1787794535501_oafs2chngof",
       "filename": "DSC07923 copy.jpg",
       "title": "",
@@ -1780,40 +1814,6 @@
       "width": 1600,
       "height": 2400,
       "dateAdded": "2026-03-28T20:00:35.610Z"
-    },
-    {
-      "id": "p_1790538251702_ukx830aon0i",
-      "filename": "20260825_IncMag_DannyMeyer0255 copy.jpg",
-      "title": "",
-      "src": "photos/20260825_IncMag_DannyMeyer0255 copy.jpg",
-      "youtubeId": null,
-      "isYt": false,
-      "isVideo": false,
-      "categories": [
-        "editorial"
-      ],
-      "tier": "site",
-      "width": 1920,
-      "height": 2400,
-      "dateAdded": "2026-09-27T19:44:11.702Z"
-    },
-    {
-      "id": "p_1790537908512_4248cvur71e",
-      "filename": "WIW_DM_DigCover_R1.mp4",
-      "title": "",
-      "src": "photos/WIW_DM_DigCover_R1.mp4",
-      "youtubeId": null,
-      "isYt": false,
-      "isVideo": true,
-      "categories": [
-        "editorial",
-        "food",
-        "motion"
-      ],
-      "tier": "site",
-      "width": 1080,
-      "height": 1350,
-      "dateAdded": "2026-09-27T19:38:28.512Z"
     },
     {
       "id": "p_1774796838901_ab0ilyc6xi",
